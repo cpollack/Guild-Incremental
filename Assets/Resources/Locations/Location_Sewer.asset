@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 974b2866eaef99a408fdb1ee5480a7a4, type: 3}
+  m_Name: Location_Sewer
+  m_EditorClassIdentifier: 
+  Name: Village Sewers
+  Description: A network of sewers and waterways are weaven below the city. They
+    are said to be inhabited by giant rats that feast on the refuse, and occasionally
+    wandering pets.
+  minLevel: 1
+  maxLevel: 99
+  distance: 0
+  depthInHours: 2
+  maxExplore: 100
+  encounterRates:
+  - type: 1
+    rate: 50
+  monsters:
+  - {fileID: 11400000, guid: 732ba13a96b631f4d9d3c9625a78b907, type: 2}
+  boss: {fileID: 11400000, guid: 01a2afd7c3618c2459dc8e94510616b7, type: 2}
+  gatherables: []

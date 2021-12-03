@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a117cb162bac26849843203195a9cc7d, type: 3}
+  m_Name: monster_giantRatKing
+  m_EditorClassIdentifier: 
+  Name: Giant Rat King
+  Description: Soverign of the grand City Sewer domain, the rat king sends his vile
+    pawns to harass the surface dwellers, and bring him back delicious morsels of
+    pets.
+  health: 10
+  attack: 3
+  defence: 1
+  speed: 2
+  explorationPercent: 1
+  experience: 0
+  gold: 0
+  itemDrops: []

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a117cb162bac26849843203195a9cc7d, type: 3}
+  m_Name: monster_giantRat
+  m_EditorClassIdentifier: 
+  Name: Giant Rat
+  Description: A rat the size of a large dog, mutated by the sewage.
+  health: 3
+  attack: 1
+  defence: 0
+  speed: 1
+  explorationPercent: 0
+  experience: 1
+  gold: 1
+  itemDrops:
+  - data: {fileID: 11400000, guid: ea74bcfc95e823b4a8f31b215f0f5f29, type: 2}
+    dropChance: 0.25
