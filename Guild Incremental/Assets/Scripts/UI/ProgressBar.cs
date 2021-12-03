@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +22,7 @@ public class ProgressBar : MonoBehaviour
         
     }
 
+#if UNITY_EDITOR
     [MenuItem("GameObject/UI/Progress Bar")]
     private static void CreateObject()
     {
@@ -28,6 +31,7 @@ public class ProgressBar : MonoBehaviour
         newObj.transform.parent = parentObj.transform;
         newObj.transform.localScale = new Vector3(1, 1, 1);
     }
+#endif
 
     public void SetPercent(float value)
     {
