@@ -22,7 +22,7 @@ jobs:
       - name: Cache Library
         uses: actions/cache@v2
         with:
-          path: Library
+          path: Guild Incremental/Library
           key: Library-${{ github.sha }}
           restore-keys: Library-
 
