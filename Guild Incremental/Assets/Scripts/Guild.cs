@@ -92,8 +92,10 @@ public class Guild : MonoBehaviour
     public bool CompleteQuest(Adventurer adventurer, Quest quest)
     {
         int gold = quest.rewardGold;
-        adventurer.GainGold((int)(gold * 0.9f));
-        this.gold = (int)(gold * 0.1f);
+        int guildGain = (int)(gold * 0.1f);
+        if (guildGain == 0) guildGain = 1;
+        this.gold += guildGain;
+        adventurer.GainGold(gold - guildGain);        
 
         foreach (GuildHall hall in halls)
         {
