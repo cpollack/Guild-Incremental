@@ -24,4 +24,9 @@ public class ConstructionPanel : MonoBehaviour
     {
         buildObj.transform.SetParent(contentPanel.transform, false);
     }
+
+    public void SetActiveJobs(int current, int max)
+    {
+        activeText.text = "Active " + current.ToString() + "/" + max.ToString();
+    }
 }

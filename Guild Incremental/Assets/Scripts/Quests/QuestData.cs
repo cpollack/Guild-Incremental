@@ -16,4 +16,7 @@ public class QuestData : ScriptableObject
     public string monsterId;
     public string itemID;
     public int count;
+
+    public int rewardRenown;
+    public int rewardGold;
 }

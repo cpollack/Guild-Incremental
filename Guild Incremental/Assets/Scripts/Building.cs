@@ -146,4 +146,9 @@ public class Building
         buildingUI.OnComplete();
         if (data.completeLog.Length > 0) guild.AddLogEntry(data.completeLog);
     }
+
+    public bool IsActive()
+    {
+        return Started && !Paused;
+    }
 }

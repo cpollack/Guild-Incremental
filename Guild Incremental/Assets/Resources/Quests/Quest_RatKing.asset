@@ -23,3 +23,5 @@ MonoBehaviour:
   monsterId: RatKing
   itemID: 
   count: 0
+  rewardRenown: 10
+  rewardGold: 30

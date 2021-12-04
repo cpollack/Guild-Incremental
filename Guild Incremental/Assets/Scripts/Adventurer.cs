@@ -120,7 +120,10 @@ public class Adventurer : MonoBehaviour, IFighter
 
         if (questPool.Count == 0) return false;
 
-        currentQuest = questPool[UnityEngine.Random.Range(0,questPool.Count-1)];
+        Quest selectedQuest = questPool[UnityEngine.Random.Range(0,questPool.Count-1)];
+        if (selectedQuest.Claim(this))
+            currentQuest = selectedQuest;
+
         return (currentQuest != null);
     }
 

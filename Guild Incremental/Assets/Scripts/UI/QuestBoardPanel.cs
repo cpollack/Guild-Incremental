@@ -85,6 +85,8 @@ public class QuestBoardPanel : MonoBehaviour
                 break;
             }
         }
+        
+        UpdateGuildQuestText();
         reloadLayout = true;
     }
 

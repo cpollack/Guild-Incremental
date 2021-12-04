@@ -7,6 +7,7 @@ public class Construction : GuildHall
     public ConstructionPanel constructionPanel;
     public GameObject buildingPanelPrefab;
     public BuildingData firstBuild;
+    public int maxJobs = 1;
     public List<Building> currentJobs = new List<Building>();    
 
     private Dictionary<string, BuildingData> allJobs = new Dictionary<string, BuildingData>();
@@ -24,16 +25,20 @@ public class Construction : GuildHall
         }
 
         LoadConstructionJobs();
+        constructionPanel.SetActiveJobs(0, maxJobs);
     }
 
     // Update is called once per frame
     void Update()
     {
+        int count = 0;
         //Safe loop in case job completes and removes mid-loop
         for (int i = currentJobs.Count - 1; i >= 0; i--)
         {
-            currentJobs[i].Update();
+            if (currentJobs[i].IsActive()) count++;
+            currentJobs[i].Update();            
         }
+        constructionPanel.SetActiveJobs(count, maxJobs);
     }
 
     public void LoadConstructionJobs()

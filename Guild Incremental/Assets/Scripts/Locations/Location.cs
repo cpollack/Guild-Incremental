@@ -78,8 +78,17 @@ public class Location
         {
             case QuestType.Kill:
                 MonsterData monster = data.monsters[UnityEngine.Random.Range(0, data.monsters.Count)];
+
+                int min = 5;
+                int max = 20;
+                int range = max - min;
+                int challengeValue = range / 3;                
+
                 count = UnityEngine.Random.Range(5, 20);
                 quest.SetObjective(this, monster, count);
+                int difficulty = (count - min) / challengeValue;
+                float goldReward = 10 * (0.9f + (0.1f * (float)difficulty));
+                quest.SetReward(0, (int)goldReward);
                 break;
             case QuestType.Gather:
                 ItemData item = data.gatherables[UnityEngine.Random.Range(0, data.gatherables.Count)];

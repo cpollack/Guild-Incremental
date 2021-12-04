@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Increase Guild Rank from F > E
   completeLog: RANK UP! The guild is now Rank E!
   requiredRenown: 10
-  costGold: 100
+  costGold: 50
   buildTimeDays: 1
   buildTimeHours: 0
   requiresBuilding: Start

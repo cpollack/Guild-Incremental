@@ -60,7 +60,7 @@ public class Quest
     public bool objectiveMet { get; private set; }
     public bool claimed { get; private set; }
     [SerializeReference] public Adventurer adventurer = null;
-    private GameTime claimTime;
+    private GameTime claimTime = new GameTime();
 
     public int rewardGold = 10;
     public int rewardRenown = 0;
@@ -92,6 +92,12 @@ public class Quest
         targetLocation = loc;
         targetItem = item;
         itemCount = count;
+    }
+
+    public void SetReward(int renown, int gold)
+    {
+        rewardRenown = renown;
+        rewardGold = gold;
     }
 
     public bool UpdateStatus(MonsterData monster, int count = 1)
@@ -127,12 +133,17 @@ public class Quest
         switch (type)
         {
             case QuestType.Kill:
-                output += "Slay " + killCount.ToString() + " " + targetMonster.Name + "s";
+                output += "Slay ";
+                if (claimed) output += Math.Min(currentCount, killCount).ToString() + "/";
+                output += killCount.ToString() + " " + targetMonster.Name + "s";
                 break;
             case QuestType.Gather:
-                output += "Collect " + itemCount.ToString() + " " + targetItem.Name + "s";
+                output += "Collect ";
+                if (claimed) output += Math.Min(currentCount, itemCount).ToString() + "/";
+                output += itemCount.ToString() + " " + targetItem.Name + "s";
                 break;
         }
+        if (claimed) output += " (claimed)";
 
         output += "\nReward:" + (rewardGold > 0 ? " " + rewardGold.ToString() + " Gold" : "") + (rewardRenown > 0 ? " " + rewardRenown.ToString() + " Renown" : "");
 

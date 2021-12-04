@@ -14,15 +14,12 @@ public enum TimeOfDay
 public class Guild : MonoBehaviour
 {
     [Header("Time")]
-    public Text textDays;
     public bool timePaused = false;
-
     public float secondsPerDay = 1.0f;
-    //public float elapsed = 0;
 
     public GameTime currentTime = new GameTime(1, 5);
     public TimeOfDay timeOfDay;
-    private string timeString;
+    public string timeString;
 
     [Header("Guild")]
     public int gold = 0;
@@ -66,7 +63,6 @@ public class Guild : MonoBehaviour
         int clock12 = Mathf.FloorToInt(currentTime.hour) % 12;
         if (clock12 == 0) clock12 = 12;
         timeString = "Day " + currentTime.day.ToString() + " " + clock12.ToString() + (Mathf.Floor(currentTime.hour) <= 11 ? "am" : "pm");
-        textDays.text = timeString + " (" + timeOfDay.ToString() + ")";
     }
 
     public GameTime GetElapsedTime(GameTime startTime)

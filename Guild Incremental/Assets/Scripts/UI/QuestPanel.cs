@@ -19,6 +19,6 @@ public class QuestPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        questText.text = quest.ToString();
     }
 }
