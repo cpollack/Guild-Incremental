@@ -18,6 +18,11 @@ public class HoverInfoPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdatePosition();
+    }
+
+    private void UpdatePosition()
+    {
         Vector2 mousePos;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, Input.mousePosition, canvas.worldCamera, out mousePos);
@@ -32,6 +37,7 @@ public class HoverInfoPanel : MonoBehaviour
         hoverText.text = text;
         //LayoutRebuilder.ForceRebuildLayoutImmediate(gameObject.GetComponent<RectTransform>());
 
+        UpdatePosition();
         gameObject.SetActive(true);
     }
 
