@@ -147,13 +147,23 @@ public class Quest
         {
             case QuestType.Kill:
                 output += "Slay ";
-                if (claimed) output += Math.Min(currentCount, killCount).ToString() + "/";
-                output += killCount.ToString() + " " + targetMonster.Name + "s";
+                if (claimed)
+                {
+                    output += targetMonster.Name + "s ";
+                    output += Math.Min(currentCount, killCount).ToString() + "/" + killCount.ToString();
+                }
+                else output += killCount.ToString() + " " + targetMonster.Name + "s";
+
                 break;
             case QuestType.Gather:
                 output += "Collect ";
-                if (claimed) output += Math.Min(currentCount, itemCount).ToString() + "/";
-                output += itemCount.ToString() + " " + targetItem.Name + "s";
+                if (claimed)
+                {
+                    output += targetItem.Name + "s ";
+                    output += Math.Min(currentCount, itemCount).ToString() + "/" + itemCount.ToString();
+                }
+                else output += itemCount.ToString() + " " + targetItem.Name + "s";
+
                 break;
         }
         //if (claimed) output += " (claimed)";
