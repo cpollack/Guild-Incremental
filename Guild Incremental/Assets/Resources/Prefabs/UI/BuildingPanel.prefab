@@ -368,7 +368,7 @@ MonoBehaviour:
   m_PreferredHeight: -1
   m_FlexibleWidth: 100
   m_FlexibleHeight: -1
-  m_LayoutPriority: 1
+  m_LayoutPriority: 2
 --- !u!1 &5328463277726485719
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,8 +927,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 549.5, y: 0}
-  m_SizeDelta: {x: 1099, y: 0}
+  m_AnchoredPosition: {x: 571.5, y: 0}
+  m_SizeDelta: {x: 1143, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5328463278234828273
 CanvasRenderer:

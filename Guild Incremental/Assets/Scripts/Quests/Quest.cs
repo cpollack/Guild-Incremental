@@ -143,7 +143,7 @@ public class Quest
                 output += itemCount.ToString() + " " + targetItem.Name + "s";
                 break;
         }
-        if (claimed) output += " (claimed)";
+        //if (claimed) output += " (claimed)";
 
         output += "\nReward:" + (rewardGold > 0 ? " " + rewardGold.ToString() + " Gold" : "") + (rewardRenown > 0 ? " " + rewardRenown.ToString() + " Renown" : "");
 

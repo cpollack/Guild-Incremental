@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5085959730610358775}
   - component: {fileID: 8832927289329741867}
+  - component: {fileID: 7013304294162391088}
   - component: {fileID: 9080612753124169846}
   - component: {fileID: 4107563389044416962}
-  - component: {fileID: 7013304294162391088}
   - component: {fileID: 7717569380717434672}
   m_Layer: 5
   m_Name: QuestPanel
@@ -33,6 +33,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6462460769302997553}
+  - {fileID: 251619582626197119}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49,6 +50,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398572468425986275}
   m_CullTransparentMesh: 1
+--- !u!114 &7013304294162391088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398572468425986275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9514860b8773a9f4a981a76156d9d75b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questText: {fileID: 3269142112286955158}
+  imageClaimed: {fileID: 4108276579805463041}
+  quest:
+    guild: {fileID: 0}
+    data: {fileID: 0}
+    category: 0
+    type: 0
+    targetLocation:
+      id: 0
+    targetMonster: {fileID: 0}
+    targetItem: {fileID: 0}
+    killCount: 0
+    itemCount: 0
+    currentCount: 0
+    minLevel: 0
+    maxLevel: 0
+    adventurer: {fileID: 0}
+    rewardGold: 0
+    rewardRenown: 0
+  adventurer: {fileID: 0}
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }
 --- !u!114 &9080612753124169846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,40 +208,6 @@ MonoBehaviour:
         Impact: 1
   paddingSizers:
     items: []
---- !u!114 &7013304294162391088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398572468425986275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9514860b8773a9f4a981a76156d9d75b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questText: {fileID: 3269142112286955158}
-  quest:
-    guild: {fileID: 0}
-    category: 0
-    type: 0
-    targetLocation:
-      id: 0
-    targetMonster: {fileID: 0}
-    targetItem: {fileID: 0}
-    killCount: 0
-    itemCount: 0
-    currentCount: 0
-    minLevel: 0
-    maxLevel: 0
-    adventurer: {fileID: 0}
-    rewardGold: 0
-    rewardRenown: 0
-  adventurer: {fileID: 0}
-  references:
-    version: 1
-    00000000:
-      type: {class: , ns: , asm: }
 --- !u!114 &7717569380717434672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,9 +225,9 @@ MonoBehaviour:
     m_Right: 4
     m_Top: 2
     m_Bottom: 2
-  m_ChildAlignment: 0
+  m_ChildAlignment: 2
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
@@ -283,19 +286,19 @@ MonoBehaviour:
   customSpacingSizers:
     items: []
   settingsFallback:
-    ChildAlignment: 0
+    ChildAlignment: 2
     ReverseArrangement: 0
     ChildForceExpandHeight: 0
-    ChildForceExpandWidth: 1
+    ChildForceExpandWidth: 0
     ChildScaleWidth: 0
     ChildScaleHeight: 0
     ChildControlWidth: 1
     ChildControlHeight: 0
-    Orientation: 1
+    Orientation: 0
     screenConfigName: Fallback
   customSettings:
     items: []
-  orientation: 1
+  orientation: 0
 --- !u!1 &1698075875664234779
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,6 +411,102 @@ MonoBehaviour:
   m_MinHeight: 20
   m_PreferredWidth: -1
   m_PreferredHeight: -1
+  m_FlexibleWidth: 1000
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!1 &4173341528952987111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 251619582626197119}
+  - component: {fileID: 896683359875830607}
+  - component: {fileID: 4108276579805463041}
+  - component: {fileID: 7079601729387183332}
+  m_Layer: 5
+  m_Name: imageClaimed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &251619582626197119
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173341528952987111}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5085959730610358775}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 376.6, y: -12}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!222 &896683359875830607
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173341528952987111}
+  m_CullTransparentMesh: 1
+--- !u!114 &4108276579805463041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173341528952987111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 87a7578e9690d4f0ab51bbc93dde40d2, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7079601729387183332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173341528952987111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: 20
+  m_MinHeight: 20
+  m_PreferredWidth: 20
+  m_PreferredHeight: 20
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1

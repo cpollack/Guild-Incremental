@@ -11,6 +11,14 @@ public enum TimeOfDay
     Night,      //7
 }
 
+public enum ResourceType
+{
+    Renown, 
+    Bank,
+    Gold,
+    Merit,
+}
+
 public class Guild : MonoBehaviour
 {
     [Header("Time")]
@@ -34,6 +42,9 @@ public class Guild : MonoBehaviour
 
     [Header("World")]
     public List<Location> locations;
+
+    [Header("Miscellaneous")]
+    public HoverInfoPanel hoverInfoPanel;
 
     // Start is called before the first frame update
     void Start()

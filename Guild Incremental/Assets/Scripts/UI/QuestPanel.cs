@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class QuestPanel : MonoBehaviour
 {
     public Text questText;
+    public Image imageClaimed;
     public Quest quest;
     public Adventurer adventurer;
 
@@ -20,5 +21,7 @@ public class QuestPanel : MonoBehaviour
     void Update()
     {
         questText.text = quest.ToString();
+        if (quest.claimed) imageClaimed.gameObject.SetActive(true);
+        else imageClaimed.gameObject.SetActive(false);
     }
 }
