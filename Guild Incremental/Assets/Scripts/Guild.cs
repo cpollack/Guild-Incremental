@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,13 @@ public enum ResourceType
     Bank,
     Gold,
     Merit,
+}
+
+[Serializable]
+public struct ResourceImage
+{
+    public ResourceType resourceType;
+    public Sprite image;
 }
 
 public class Guild : MonoBehaviour
@@ -45,6 +53,7 @@ public class Guild : MonoBehaviour
 
     [Header("Miscellaneous")]
     public HoverInfoPanel hoverInfoPanel;
+    public List<ResourceImage> resourceImages;
 
     // Start is called before the first frame update
     void Start()
@@ -120,6 +129,13 @@ public class Guild : MonoBehaviour
         return true;
     }
 
+    public void GetQuestGoldRates(int gold, out int coffers, out int adv)
+    {
+        coffers = (int)(gold * 0.1f);
+        if (coffers == 0) coffers = 1;
+        adv = gold - coffers;
+    }
+
     /* Adventurers */
 
     //Spawns the initial adventurer
@@ -145,5 +161,13 @@ public class Guild : MonoBehaviour
         entryObj.GetComponent<Text>().text = timeString + " - " + logEntry;
         entryObj.transform.SetParent(logPanel.transform, false);
         LayoutRebuilder.ForceRebuildLayoutImmediate(logPanel.GetComponent<RectTransform>());
+    }
+
+    public Sprite GetResourceImage(ResourceType resourceType)
+    {
+        foreach (ResourceImage resourceImage in resourceImages)
+            if (resourceImage.resourceType == resourceType) return resourceImage.image;
+
+        return null;
     }
 }

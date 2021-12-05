@@ -17,6 +17,19 @@ public enum QuestType
 }
 
 [Serializable]
+public struct QuestReward
+{
+    public ResourceType resourceType;
+    public int value;
+
+    public QuestReward(ResourceType type, int val)
+    {
+        resourceType = type;
+        value = val;
+    }
+}
+
+[Serializable]
 public class Quest
 {
     public Quest(QuestCategory cat, QuestType type)
@@ -64,6 +77,7 @@ public class Quest
 
     public int rewardGold = 10;
     public int rewardRenown = 0;
+    public List<QuestReward> rewards = new List<QuestReward>();
 
     public bool Claim(Adventurer adventurer)
     {
@@ -94,10 +108,9 @@ public class Quest
         itemCount = count;
     }
 
-    public void SetReward(int renown, int gold)
+    public void AddReward(ResourceType type, int value)
     {
-        rewardRenown = renown;
-        rewardGold = gold;
+        rewards.Add(new QuestReward(type, value));
     }
 
     public bool UpdateStatus(MonsterData monster, int count = 1)
@@ -145,7 +158,7 @@ public class Quest
         }
         //if (claimed) output += " (claimed)";
 
-        output += "\nReward:" + (rewardGold > 0 ? " " + rewardGold.ToString() + " Gold" : "") + (rewardRenown > 0 ? " " + rewardRenown.ToString() + " Renown" : "");
+        //output += "\nReward:" + (rewardGold > 0 ? " " + rewardGold.ToString() + " Gold" : "") + (rewardRenown > 0 ? " " + rewardRenown.ToString() + " Renown" : "");
 
         return output;
     }

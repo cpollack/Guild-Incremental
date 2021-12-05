@@ -68,6 +68,10 @@ public class QuestBoardPanel : MonoBehaviour
         QuestPanel questPanel = objPanel.GetComponent<QuestPanel>();
         questPanel.quest = quest;
         questPanel.adventurer = quest.adventurer;
+        
+        foreach (QuestReward reward in quest.rewards)
+            questPanel.AddReward(reward);
+
         questPanels.Add(questPanel);
 
         UpdateGuildQuestText();

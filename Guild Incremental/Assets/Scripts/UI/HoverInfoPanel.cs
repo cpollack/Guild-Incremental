@@ -27,6 +27,8 @@ public class HoverInfoPanel : MonoBehaviour
 
     public void SetAndDisplay(string text)
     {
+        if (text.Length == 0) return;
+
         hoverText.text = text;
         //LayoutRebuilder.ForceRebuildLayoutImmediate(gameObject.GetComponent<RectTransform>());
 
