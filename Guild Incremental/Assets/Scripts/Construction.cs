@@ -72,7 +72,7 @@ public class Construction : GuildHall
     public void AddConstructionJob(BuildingData data)
     {
         GameObject buildingObj = Instantiate(buildingPanelPrefab);
-        BuildingUI buildingUI = buildingObj.GetComponent<BuildingUI>();
+        BuildingPanel buildingUI = buildingObj.GetComponent<BuildingPanel>();
         Building building = new Building(guild, data, buildingUI);
         buildingUI.building = building;
         constructionPanel.AddBuilding(buildingObj);

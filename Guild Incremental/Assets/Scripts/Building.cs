@@ -1,26 +1,41 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public struct BuildingResource
+{
+    public ResourceType resourceType;
+    public int value;
+
+    public BuildingResource(ResourceType type, int val)
+    {
+        resourceType = type;
+        value = val;
+    }
+}
+
 public class Building
 {
-    public Building(Guild guild, BuildingData buildingData, BuildingUI buildingUI)
+    public Building(Guild guild, BuildingData buildingData, BuildingPanel buildingUI)
     {
         this.guild = guild;
         data = buildingData;
-        this.buildingUI = buildingUI;
+        this.buildingPanel = buildingUI;
+        this.buildingPanel.building = this;
 
         Started = false;
         Paused = false;
         Completed = false;
         UpdateButton();
-        UpdateBuildData();
+        SetBuildData();
     }
 
     public BuildingData data;
-    private Guild guild;
+    public Guild guild;
 
-    public BuildingUI buildingUI;
+    public BuildingPanel buildingPanel;
 
     public bool Started { get; private set; }
     public bool Paused { get; private set; }
@@ -47,12 +62,12 @@ public class Building
             GameTime elapsedTime = guild.GetElapsedTime(startTime);
             GameTime remTime = new GameTime(data.buildTimeDays, data.buildTimeHours);
             remTime = remTime.GetDifference(elapsedTime);
-            buildingUI.textTime.text = remTime.ToString() + " Remaining";
+            buildingPanel.textTime.text = remTime.ToString() + " Remaining";
 
             float elapsed = elapsedTime.GetHours();
             float required = (data.buildTimeDays * 24) + data.buildTimeHours;
             float perc = Mathf.Min(elapsed / required, 1f);
-            buildingUI.progressBar.SetPercent(perc);
+            buildingPanel.progressBar.SetPercent(perc);
             if (perc == 1)
             {
                 OnComplete();
@@ -88,9 +103,9 @@ public class Building
     private void StartConstruction()
     {
         if (guild.renown < data.requiredRenown) return;
-        if (guild.gold < data.costGold) return;
+        if (guild.gold < GetCost(ResourceType.Bank)) return;
 
-        guild.gold -= data.costGold;
+        guild.gold -= GetCost(ResourceType.Bank);
         Started = true;
         startTime.day = guild.currentTime.day;
         startTime.hour = guild.currentTime.hour;
@@ -116,39 +131,50 @@ public class Building
 
         switch (buildMode) {
             case BuildMode.None:
-                buildingUI.textButton.text = data.requiredRenown.ToString("0") + " Renown";
+                buildingPanel.textButton.text = data.requiredRenown.ToString("0") + " Renown";
                 break;
             case BuildMode.Build:
-                buildingUI.textButton.text = "Build";
+                buildingPanel.textButton.text = "Build";
                 break;
             case BuildMode.Pause:
-                buildingUI.textButton.text = "Resume";
+                buildingPanel.textButton.text = "Resume";
                 break;
             case BuildMode.Continue:
-                buildingUI.textButton.text = "Pause";
+                buildingPanel.textButton.text = "Pause";
                 break;
         }
     }
 
-    private void UpdateBuildData()
+    private void SetBuildData()
     {
-        buildingUI.textName.text = data.buildingTitle;
+        buildingPanel.textName.text = data.buildingTitle;
         GameTime buildTime = new GameTime(data.buildTimeDays, data.buildTimeHours);
-        buildingUI.textTime.text = buildTime.ToString();
-        buildingUI.textFlavor.text = data.description;
-        buildingUI.textCost.text = (data.costGold > 0 ? data.costGold.ToString() +  " Gold" : "");
+        buildingPanel.textTime.text = buildTime.ToString();
+        buildingPanel.textFlavor.text = data.description;
+
+        foreach (BuildingResource resource in data.cost)
+            buildingPanel.AddCost(resource);
+        //buildingUI.textCost.text = (data.costGold > 0 ? data.costGold.ToString() +  " Gold" : "");
     }
 
     private void OnComplete()
     {
         Completed = true;
         guild.CompleteBuilding(data.buildingID);
-        buildingUI.OnComplete();
+        buildingPanel.OnComplete();
         if (data.completeLog.Length > 0) guild.AddLogEntry(data.completeLog);
     }
 
     public bool IsActive()
     {
         return Started && !Paused;
+    }
+
+    private int GetCost(ResourceType resource)
+    {
+        foreach (BuildingResource buildingResource in data.cost)
+            if (buildingResource.resourceType == resource)
+                return buildingResource.value;
+        return 0;
     }
 }

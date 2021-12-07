@@ -11,7 +11,7 @@ public class BuildingData : ScriptableObject
     public string completeLog;
 
     public int requiredRenown = 0;
-    public int costGold = 0;
+    public List<BuildingResource> cost;
 
     public int buildTimeDays = 0;
     public float buildTimeHours = 0f;
