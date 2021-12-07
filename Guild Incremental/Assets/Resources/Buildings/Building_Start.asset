@@ -18,9 +18,7 @@ MonoBehaviour:
     for business!
   completeLog: Guild Founded
   requiredRenown: 0
-  cost:
-  - resourceType: 1
-    value: 0
+  cost: []
   buildTimeDays: 0
   buildTimeHours: 1
   requiresBuilding: 

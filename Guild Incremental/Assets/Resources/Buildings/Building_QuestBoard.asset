@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingID: QuestBoard
   buildingTitle: Construct a Quest Board
-  description: Unlock [Quest Board]
+  description: What's a guild without a quest board!? Attract adventurers, and send
+    them to their doom. Unlocks [Quest Board]
   completeLog: Built a Quest Board. You can now issue Guild Quests.
   requiredRenown: 0
   cost:
