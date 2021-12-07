@@ -6,11 +6,18 @@ using UnityEngine.UI;
 public class QuestBoardPanel : MonoBehaviour
 {
     public QuestBoard questBoard;
+    public GameObject prefabQuestPanel;
     public GameObject contentPanel;
-    public GameObject contentPanelGuild;
+
+    [Header("Main Quests")]
+    public GameObject contentPanelMain;
+    public GameObject contentPanelMainQuests;
+
+    [Header("Guild Quests")]
+    public GameObject contentPanelGuildQuests;
     public Text textGuildQuest;
     public List<QuestPanel> questPanels;
-    public GameObject prefabQuestPanel;
+    
 
     bool reloadLayout = false;
 
@@ -61,8 +68,18 @@ public class QuestBoardPanel : MonoBehaviour
         if (QuestExists(quest)) return;
 
         GameObject destPanel;
-        if (quest.category == QuestCategory.Guild) destPanel = contentPanelGuild;
-        else destPanel = contentPanel;
+        switch (quest.category)
+        {
+            case QuestCategory.Guild:
+                destPanel = contentPanelGuildQuests;
+                break;
+            case QuestCategory.Main:
+                destPanel = contentPanelMainQuests;
+                break;
+            default:
+                destPanel = contentPanel;
+                break;
+        }
 
         GameObject objPanel = Instantiate(prefabQuestPanel, destPanel.transform, false);
         QuestPanel questPanel = objPanel.GetComponent<QuestPanel>();
@@ -74,7 +91,8 @@ public class QuestBoardPanel : MonoBehaviour
 
         questPanels.Add(questPanel);
 
-        UpdateGuildQuestText();
+        if (quest.category == QuestCategory.Guild) UpdateGuildQuestText();
+        UpdateCategoryPanels();
         reloadLayout = true;
     }
 
@@ -90,7 +108,8 @@ public class QuestBoardPanel : MonoBehaviour
             }
         }
         
-        UpdateGuildQuestText();
+        if (quest.category == QuestCategory.Guild) UpdateGuildQuestText();
+        UpdateCategoryPanels();
         reloadLayout = true;
     }
 
@@ -103,14 +122,15 @@ public class QuestBoardPanel : MonoBehaviour
         return false;
     }
 
+    public void UpdateCategoryPanels()
+    {
+        if (QuestCountByCategory(QuestCategory.Main) > 0) contentPanelMain.SetActive(true);
+        else contentPanelMain.SetActive(false);
+    }
+
     public void UpdateGuildQuestText()
     {
-        int count = 0;
-        foreach (QuestPanel panel in questPanels)
-        {
-            if (panel.quest.category == QuestCategory.Guild) count++;
-        }
-        textGuildQuest.text = "Guild Quests (" + count.ToString() + "/" + questBoard.maxGuildQuests.ToString() + ")";
+        textGuildQuest.text = "Guild Quests (" + QuestCountByCategory(QuestCategory.Guild).ToString() + "/" + questBoard.maxGuildQuests.ToString() + ")";
     }
 
     public void IssueGuildQuest()
@@ -126,5 +146,14 @@ public class QuestBoardPanel : MonoBehaviour
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(obj.GetComponent<RectTransform>());
+    }
+
+    public int QuestCountByCategory(QuestCategory category)
+    {
+        int count = 0;
+        foreach (Quest quest in questBoard.quests)
+            if (quest.category == category) count++;
+
+        return count;
     }
 }
