@@ -22,6 +22,7 @@ public class EncounterRate
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Location Data", order = 1)]
 public class LocationData : ScriptableObject
 {
+    public string locationID;
     public string Name;
     public string Description;
 

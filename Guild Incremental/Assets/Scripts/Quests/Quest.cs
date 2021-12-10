@@ -17,19 +17,6 @@ public enum QuestType
 }
 
 [Serializable]
-public struct QuestReward
-{
-    public ResourceType resourceType;
-    public int value;
-
-    public QuestReward(ResourceType type, int val)
-    {
-        resourceType = type;
-        value = val;
-    }
-}
-
-[Serializable]
 public class Quest
 {
     public Quest(QuestCategory cat, QuestType type)
@@ -49,6 +36,10 @@ public class Quest
         category = data.category;
         type = data.type;
         guild = GameObject.Find("Guild").GetComponent<Guild>();
+        
+        targetLocation = guild.GetLocation(data.locationID);
+        rewards = data.rewards;
+
         startTime.day = guild.currentTime.day;
         startTime.hour = guild.currentTime.hour;
         claimed = false;
@@ -77,7 +68,7 @@ public class Quest
 
     public int rewardGold = 10;
     public int rewardRenown = 0;
-    public List<QuestReward> rewards = new List<QuestReward>();
+    public List<Resource> rewards = new List<Resource>();
 
     public bool Claim(Adventurer adventurer)
     {
@@ -110,7 +101,7 @@ public class Quest
 
     public void AddReward(ResourceType type, int value)
     {
-        rewards.Add(new QuestReward(type, value));
+        rewards.Add(new Resource(type, value));
     }
 
     public bool UpdateStatus(MonsterData monster, int count = 1)

@@ -28,16 +28,16 @@ public class QuestPanel : MonoBehaviour
         else imageClaimed.gameObject.SetActive(false);
     }
 
-    public void AddReward(QuestReward reward)
+    public void AddReward(Resource reward)
     {
         GameObject obj = Instantiate(rewardPrefab, rewardsPanel.transform, false);
         ResourcePanel rewardPanel = obj.GetComponent<ResourcePanel>();
 
-        rewardPanel.resourceImage.sprite = quest.guild.GetResourceImage(reward.resourceType);
+        rewardPanel.resourceImage.sprite = quest.guild.GetResourceImage(reward.type);
         rewardPanel.resourceText.text = reward.value.ToString();
 
         string hover = "";
-        switch (reward.resourceType)
+        switch (reward.type)
         {
             case ResourceType.Renown:
                 hover = "Renown";

@@ -40,6 +40,7 @@ public class PopupPanel : MonoBehaviour
         textTime.text = time;
         textContent.text = content;
         elapsed = 0;
+        canvasGroup.alpha = 1;
         gameObject.SetActive(true);
     }
 }

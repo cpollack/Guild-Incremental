@@ -17,6 +17,11 @@ public class QuestData : ScriptableObject
     public string itemID;
     public int count;
 
-    public int rewardRenown;
-    public int rewardGold;
+    public List<Resource> rewards;
+
+    public List<Resource> unlockRequirements;
+
+    [TextArea(3,5)]
+    public string unlockPopup;
+    public string unlockLog;
 }

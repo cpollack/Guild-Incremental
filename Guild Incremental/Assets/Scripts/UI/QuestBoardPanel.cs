@@ -86,7 +86,7 @@ public class QuestBoardPanel : MonoBehaviour
         questPanel.quest = quest;
         questPanel.adventurer = quest.adventurer;
         
-        foreach (QuestReward reward in quest.rewards)
+        foreach (Resource reward in quest.rewards)
             questPanel.AddReward(reward);
 
         questPanels.Add(questPanel);

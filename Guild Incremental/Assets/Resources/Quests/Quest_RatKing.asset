@@ -13,15 +13,33 @@ MonoBehaviour:
   m_Name: Quest_RatKing
   m_EditorClassIdentifier: 
   questID: RatKing
-  questName: Slay the Rat King
-  questDescription: Poor Fluffums. Snatched off his leash right in-front of my son
-    as he passed by a storm drain. Enough is enough. This rain of terror must end!
-    Go and slay the Rat King to put an end to his tyranny.
+  questName: Slay the Giant Rat King
+  questDescription: Slay the Giant Rat King and get revenge for Fluffums.
   category: 0
   type: 2
   locationID: Sewer
   monsterId: RatKing
   itemID: 
   count: 0
-  rewardRenown: 10
-  rewardGold: 30
+  rewards:
+  - type: 0
+    value: 50
+  - type: 2
+    value: 100
+  - type: 3
+    value: 10
+  unlockRequirements:
+  - type: 0
+    value: 1
+  unlockPopup: 'A wealthy looking noble rushes into the guild with tears streaming
+    down his face.
+
+
+    "Oh the tragedy! My poor Fluffums, stolen away before my
+    very eyes. Please oh please good sir. You must put an end to the tyranny of the
+    rat king!"
+
+
+    The noble begs the aid of your guild. This might be a good chance
+    to spread your name a bit, but is your lone adventurer up for the challenge?'
+  unlockLog: Unlocked your first main quest.

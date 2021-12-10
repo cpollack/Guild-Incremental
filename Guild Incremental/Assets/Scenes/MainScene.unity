@@ -697,6 +697,7 @@ MonoBehaviour:
   locations:
   - data: {fileID: 11400000, guid: da8cfbdbb387a794293960d9d596fb7f, type: 2}
     explored: 0
+  completedQuests: []
   hoverInfoPanel: {fileID: 1447390308}
   popupPanel: {fileID: 1822292901}
   resourceImages:
@@ -815,6 +816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 219238060}
   - component: {fileID: 219238061}
+  - component: {fileID: 219238062}
   m_Layer: 5
   m_Name: content
   m_TagString: Untagged
@@ -867,6 +869,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &219238062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219238059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &239763533
 GameObject:
   m_ObjectHideFlags: 0
@@ -4796,6 +4812,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1227733888}
   - component: {fileID: 1227733889}
+  - component: {fileID: 1227733890}
   m_Layer: 5
   m_Name: panelMainQuests
   m_TagString: Untagged
@@ -4850,6 +4867,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1227733890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227733887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1239129979
 GameObject:
   m_ObjectHideFlags: 0
@@ -5940,6 +5971,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1520632632}
   - component: {fileID: 1520632634}
+  - component: {fileID: 1520632633}
   m_Layer: 5
   m_Name: panelGuildQuests
   m_TagString: Untagged
@@ -5968,6 +6000,20 @@ RectTransform:
   m_AnchoredPosition: {x: 365.66666, y: -36.081253}
   m_SizeDelta: {x: 731.3333, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1520632633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520632631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &1520632634
 MonoBehaviour:
   m_ObjectHideFlags: 0

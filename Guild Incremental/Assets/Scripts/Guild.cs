@@ -12,14 +12,6 @@ public enum TimeOfDay
     Night,      //7
 }
 
-public enum ResourceType
-{
-    Renown, 
-    Bank,
-    Gold,
-    Merit,
-}
-
 [Serializable]
 public struct ResourceImage
 {
@@ -50,6 +42,7 @@ public class Guild : MonoBehaviour
 
     [Header("World")]
     public List<Location> locations;
+    public List<string> completedQuests = new List<string>();
 
     [Header("Miscellaneous")]
     public HoverInfoPanel hoverInfoPanel;
@@ -112,9 +105,11 @@ public class Guild : MonoBehaviour
 
     public bool CompleteQuest(Adventurer adventurer, Quest quest)
     {
-        foreach (QuestReward reward in quest.rewards)
+        if (quest.data != null && quest.data.questID.Length > 0) completedQuests.Add(quest.data.questID);
+
+        foreach (Resource reward in quest.rewards)
         {
-            switch (reward.resourceType)
+            switch (reward.type)
             {
                 case ResourceType.Renown:
                     renown += reward.value;
@@ -123,7 +118,7 @@ public class Guild : MonoBehaviour
                     adventurer.GainGold(reward.value);
                     break;
                 default:
-                    Debug.LogWarning("Guild::CompleteQuest unhandled ResourceType [" + reward.resourceType + "]");
+                    Debug.LogWarning("Guild::CompleteQuest unhandled ResourceType [" + reward.type + "]");
                     break;
             }
         }                
@@ -189,6 +184,17 @@ public class Guild : MonoBehaviour
     {
         foreach (ResourceImage resourceImage in resourceImages)
             if (resourceImage.resourceType == resourceType) return resourceImage.image;
+
+        return null;
+    }
+
+    public Location GetLocation(string locationID)
+    {
+        foreach (Location loc in locations)
+        {
+            if (loc.data.locationID == locationID)
+                return loc;
+        }
 
         return null;
     }

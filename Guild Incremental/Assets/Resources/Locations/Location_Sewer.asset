@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974b2866eaef99a408fdb1ee5480a7a4, type: 3}
   m_Name: Location_Sewer
   m_EditorClassIdentifier: 
+  locationID: Sewer
   Name: Village Sewers
   Description: A network of sewers and waterways are weaven below the city. They
     are said to be inhabited by giant rats that feast on the refuse, and occasionally
