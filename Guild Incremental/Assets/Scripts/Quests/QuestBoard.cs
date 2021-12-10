@@ -74,6 +74,9 @@ public class QuestBoard : GuildHall
             totalGuildQuestsIssued++;
             if (totalGuildQuestsIssued == 1)
             {
+                guild.TriggerPopup("As you pin the first quest to the board, a young and bright eyed man walks in." +
+                    "\n\n\"Slaying rats in the sewers, eh? I'm your man for the job!\"" +
+                    "\n\nHe doesn't look like much with his hand-me-down worn leathers, and rusty sword. Still, he will have to do.");
                 guild.AddLogEntry("Issued first guild quest. You have attracted the attention of a new adventurer!");
                 guild.SpawnFirstAdventurer();
             }

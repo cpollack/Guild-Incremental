@@ -53,6 +53,7 @@ public class Guild : MonoBehaviour
 
     [Header("Miscellaneous")]
     public HoverInfoPanel hoverInfoPanel;
+    public PopupPanel popupPanel;
     public List<ResourceImage> resourceImages;
 
     // Start is called before the first frame update
@@ -161,6 +162,11 @@ public class Guild : MonoBehaviour
         entryObj.GetComponent<Text>().text = timeString + " - " + logEntry;
         entryObj.transform.SetParent(logPanel.transform, false);
         LayoutRebuilder.ForceRebuildLayoutImmediate(logPanel.GetComponent<RectTransform>());
+    }
+
+    public void TriggerPopup(string content)
+    {
+        popupPanel.Popup(timeString, content);
     }
 
     public Sprite GetResourceImage(ResourceType resourceType)
