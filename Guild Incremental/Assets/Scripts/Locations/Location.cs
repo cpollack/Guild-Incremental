@@ -87,12 +87,13 @@ public class Location
                 count = UnityEngine.Random.Range(5, 20);
                 quest.SetObjective(this, monster, count);
                 int difficulty = (count - min) / challengeValue;
+
+                float renownReward = 1 * (0.9f + (0.1f * (float)difficulty));
+                renownReward = Math.Max(renownReward, 1);
                 float goldReward = 10 * (0.9f + (0.1f * (float)difficulty));
 
-                int rewGuild, rewAdv;
-                quest.guild.GetQuestGoldRates((int)goldReward, out rewGuild, out rewAdv);
-                quest.AddReward(ResourceType.Bank, rewGuild);
-                quest.AddReward(ResourceType.Gold, rewAdv);
+                quest.AddReward(ResourceType.Renown, (int)renownReward);
+                quest.AddReward(ResourceType.Gold, (int)goldReward);
 
                 break;
             case QuestType.Gather:

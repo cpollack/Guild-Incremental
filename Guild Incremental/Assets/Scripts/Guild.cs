@@ -112,11 +112,21 @@ public class Guild : MonoBehaviour
 
     public bool CompleteQuest(Adventurer adventurer, Quest quest)
     {
-        int gold = quest.rewardGold;
-        int guildGain = (int)(gold * 0.1f);
-        if (guildGain == 0) guildGain = 1;
-        this.gold += guildGain;
-        adventurer.GainGold(gold - guildGain);        
+        foreach (QuestReward reward in quest.rewards)
+        {
+            switch (reward.resourceType)
+            {
+                case ResourceType.Renown:
+                    renown += reward.value;
+                    break;
+                case ResourceType.Gold:
+                    adventurer.GainGold(reward.value);
+                    break;
+                default:
+                    Debug.LogWarning("Guild::CompleteQuest unhandled ResourceType [" + reward.resourceType + "]");
+                    break;
+            }
+        }                
 
         foreach (GuildHall hall in halls)
         {
@@ -167,6 +177,12 @@ public class Guild : MonoBehaviour
     public void TriggerPopup(string content)
     {
         popupPanel.Popup(timeString, content);
+    }
+
+    public void LogAndPopup(string content)
+    {
+        AddLogEntry(content);
+        TriggerPopup(content);
     }
 
     public Sprite GetResourceImage(ResourceType resourceType)
