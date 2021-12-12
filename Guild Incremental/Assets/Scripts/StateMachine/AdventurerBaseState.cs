@@ -41,8 +41,8 @@ public class AdventurerBaseState : BaseState
 
     protected void ResetStartTime()
     {
-        startTime.day = Guild.currentTime.day;
-        startTime.hour = Guild.currentTime.hour;
+        startTime.day = Guild.CurrentTime.day;
+        startTime.hour = Guild.CurrentTime.hour;
     }
 
     protected void UpdateActionPercent()

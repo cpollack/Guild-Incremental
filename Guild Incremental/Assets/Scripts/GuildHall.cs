@@ -10,7 +10,7 @@ public class GuildHall : MonoBehaviour
     public bool Unlocked = false;
 
     // Start is called before the first frame update
-    protected void Start()
+    protected void Awake()
     {
         guild = GameObject.Find("Guild").GetComponent<Guild>();
     }
@@ -19,6 +19,11 @@ public class GuildHall : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public virtual void ResetGame()
+    {
+        //
     }
 
     public virtual void CompleteBuild(string buildID)

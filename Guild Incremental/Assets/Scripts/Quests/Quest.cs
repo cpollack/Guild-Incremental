@@ -25,8 +25,8 @@ public class Quest
         category = cat;
         this.type = type;
         guild = GameObject.Find("Guild").GetComponent<Guild>();
-        startTime.day = guild.currentTime.day;
-        startTime.hour = guild.currentTime.hour;
+        startTime.day = guild.CurrentTime.day;
+        startTime.hour = guild.CurrentTime.hour;
         claimed = false;
     }
 
@@ -40,8 +40,8 @@ public class Quest
         targetLocation = guild.GetLocation(data.locationID);
         rewards = data.rewards;
 
-        startTime.day = guild.currentTime.day;
-        startTime.hour = guild.currentTime.hour;
+        startTime.day = guild.CurrentTime.day;
+        startTime.hour = guild.CurrentTime.hour;
         claimed = false;
     }
 
@@ -77,8 +77,8 @@ public class Quest
         this.adventurer = adventurer;
         objectiveMet = false;
         claimed = true;
-        claimTime.day = guild.currentTime.day;
-        claimTime.hour = guild.currentTime.hour;
+        claimTime.day = guild.CurrentTime.day;
+        claimTime.hour = guild.CurrentTime.hour;
 
         return true;
     }

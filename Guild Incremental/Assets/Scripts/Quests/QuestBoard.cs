@@ -16,9 +16,9 @@ public class QuestBoard : GuildHall
 
     private Dictionary<string, QuestData> allQuests = new Dictionary<string, QuestData>();
 
-    new private void Start()
+    new private void Awake()
     {
-        base.Start();
+        base.Awake();
         questBoardPanel.SetLockState(Unlocked);
 
         UnityEngine.Object[] resources = Resources.LoadAll("Quests", typeof(QuestData));
@@ -72,7 +72,7 @@ public class QuestBoard : GuildHall
             if (skip) continue;
 
             //Quest already completed
-            if (guild.completedQuests.Contains(kvp.Key))
+            if (guild.CompletedQuests.Contains(kvp.Key))
                 continue;
 
             //Quest unlock conditions met

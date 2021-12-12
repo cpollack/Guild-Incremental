@@ -25,34 +25,46 @@ public class Guild : MonoBehaviour
     public bool timePaused = false;
     public float secondsPerDay = 1.0f;
 
-    public GameTime currentTime = new GameTime(1, 5);
+    //public GameTime currentTime = new GameTime(1, 5);
     public TimeOfDay timeOfDay;
     public string timeString;
 
-    [Header("Guild")]
-    public int gold = 0;
-    public int renown = 0;
+    private float elapsed = 0;
+    public float autoSaveTimer = 30;
 
     [Header("Guild Halls")]
     public MainMenu mainMenu;
     public GameObject logPanel;
     public GameObject logEntryPrefab;
-    public List<string> completedBuildings = new List<string>();
+    
     public List<GuildHall> halls = new List<GuildHall>();
 
     [Header("World")]
     public List<Location> locations;
-    public List<string> completedQuests = new List<string>();
 
     [Header("Miscellaneous")]
     public HoverInfoPanel hoverInfoPanel;
     public PopupPanel popupPanel;
     public List<ResourceImage> resourceImages;
 
+    [Header("Game Data")]
+    private GameData gameData;
+    /* Accessors */
+    public GameTime CurrentTime { get { return gameData.currentTime; } private set { } }
+    public int Renown { get { return gameData.renown; } set { gameData.renown = value; } }
+    public int Gold { get { return gameData.gold; } set { gameData.gold = value; } }
+    public List<string> CompletedBuildings { get { return gameData.completedBuildings; } private set { } }
+    public List<string> CompletedQuests { get { return gameData.completedQuests; } private set { } }
+
     // Start is called before the first frame update
     void Start()
     {
-        //
+        Load();
+    }
+
+    private void OnDestroy()
+    {
+        Save();
     }
 
     // Update is called once per frame
@@ -64,30 +76,39 @@ public class Guild : MonoBehaviour
     /* TIME */
     private void UpdateTime()
     {
+        //Real Time
+        elapsed += Time.deltaTime;
+        if (elapsed >= autoSaveTimer)
+        {
+            elapsed = 0;
+            Save();
+        }
+
+        //Game Time
         if (timePaused) return;
 
-        currentTime.AddHours(Time.deltaTime / secondsPerDay * 24);      
+        CurrentTime.AddHours(Time.deltaTime / secondsPerDay * 24);      
 
-        if (currentTime.hour < 5) timeOfDay = TimeOfDay.Night;
-        else if (currentTime.hour < 12) timeOfDay = TimeOfDay.Morning;
-        else if (currentTime.hour < 17) timeOfDay = TimeOfDay.Afternoon;
-        else if (currentTime.hour <= 22) timeOfDay = TimeOfDay.Evening;
+        if (CurrentTime.hour < 5) timeOfDay = TimeOfDay.Night;
+        else if (CurrentTime.hour < 12) timeOfDay = TimeOfDay.Morning;
+        else if (CurrentTime.hour < 17) timeOfDay = TimeOfDay.Afternoon;
+        else if (CurrentTime.hour <= 22) timeOfDay = TimeOfDay.Evening;
         else timeOfDay = TimeOfDay.Night;
 
-        int clock12 = Mathf.FloorToInt(currentTime.hour) % 12;
+        int clock12 = Mathf.FloorToInt(CurrentTime.hour) % 12;
         if (clock12 == 0) clock12 = 12;
-        timeString = "Day " + currentTime.day.ToString() + " " + clock12.ToString() + (Mathf.Floor(currentTime.hour) <= 11 ? "am" : "pm");
+        timeString = "Day " + CurrentTime.day.ToString() + " " + clock12.ToString() + (Mathf.Floor(CurrentTime.hour) <= 11 ? "am" : "pm");
     }
 
     public GameTime GetElapsedTime(GameTime startTime)
     {
-        return currentTime.GetDifference(startTime);
+        return CurrentTime.GetDifference(startTime);
     }
 
     /* Construction */
     public void CompleteBuilding(string buildID)
     {
-        completedBuildings.Add(buildID);
+        CompletedBuildings.Add(buildID);
         mainMenu.CompleteBuilding(buildID);
         foreach (GuildHall hall in halls)
             hall.CompleteBuild(buildID);
@@ -105,14 +126,14 @@ public class Guild : MonoBehaviour
 
     public bool CompleteQuest(Adventurer adventurer, Quest quest)
     {
-        if (quest.data != null && quest.data.questID.Length > 0) completedQuests.Add(quest.data.questID);
+        if (quest.data != null && quest.data.questID.Length > 0) CompletedQuests.Add(quest.data.questID);
 
         foreach (Resource reward in quest.rewards)
         {
             switch (reward.type)
             {
                 case ResourceType.Renown:
-                    renown += reward.value;
+                    gameData.renown += reward.value;
                     break;
                 case ResourceType.Gold:
                     adventurer.GainGold(reward.value);
@@ -161,6 +182,8 @@ public class Guild : MonoBehaviour
         //
     }
 
+    /* Utility */
+
     public void AddLogEntry(string logEntry)
     {
         GameObject entryObj = Instantiate(logEntryPrefab);
@@ -197,5 +220,46 @@ public class Guild : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void Save()
+    {
+        foreach (GuildHall hall in halls)
+            if (hall.data.ID == "Construction")
+            {
+                Construction construction = (Construction)hall;
+                gameData.currentBuildProjects = construction.currentJobs;
+                gameData.maxConstructionJobs = construction.maxJobs;
+                break;
+            }
+
+
+        DataAccessor.Save(gameData);
+    }
+
+    public void ResetSave()
+    {
+        gameData = new GameData();
+
+        foreach (GuildHall hall in halls)
+            hall.ResetGame();
+
+        mainMenu.Reset(gameData.completedBuildings, true);
+    }
+
+    public void Load()
+    {
+        gameData = DataAccessor.Load();
+        if (gameData == null) return;
+
+        foreach (GuildHall hall in halls)
+            if (hall.data.ID == "Construction")
+            {
+                Construction construction = (Construction)hall;
+                construction.Load(gameData.currentBuildProjects, gameData.maxConstructionJobs);
+                break;
+            }
+
+        mainMenu.Reset(gameData.completedBuildings);
     }
 }

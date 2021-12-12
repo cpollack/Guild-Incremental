@@ -20,8 +20,8 @@ public class HeaderPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        textRenown.text = guild.renown.ToString();
-        textGold.text = guild.gold.ToString();
+        textRenown.text = guild.Renown.ToString();
+        textGold.text = guild.Gold.ToString();
         textDate.text = guild.timeString + " (" + guild.timeOfDay.ToString() + ")";
     }
 }

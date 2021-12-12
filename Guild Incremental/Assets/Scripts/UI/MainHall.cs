@@ -10,9 +10,9 @@ public class MainHall : GuildHall
     public List<Adventurer> adventurers = new List<Adventurer>();
 
     // Start is called before the first frame update
-    new void Start()
+    new void Awake()
     {
-        base.Start();
+        base.Awake();
     }
 
     // Update is called once per frame

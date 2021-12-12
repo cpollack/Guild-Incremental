@@ -28,7 +28,7 @@ public class Resource
         switch (type)
         {
             case ResourceType.Renown:
-                if (guild.renown >= value)
+                if (guild.Renown >= value)
                     return true;
                 break;
         }

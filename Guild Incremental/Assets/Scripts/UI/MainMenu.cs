@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public List<MainMenuItem> menuItems = new List<MainMenuItem>();
     public MainMenuItem currentItem;
+    public Toggle defaultToggle;
 
     // Start is called before the first frame update
     void Start()
@@ -36,5 +37,20 @@ public class MainMenu : MonoBehaviour
         currentItem.OnLeaveTab();
         currentItem = menuItem;
         currentItem.OnEnterTab();
+    }
+
+    public void Reset(List<string> completedBuildings, bool gotoDefTab = false)
+    {
+        if (gotoDefTab)
+        {
+            defaultToggle.isOn = true;
+        }
+
+        foreach (MainMenuItem menuItem in menuItems)
+        {
+            if (menuItem.requireBuildID.Length == 0) menuItem.gameObject.SetActive(true);
+            else if (completedBuildings.Contains(menuItem.requireBuildID)) menuItem.gameObject.SetActive(true);
+            else menuItem.gameObject.SetActive(false);
+        }
     }
 }

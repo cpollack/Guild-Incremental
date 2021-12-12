@@ -29,4 +29,12 @@ public class ConstructionPanel : MonoBehaviour
     {
         activeText.text = "Active " + current.ToString() + "/" + max.ToString();
     }
+
+    public void RemoveAllJobs()
+    {
+        foreach (Transform child in contentPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 }

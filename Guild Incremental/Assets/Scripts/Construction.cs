@@ -10,12 +10,18 @@ public class Construction : GuildHall
     public int maxJobs = 1;
     public List<Building> currentJobs = new List<Building>();    
 
-    private Dictionary<string, BuildingData> allJobs = new Dictionary<string, BuildingData>();
+    private Dictionary<string, BuildingData> allJobs;
 
     // Start is called before the first frame update
-    new void Start()
+    new void Awake()
     {
-        base.Start();
+        base.Awake();
+        LoadResources();
+    }
+
+    private void LoadResources()
+    {
+        allJobs = new Dictionary<string, BuildingData>();
 
         Object[] resources = Resources.LoadAll("Buildings", typeof(BuildingData));
         foreach (Object resource in resources)
@@ -23,7 +29,10 @@ public class Construction : GuildHall
             BuildingData buildingData = (BuildingData)resource;
             allJobs.Add(buildingData.buildingID, buildingData);
         }
+    }
 
+    private void Start()
+    {
         LoadConstructionJobs();
         constructionPanel.SetActiveJobs(0, maxJobs);
     }
@@ -41,9 +50,34 @@ public class Construction : GuildHall
         constructionPanel.SetActiveJobs(count, maxJobs);
     }
 
+    public void Load(List<Building> currentBuildProjects, int maxConstructionJobs)
+    {
+        foreach (string buildID in guild.CompletedBuildings)
+            allJobs.Remove(buildID);
+
+        foreach (Building building in currentBuildProjects)
+        {
+            AddConstructionJob(building);
+            building.OnLoad();
+        }
+
+        maxJobs = maxConstructionJobs;
+    }
+
+    public override void ResetGame()
+    {
+        LoadResources();
+        guild.CompletedBuildings.Clear();
+        constructionPanel.RemoveAllJobs();
+        currentJobs.Clear();
+
+        LoadConstructionJobs();
+        constructionPanel.SetActiveJobs(0, maxJobs);
+    }
+
     public void LoadConstructionJobs()
     {
-        if (guild.completedBuildings.Count == 0)
+        if (guild.CompletedBuildings.Count == 0 && currentJobs.Count == 0)
         {
             AddConstructionJob(firstBuild);
             return;
@@ -62,11 +96,20 @@ public class Construction : GuildHall
             }
             if (skip) continue;
 
-            if (guild.completedBuildings.Contains(kvp.Value.requiresBuilding))
+            if (guild.CompletedBuildings.Contains(kvp.Value.requiresBuilding))
             {
                 AddConstructionJob(kvp.Value);
             }
         }
+    }
+
+    public BuildingData FindBuildingData(string id)
+    {
+        foreach (KeyValuePair<string, BuildingData> kvp in allJobs)
+        {
+            if (kvp.Value.buildingID == id) return kvp.Value;
+        }
+        return null;
     }
 
     public void AddConstructionJob(BuildingData data)
@@ -74,6 +117,20 @@ public class Construction : GuildHall
         GameObject buildingObj = Instantiate(buildingPanelPrefab);
         BuildingPanel buildingUI = buildingObj.GetComponent<BuildingPanel>();
         Building building = new Building(guild, data, buildingUI);
+        buildingUI.building = building;
+        constructionPanel.AddBuilding(buildingObj);
+        currentJobs.Add(building);
+    }
+
+    public void AddConstructionJob(Building building)
+    {
+        building.guild = guild;
+        if (building.buildingID.Length > 0 && building.data == null)
+            building.data = FindBuildingData(building.buildingID);        
+
+        GameObject buildingObj = Instantiate(buildingPanelPrefab);
+        BuildingPanel buildingUI = buildingObj.GetComponent<BuildingPanel>();
+        building.buildingPanel = buildingUI;
         buildingUI.building = building;
         constructionPanel.AddBuilding(buildingObj);
         currentJobs.Add(building);

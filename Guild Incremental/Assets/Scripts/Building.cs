@@ -16,15 +16,18 @@ public struct BuildingResource
     }
 }
 
+[Serializable]
 public class Building
 {
     public Building(Guild guild, BuildingData buildingData, BuildingPanel buildingUI)
     {
         this.guild = guild;
         data = buildingData;
+        buildingID = data.buildingID;
         this.buildingPanel = buildingUI;
         this.buildingPanel.building = this;
 
+        buildMode = BuildMode.None;
         Started = false;
         Paused = false;
         Completed = false;
@@ -32,27 +35,26 @@ public class Building
         SetBuildData();
     }
 
-    public BuildingData data;
-    public Guild guild;
+    public string buildingID;
+    [NonSerialized] public BuildingData data;
+    [NonSerialized] public Guild guild;
+    [NonSerialized] public BuildingPanel buildingPanel;
 
-    public BuildingPanel buildingPanel;
-
-    public bool Started { get; private set; }
-    public bool Paused { get; private set; }
-    public bool Completed { get; private set; }
-    
+    public bool Started;
+    public bool Paused;
+    public bool Completed;    
 
     public GameTime startTime = new GameTime();
     public GameTime pauseTime = new GameTime();
 
-    private enum BuildMode
+    public enum BuildMode
     {
         None,
         Build,
         Pause,
         Continue,
     }
-    private BuildMode buildMode = BuildMode.None;
+    public BuildMode buildMode;
 
     // Update is called once per frame
     public void Update()
@@ -75,6 +77,26 @@ public class Building
         }
     }
 
+    public void OnLoad()
+    {
+        UpdateButton();
+        SetBuildData();
+        if (Started)
+        {
+            GameTime elapsedTime;
+            if (Paused) elapsedTime = pauseTime.GetDifference(startTime);
+            else elapsedTime = guild.GetElapsedTime(startTime);
+            GameTime remTime = new GameTime(data.buildTimeDays, data.buildTimeHours);
+            remTime = remTime.GetDifference(elapsedTime);
+            buildingPanel.textTime.text = remTime.ToString() + " Remaining";
+
+            float elapsed = elapsedTime.GetHours();
+            float required = (data.buildTimeDays * 24) + data.buildTimeHours;
+            float perc = Mathf.Min(elapsed / required, 1f);
+            buildingPanel.progressBar.SetPercent(perc);
+        }
+    }
+
     public void OnClick()
     {
         switch (buildMode) {
@@ -84,8 +106,7 @@ public class Building
             case BuildMode.Pause:
                 GameTime dif = new GameTime();
                 dif.Set(pauseTime.GetDifference(startTime));
-               //dif.SubtractHours(pauseTime.GetDifference(startTime).GetHours());
-                startTime.Set(guild.currentTime);
+                startTime.Set(guild.CurrentTime);
                 startTime.SubtractHours(dif.GetHours());
                 pauseTime.Set(0, 0);
 
@@ -94,7 +115,7 @@ public class Building
                 break;
             case BuildMode.Continue:
                 Paused = true;
-                pauseTime.Set(guild.currentTime);
+                pauseTime.Set(guild.CurrentTime);
                 UpdateButton();
                 break;
         }
@@ -102,13 +123,13 @@ public class Building
 
     private void StartConstruction()
     {
-        if (guild.renown < data.requiredRenown) return;
-        if (guild.gold < GetCost(ResourceType.Bank)) return;
+        if (guild.Renown < data.requiredRenown) return;
+        if (guild.Gold < GetCost(ResourceType.Bank)) return;
 
-        guild.gold -= GetCost(ResourceType.Bank);
+        guild.Gold -= GetCost(ResourceType.Bank);
         Started = true;
-        startTime.day = guild.currentTime.day;
-        startTime.hour = guild.currentTime.hour;
+        startTime.day = guild.CurrentTime.day;
+        startTime.hour = guild.CurrentTime.hour;
         UpdateButton();
     }
 
@@ -116,7 +137,7 @@ public class Building
     {
         if (!Started)
         {
-            if (guild.renown < data.requiredRenown)
+            if (guild.Renown < data.requiredRenown)
                 buildMode = BuildMode.None;
             else
                 buildMode = BuildMode.Build;
