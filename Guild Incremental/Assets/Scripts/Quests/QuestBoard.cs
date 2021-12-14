@@ -140,7 +140,7 @@ public class QuestBoard : GuildHall
             guild.TotalGuildQuestsIssued++;
             if (guild.TotalGuildQuestsIssued == 1)
             {
-                guild.TriggerPopup("As you pin the first quest to the board, a young and bright eyed man walks in." +
+                guild.AddStoryEntry("A Bright Eyed Newbie", "As you pin the first quest to the board, a young and bright eyed man walks in." +
                     "\n\n\"Slaying rats in the sewers, eh? I'm your man for the job!\"" +
                     "\n\nHe doesn't look like much with his hand-me-down worn leathers, and rusty sword. Still, he will have to do.");
                 guild.AddLogEntry("Issued first guild quest. You have attracted the attention of a new adventurer!");
@@ -182,7 +182,7 @@ public class QuestBoard : GuildHall
         guild.Quests.Add(quest);
         questBoardPanel.AddQuest(quest);
 
-        if (data.unlockPopup.Length > 0) guild.TriggerPopup(data.unlockPopup);
+        if (data.unlockStory.Length > 0) guild.AddStoryEntry(data.unlockStoryHeader, data.unlockStory);
         if (data.unlockLog.Length > 0) guild.AddLogEntry(data.unlockLog);
     }
 }

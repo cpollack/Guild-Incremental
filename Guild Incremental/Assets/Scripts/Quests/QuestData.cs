@@ -21,7 +21,8 @@ public class QuestData : ScriptableObject
 
     public List<Resource> unlockRequirements;
 
-    [TextArea(3,5)]
-    public string unlockPopup;
+    public string unlockStoryHeader;
+    [TextArea(3, 5)]
+    public string unlockStory;
     public string unlockLog;
 }

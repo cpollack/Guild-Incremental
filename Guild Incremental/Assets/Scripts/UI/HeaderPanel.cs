@@ -22,6 +22,6 @@ public class HeaderPanel : MonoBehaviour
     {
         textRenown.text = guild.Renown.ToString();
         textGold.text = guild.Gold.ToString();
-        textDate.text = guild.timeString + " (" + guild.timeOfDay.ToString() + ")";
+        textDate.text = guild.CurrentTime.GetFormattedTime() + " (" + guild.timeOfDay.ToString() + ")";
     }
 }

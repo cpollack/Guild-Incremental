@@ -11,6 +11,8 @@ public class GameData
     public int gold;
 
     public List<Adventurer> adventurers;
+    public List<StoryEntry> storyEntries;
+    public List<LogEntry> logEntries;
 
     public List<string> completedBuildings;
     public List<Building> currentBuildProjects;
@@ -29,6 +31,9 @@ public class GameData
 
         adventurers = new List<Adventurer>();
 
+        storyEntries = new List<StoryEntry>();
+        logEntries = new List<LogEntry>();
+
         completedBuildings = new List<string>();
         currentBuildProjects = new List<Building>();
         maxConstructionJobs = 1;
@@ -44,6 +49,8 @@ public class GameData
         if (currentTime == null) currentTime = new GameTime(1, 5);
 
         if (adventurers == null) adventurers = new List<Adventurer>();
+        if (logEntries == null) logEntries = new List<LogEntry>();
+        if (storyEntries == null) storyEntries = new List<StoryEntry>();
 
         if (completedBuildings == null) completedBuildings = new List<string>();
         if (currentBuildProjects == null) currentBuildProjects = new List<Building>();

@@ -16,8 +16,10 @@ MonoBehaviour:
   keepCompletedTasks: 1
   showCompletedTasks: 0
   items:
+  - task: Save Guild Log Data
+    isComplete: 1
   - task: Adventurer:Load() state machine
-    isComplete: 0
+    isComplete: 1
   - task: Implement Story
     isComplete: 0
   - task: Tavern
@@ -36,3 +38,5 @@ MonoBehaviour:
     isComplete: 1
   - task: Add AdvPanel on Load
     isComplete: 1
+  - task: '[BUG] HoverInfo can exceed bounds of viewport'
+    isComplete: 0

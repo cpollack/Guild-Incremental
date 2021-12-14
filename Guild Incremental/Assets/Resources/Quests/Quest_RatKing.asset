@@ -29,7 +29,8 @@ MonoBehaviour:
   unlockRequirements:
   - type: 0
     value: 1
-  unlockPopup: 'A wealthy looking noble rushes into the guild with tears streaming
+  unlockStoryHeader: King of the Rats
+  unlockStory: 'A wealthy looking noble rushes into the guild with tears streaming
     down his face.
 
 

@@ -19,6 +19,13 @@ public struct ResourceImage
     public Sprite image;
 }
 
+[Serializable]
+public struct LogEntry
+{
+    public GameTime time;
+    public string text;
+}
+
 public class Guild : MonoBehaviour
 {
     [Header("Time")]
@@ -27,7 +34,6 @@ public class Guild : MonoBehaviour
 
     //public GameTime currentTime = new GameTime(1, 5);
     public TimeOfDay timeOfDay;
-    public string timeString;
 
     private float elapsed = 0;
     public float autoSaveTimer = 30;
@@ -46,6 +52,7 @@ public class Guild : MonoBehaviour
     public HoverInfoPanel hoverInfoPanel;
     public PopupPanel popupPanel;
     public List<ResourceImage> resourceImages;
+    public StoryButton storyButton;
 
     [Header("Game Data")]
     private GameData gameData;
@@ -54,7 +61,9 @@ public class Guild : MonoBehaviour
     public int Renown { get { return gameData.renown; } set { gameData.renown = value; } }
     public int Gold { get { return gameData.gold; } set { gameData.gold = value; } }
     public List<Adventurer> Adventurers { get { return gameData.adventurers; } private set { } }
-    
+    public List<StoryEntry> StoryEntries { get { return gameData.storyEntries; } private set { } }
+    public List<LogEntry> LogEntries { get { return gameData.logEntries; } private set { } }
+
     public List<string> CompletedBuildings { get { return gameData.completedBuildings; } private set { } }
     public List<Building> CurrentBuildProjects { get { return gameData.currentBuildProjects; } private set { } }
     public int MaxConstructionJobs { get { return gameData.maxConstructionJobs; } set { gameData.maxConstructionJobs = value; } }
@@ -105,10 +114,6 @@ public class Guild : MonoBehaviour
         else if (CurrentTime.hour < 17) timeOfDay = TimeOfDay.Afternoon;
         else if (CurrentTime.hour <= 22) timeOfDay = TimeOfDay.Evening;
         else timeOfDay = TimeOfDay.Night;
-
-        int clock12 = Mathf.FloorToInt(CurrentTime.hour) % 12;
-        if (clock12 == 0) clock12 = 12;
-        timeString = "Day " + CurrentTime.day.ToString() + " " + clock12.ToString() + (Mathf.Floor(CurrentTime.hour) <= 11 ? "am" : "pm");
     }
 
     public GameTime GetElapsedTime(GameTime startTime)
@@ -195,17 +200,41 @@ public class Guild : MonoBehaviour
 
     /* Utility */
 
-    public void AddLogEntry(string logEntry)
+    public void AddStoryEntry(string header, string text)
+    {
+        TriggerPopup("New Story Unlocked!");
+
+        StoryEntry storyEntry = new StoryEntry();
+        storyEntry.read = false;
+        storyEntry.time = new GameTime(CurrentTime);
+        storyEntry.header = header;
+        storyEntry.text = text;
+        StoryEntries.Add(storyEntry);
+
+        storyButton.UpdateButtonState();
+    }
+
+    public void AddLogEntry(string logText)
+    {
+        LogEntry logEntry = new LogEntry();
+        logEntry.time = new GameTime(CurrentTime);
+        logEntry.text = logText;
+        LogEntries.Add(logEntry);
+
+        AddLogEntry(logEntry);
+    }
+
+    public void AddLogEntry(LogEntry entry)
     {
         GameObject entryObj = Instantiate(logEntryPrefab);
-        entryObj.GetComponent<Text>().text = timeString + " - " + logEntry;
+        entryObj.GetComponent<Text>().text = entry.time.GetFormattedTime() + " - " + entry.text;
         entryObj.transform.SetParent(logPanel.transform, false);
         LayoutRebuilder.ForceRebuildLayoutImmediate(logPanel.GetComponent<RectTransform>());
     }
 
     public void TriggerPopup(string content)
     {
-        popupPanel.Popup(timeString, content);
+        popupPanel.Popup(CurrentTime.GetFormattedTime(), content);
     }
 
     public void LogAndPopup(string content)
@@ -281,6 +310,11 @@ public class Guild : MonoBehaviour
             hall.ResetGame();
 
         mainMenu.Reset(gameData.completedBuildings, true);
+
+        foreach (Transform transform in logPanel.transform)
+            Destroy(transform.gameObject);
+
+        storyButton.UpdateButtonState();
     }
 
     public void Load()
@@ -304,5 +338,10 @@ public class Guild : MonoBehaviour
             hall.Load();
 
         mainMenu.Reset(gameData.completedBuildings);
+
+        foreach (LogEntry logEntry in LogEntries)
+            AddLogEntry(logEntry);
+
+        storyButton.UpdateButtonState();
     }
 }

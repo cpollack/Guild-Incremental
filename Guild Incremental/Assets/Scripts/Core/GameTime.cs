@@ -12,6 +12,12 @@ public class GameTime
         this.hour = hour;
     }
 
+    public GameTime(GameTime time)
+    {
+        day = time.day;
+        hour = time.hour;
+    }
+
     public int day;
     public float hour;
 
@@ -127,5 +133,12 @@ public class GameTime
         if (strTime.Length > 0) strTime += " ";
         strTime += ((int)hour).ToString("0") + " Hour" + ((int)hour == 1 ? "" : "s");
         return strTime;
+    }
+
+    public string GetFormattedTime()
+    {
+        int clock12 = Mathf.FloorToInt(hour) % 12;
+        if (clock12 == 0) clock12 = 12;
+        return "Day " + day.ToString() + " " + clock12.ToString() + (Mathf.Floor(hour) <= 11 ? "am" : "pm");
     }
 }
