@@ -6,6 +6,7 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     [Header("Attributes")]
+    public string itemID;
     public string Name;
     public string Description;
 }

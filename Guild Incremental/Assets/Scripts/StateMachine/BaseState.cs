@@ -16,4 +16,12 @@ public abstract class BaseState
 
     public virtual void OnBeforeStateChange() { }
     public virtual void OnStateChange() { }
+
+    public virtual void Save() { }
+    public virtual void Load() { }
+
+    public virtual int GetSubState()
+    {
+        return 0;
+    }
 }

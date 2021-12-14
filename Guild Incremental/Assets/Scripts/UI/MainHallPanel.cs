@@ -7,6 +7,8 @@ public class MainHallPanel : MonoBehaviour
     public GameObject panelContent;
     public GameObject adventurerPanelPrefab;
 
+    public List<AdventurerPanel> adventurerPanels;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,10 +21,19 @@ public class MainHallPanel : MonoBehaviour
         
     }
 
+    public void RemoveAllAdventurers()
+    {
+        foreach (AdventurerPanel panel in adventurerPanels)
+            Destroy(panel.gameObject);
+        adventurerPanels.Clear();
+    }
+
     public void AddAdventurer(Adventurer adventurer)
     {
         GameObject gameObject = Instantiate(adventurerPanelPrefab);
         gameObject.transform.SetParent(panelContent.transform, false);
-        gameObject.GetComponent<AdventurerPanel>().adventurer = adventurer;
+        AdventurerPanel adventurerPanel = gameObject.GetComponent<AdventurerPanel>();
+        adventurerPanel.adventurer = adventurer;
+        adventurerPanels.Add(adventurerPanel);
     }
 }

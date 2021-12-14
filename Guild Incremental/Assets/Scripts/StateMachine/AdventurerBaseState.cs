@@ -11,7 +11,7 @@ public class AdventurerBaseState : BaseState
     protected GameTime startTime = new GameTime();
     protected GameTime stateLength = new GameTime();
 
-    public AdventurerBaseState(Adventurer adventurer) : base(adventurer.gameObject)
+    public AdventurerBaseState(Adventurer adventurer) : base(null)
     {
         this.Adventurer = adventurer;
         this.Guild = adventurer.guild;
@@ -55,5 +55,19 @@ public class AdventurerBaseState : BaseState
     protected void HideActionPercent()
     {
         Adventurer.SetActionPercent(-1);
+    }
+
+    public override void Save()
+    {
+        Adventurer.stateStartTime = startTime;
+        Adventurer.stateLength = stateLength;
+    }
+
+    public override void Load()
+    {
+        startTime = Adventurer.stateStartTime;
+        if (startTime == null) startTime = new GameTime();
+        stateLength = Adventurer.stateLength;
+        if (stateLength == null) stateLength = new GameTime();
     }
 }

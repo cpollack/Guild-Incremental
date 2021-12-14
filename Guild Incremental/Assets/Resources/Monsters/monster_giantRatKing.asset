@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a117cb162bac26849843203195a9cc7d, type: 3}
-  m_Name: monster_giantRatKing
+  m_Name: monster_GiantRatKing
   m_EditorClassIdentifier: 
+  monsterID: GiantRatKing
   Name: Giant Rat King
   Description: Soverign of the grand City Sewer domain, the rat king sends his vile
     pawns to harass the surface dwellers, and bring him back delicious morsels of

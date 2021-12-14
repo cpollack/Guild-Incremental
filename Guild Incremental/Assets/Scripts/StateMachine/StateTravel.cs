@@ -45,7 +45,9 @@ public class StateTravel : AdventurerBaseState
 
     public override void OnBeforeStateChange()
     {
-        Adventurer.currentLocation = Adventurer.targetLocation;
+        Adventurer.currentLocationID = Adventurer.targetLocationID;
+        Adventurer.currentLocation = Adventurer.targetLocation;        
+        Adventurer.targetLocationID = "";
         Adventurer.targetLocation = null;
     }
 }

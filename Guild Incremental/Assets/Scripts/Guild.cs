@@ -53,12 +53,21 @@ public class Guild : MonoBehaviour
     public GameTime CurrentTime { get { return gameData.currentTime; } private set { } }
     public int Renown { get { return gameData.renown; } set { gameData.renown = value; } }
     public int Gold { get { return gameData.gold; } set { gameData.gold = value; } }
+    public List<Adventurer> Adventurers { get { return gameData.adventurers; } private set { } }
+    
     public List<string> CompletedBuildings { get { return gameData.completedBuildings; } private set { } }
+    public List<Building> CurrentBuildProjects { get { return gameData.currentBuildProjects; } private set { } }
+    public int MaxConstructionJobs { get { return gameData.maxConstructionJobs; } set { gameData.maxConstructionJobs = value; } }
+
     public List<string> CompletedQuests { get { return gameData.completedQuests; } private set { } }
+    public List<Quest> Quests { get { return gameData.quests; } private set { } }
+    public int MaxGuildQuests { get { return gameData.maxGuildQuests; } set { gameData.maxGuildQuests = value; } }
+    public int TotalGuildQuestsIssued { get { return gameData.totalGuildQuestsIssued; } set { gameData.totalGuildQuestsIssued = value; } }
 
     // Start is called before the first frame update
     void Start()
     {
+        //Load must occur after AWAKE
         Load();
     }
 
@@ -71,6 +80,8 @@ public class Guild : MonoBehaviour
     void Update()
     {
         UpdateTime();
+        foreach (Adventurer adventurer in Adventurers)
+            adventurer.Update();
     }
 
     /* TIME */
@@ -211,6 +222,17 @@ public class Guild : MonoBehaviour
         return null;
     }
 
+    public Adventurer GetAdventurer(string adventurerName)
+    {
+        foreach (Adventurer adventurer in Adventurers)
+        {
+            if (adventurer.Name == adventurerName)
+                return adventurer;
+        }
+
+        return null;
+    }
+
     public Location GetLocation(string locationID)
     {
         foreach (Location loc in locations)
@@ -222,17 +244,31 @@ public class Guild : MonoBehaviour
         return null;
     }
 
+    public QuestData GetQuestData(string questID)
+    {
+        string fileName = "Quest_" + questID;
+
+        return Resources.Load<QuestData>("Quests/" + fileName);
+    }
+
+    public MonsterData GetMonsterData(string monsterID)
+    {
+        string fileName = "monster_" + monsterID;
+
+        return Resources.Load<MonsterData>("Monsters/" + fileName);
+    }
+
+    public ItemData GetItemData(string itemID)
+    {
+        string fileName = "Item_" + itemID;
+
+        return Resources.Load<ItemData>("Items/" + fileName);
+    }
+
     public void Save()
     {
-        foreach (GuildHall hall in halls)
-            if (hall.data.ID == "Construction")
-            {
-                Construction construction = (Construction)hall;
-                gameData.currentBuildProjects = construction.currentJobs;
-                gameData.maxConstructionJobs = construction.maxJobs;
-                break;
-            }
-
+        foreach (Adventurer adventurer in Adventurers)
+            adventurer.Save();
 
         DataAccessor.Save(gameData);
     }
@@ -252,13 +288,20 @@ public class Guild : MonoBehaviour
         gameData = DataAccessor.Load();
         if (gameData == null) return;
 
+        foreach (Adventurer adventurer in Adventurers)
+        {
+            adventurer.guild = this;
+            adventurer.Load();
+        }
+
+        foreach (Quest quest in Quests)
+        {
+            quest.guild = this;
+            quest.Load();
+        }
+
         foreach (GuildHall hall in halls)
-            if (hall.data.ID == "Construction")
-            {
-                Construction construction = (Construction)hall;
-                construction.Load(gameData.currentBuildProjects, gameData.maxConstructionJobs);
-                break;
-            }
+            hall.Load();
 
         mainMenu.Reset(gameData.completedBuildings);
     }

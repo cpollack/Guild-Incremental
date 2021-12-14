@@ -32,7 +32,7 @@ public class QuestBoardPanel : MonoBehaviour
     {
         if (reloadLayout)
         {
-            RebuildLayout(gameObject);
+            GameLib.RebuildLayout(this, gameObject);
             reloadLayout = false;
         }
     }
@@ -56,10 +56,11 @@ public class QuestBoardPanel : MonoBehaviour
 
     public void LoadQuests()
     {
-        foreach(Quest quest in questBoard.quests)
+        foreach(Quest quest in questBoard.GetQuests())
         {
             AddQuest(quest);
         }
+        UpdateGuildQuestText();
         reloadLayout = true;
     }
 
@@ -96,13 +97,24 @@ public class QuestBoardPanel : MonoBehaviour
         reloadLayout = true;
     }
 
+    public void RemoveAllQuests()
+    {
+        foreach (QuestPanel panel in questPanels)
+            Destroy(panel.gameObject);
+        questPanels.Clear();
+
+        UpdateGuildQuestText();
+        UpdateCategoryPanels();
+        reloadLayout = true;
+    }
+
     public void RemoveQuest(Quest quest)
     {
         foreach (QuestPanel panel in questPanels)
         {
             if (panel.quest == quest)
             {
-                Object.Destroy(panel.gameObject);
+                Destroy(panel.gameObject);
                 questPanels.Remove(panel);
                 break;
             }
@@ -130,7 +142,7 @@ public class QuestBoardPanel : MonoBehaviour
 
     public void UpdateGuildQuestText()
     {
-        textGuildQuest.text = "Guild Quests (" + QuestCountByCategory(QuestCategory.Guild).ToString() + "/" + questBoard.maxGuildQuests.ToString() + ")";
+        textGuildQuest.text = "Guild Quests (" + QuestCountByCategory(QuestCategory.Guild).ToString() + "/" + questBoard.GetMaxGuildQuests().ToString() + ")";
     }
 
     public void IssueGuildQuest()
@@ -138,20 +150,10 @@ public class QuestBoardPanel : MonoBehaviour
         questBoard.IssueQuest();
     }
 
-    public void RebuildLayout(GameObject obj)
-    {
-        foreach (Transform child in obj.transform)
-        {
-            RebuildLayout(child.gameObject);
-        }
-
-        LayoutRebuilder.ForceRebuildLayoutImmediate(obj.GetComponent<RectTransform>());
-    }
-
     public int QuestCountByCategory(QuestCategory category)
     {
         int count = 0;
-        foreach (Quest quest in questBoard.quests)
+        foreach (Quest quest in questBoard.GetQuests())
             if (quest.category == category) count++;
 
         return count;

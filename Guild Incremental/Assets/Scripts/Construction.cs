@@ -7,8 +7,8 @@ public class Construction : GuildHall
     public ConstructionPanel constructionPanel;
     public GameObject buildingPanelPrefab;
     public BuildingData firstBuild;
-    public int maxJobs = 1;
-    public List<Building> currentJobs = new List<Building>();    
+    //public int maxJobs = 1;
+    //public List<Building> currentJobs = new List<Building>();    
 
     private Dictionary<string, BuildingData> allJobs;
 
@@ -34,7 +34,7 @@ public class Construction : GuildHall
     private void Start()
     {
         LoadConstructionJobs();
-        constructionPanel.SetActiveJobs(0, maxJobs);
+        constructionPanel.SetActiveJobs(0, guild.MaxConstructionJobs);
     }
 
     // Update is called once per frame
@@ -42,42 +42,40 @@ public class Construction : GuildHall
     {
         int count = 0;
         //Safe loop in case job completes and removes mid-loop
-        for (int i = currentJobs.Count - 1; i >= 0; i--)
+        for (int i = guild.CurrentBuildProjects.Count - 1; i >= 0; i--)
         {
-            if (currentJobs[i].IsActive()) count++;
-            currentJobs[i].Update();            
+            if (guild.CurrentBuildProjects[i].IsActive()) count++;
+            guild.CurrentBuildProjects[i].Update();            
         }
-        constructionPanel.SetActiveJobs(count, maxJobs);
+        constructionPanel.SetActiveJobs(count, guild.MaxConstructionJobs);
     }
 
-    public void Load(List<Building> currentBuildProjects, int maxConstructionJobs)
+    public override void Load()
     {
         foreach (string buildID in guild.CompletedBuildings)
             allJobs.Remove(buildID);
 
-        foreach (Building building in currentBuildProjects)
+        foreach (Building building in guild.CurrentBuildProjects)
         {
             AddConstructionJob(building);
             building.OnLoad();
         }
-
-        maxJobs = maxConstructionJobs;
     }
 
     public override void ResetGame()
     {
         LoadResources();
-        guild.CompletedBuildings.Clear();
+        //guild.CompletedBuildings.Clear();
         constructionPanel.RemoveAllJobs();
-        currentJobs.Clear();
+        //guild.CurrentBuildProjects.Clear();
 
         LoadConstructionJobs();
-        constructionPanel.SetActiveJobs(0, maxJobs);
+        constructionPanel.SetActiveJobs(0, guild.MaxConstructionJobs);
     }
 
     public void LoadConstructionJobs()
     {
-        if (guild.CompletedBuildings.Count == 0 && currentJobs.Count == 0)
+        if (guild.CompletedBuildings.Count == 0 && guild.CurrentBuildProjects.Count == 0)
         {
             AddConstructionJob(firstBuild);
             return;
@@ -86,7 +84,7 @@ public class Construction : GuildHall
         foreach (KeyValuePair<string, BuildingData> kvp in allJobs)
         {
             bool skip = false;
-            foreach (Building building in currentJobs)
+            foreach (Building building in guild.CurrentBuildProjects)
             {
                 if (building.data.buildingID == kvp.Key)
                 {
@@ -119,7 +117,7 @@ public class Construction : GuildHall
         Building building = new Building(guild, data, buildingUI);
         buildingUI.building = building;
         constructionPanel.AddBuilding(buildingObj);
-        currentJobs.Add(building);
+        guild.CurrentBuildProjects.Add(building);
     }
 
     public void AddConstructionJob(Building building)
@@ -133,17 +131,16 @@ public class Construction : GuildHall
         building.buildingPanel = buildingUI;
         buildingUI.building = building;
         constructionPanel.AddBuilding(buildingObj);
-        currentJobs.Add(building);
     }
 
     public override void CompleteBuild(string buildID)
     {
         allJobs.Remove(buildID);
-        foreach (Building building in currentJobs)
+        foreach (Building building in guild.CurrentBuildProjects)
         {
             if (building.data.buildingID == buildID)
             {
-                currentJobs.Remove(building);                
+                guild.CurrentBuildProjects.Remove(building);                
                 break;
             }
         }

@@ -15,6 +15,7 @@ public class ItemDrop
 public class MonsterData : ScriptableObject
 {
     [Header("Attributes")]
+    public string monsterID;
     public string Name;
     public string Description;
     public int health;

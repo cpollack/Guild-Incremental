@@ -3,16 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
 public class QuestBoard : GuildHall
 {
-    public List<Quest> quests = new List<Quest>();
     public QuestBoardPanel questBoardPanel;
 
-    public int maxGuildQuests = 3;
     public bool staffed = false;
-
-    public int totalGuildQuestsIssued = 0;
 
     private Dictionary<string, QuestData> allQuests = new Dictionary<string, QuestData>();
 
@@ -20,6 +15,13 @@ public class QuestBoard : GuildHall
     {
         base.Awake();
         questBoardPanel.SetLockState(Unlocked);
+
+        LoadResources();
+    }
+
+    private void LoadResources()
+    {
+        allQuests = new Dictionary<string, QuestData>();
 
         UnityEngine.Object[] resources = Resources.LoadAll("Quests", typeof(QuestData));
         foreach (UnityEngine.Object resource in resources)
@@ -35,10 +37,28 @@ public class QuestBoard : GuildHall
         UpdateQuestPool();
     }
 
+    public override void Load()
+    {
+        foreach (string questID in guild.CompletedQuests)
+            allQuests.Remove(questID);
+
+        foreach (string buildID in guild.CompletedBuildings)
+            CompleteBuild(buildID);
+
+        foreach (Quest quest in guild.Quests)
+            questBoardPanel.AddQuest(quest);
+    }
+
+    public override void ResetGame()
+    {
+        LoadResources();
+        questBoardPanel.RemoveAllQuests();
+    }
+
     public void CompleteQuest(Quest quest)
     {
         questBoardPanel.RemoveQuest(quest);
-        quests.Remove(quest);        
+        guild.Quests.Remove(quest);        
         UpdateQuestPool();
         GenerateMainQuests();
     }
@@ -47,7 +67,7 @@ public class QuestBoard : GuildHall
     {
         if (staffed)
         {
-            while (GetGuildQuestCount() < maxGuildQuests)
+            while (GetGuildQuestCount() < guild.MaxGuildQuests)
             {
                 GenerateGuildQuest();
             }
@@ -58,10 +78,10 @@ public class QuestBoard : GuildHall
     { 
         foreach (KeyValuePair<string, QuestData> kvp in allQuests)
         {
-            QuestData data = (QuestData)kvp.Value;
+            QuestData data = kvp.Value;
             //Quest already active
             bool skip = false;
-            foreach (Quest quest in quests)
+            foreach (Quest quest in guild.Quests)
             {
                 if (quest.data != null && quest.data.questID == kvp.Key)
                 {
@@ -92,14 +112,14 @@ public class QuestBoard : GuildHall
 
     public void IssueQuest()
     {
-        if (GetGuildQuestCount() >= maxGuildQuests) return;
+        if (GetGuildQuestCount() >= guild.MaxGuildQuests) return;
         GenerateGuildQuest();
     }
 
     private int GetGuildQuestCount()
     {
         int count = 0;
-        foreach (Quest quest in quests)
+        foreach (Quest quest in guild.Quests)
         {
             if (quest.category == QuestCategory.Guild) count++;
         }
@@ -111,14 +131,14 @@ public class QuestBoard : GuildHall
         //Later this should select locations based on user defined rules
 
         Location questLoc = guild.locations[0];
-        Quest newQuest = questLoc.GenerateRandomQuest();
+        Quest newQuest = questLoc.GenerateRandomQuest(guild);
         if (newQuest != null)
         {
-            quests.Add(newQuest);
+            guild.Quests.Add(newQuest);
             questBoardPanel.AddQuest(newQuest);
-            
-            totalGuildQuestsIssued++;
-            if (totalGuildQuestsIssued == 1)
+
+            guild.TotalGuildQuestsIssued++;
+            if (guild.TotalGuildQuestsIssued == 1)
             {
                 guild.TriggerPopup("As you pin the first quest to the board, a young and bright eyed man walks in." +
                     "\n\n\"Slaying rats in the sewers, eh? I'm your man for the job!\"" +
@@ -130,10 +150,17 @@ public class QuestBoard : GuildHall
         else Debug.LogError("QuestBoard:GenerateGuildQuest failed to generate a quest for " + questLoc.data.Name);
     }
 
+    public List<Quest> GetQuests()
+    {
+        return guild.Quests;
+    }
+
+    public int GetMaxGuildQuests() { return guild.MaxGuildQuests; }
+
     public List<Quest> GetAvailableQuests()
     {
         List<Quest> availableQuests = new List<Quest>();
-        foreach (Quest quest in quests)
+        foreach (Quest quest in guild.Quests)
         {
             if (!quest.claimed) availableQuests.Add(quest);
         }
@@ -151,8 +178,8 @@ public class QuestBoard : GuildHall
 
     public void AddQuest(QuestData data)
     {
-        Quest quest = new Quest(data);
-        quests.Add(quest);
+        Quest quest = new Quest(data, guild);
+        guild.Quests.Add(quest);
         questBoardPanel.AddQuest(quest);
 
         if (data.unlockPopup.Length > 0) guild.TriggerPopup(data.unlockPopup);

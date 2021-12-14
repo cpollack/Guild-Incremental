@@ -21,10 +21,9 @@ public class GuildHall : MonoBehaviour
         
     }
 
-    public virtual void ResetGame()
-    {
-        //
-    }
+    public virtual void Save() { }
+    public virtual void Load() { }
+    public virtual void ResetGame() { }
 
     public virtual void CompleteBuild(string buildID)
     {

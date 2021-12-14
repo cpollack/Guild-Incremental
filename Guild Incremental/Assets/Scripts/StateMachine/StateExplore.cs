@@ -20,6 +20,7 @@ public class StateExplore : AdventurerBaseState
         {
             if (Guild.timeOfDay == TimeOfDay.Evening || Guild.timeOfDay == TimeOfDay.Night)
             {
+                Adventurer.targetLocationID = "";
                 Adventurer.targetLocation = null; //Return home
                 return typeof(StateTravel);
             }
@@ -54,6 +55,12 @@ public class StateExplore : AdventurerBaseState
         Adventurer.SetActionText("Exploring " + location.data.Name);
         Adventurer.HideActionPercent();
         stateLength.Set(0, encounterTimer);
+    }
+
+    public override void Load()
+    {
+        base.Load();
+        location = Adventurer.currentLocation;
     }
 
     private Type HandleEncounterByType(EncounterType encounterType)

@@ -5,9 +5,6 @@ using UnityEngine;
 public class MainHall : GuildHall
 {
     public MainHallPanel mainHallPanel;
-    public GameObject adventurersObject;
-    public GameObject adventurerPrefab;
-    public List<Adventurer> adventurers = new List<Adventurer>();
 
     // Start is called before the first frame update
     new void Awake()
@@ -21,12 +18,24 @@ public class MainHall : GuildHall
         
     }
 
+    public override void Load()
+    {
+        foreach(Adventurer adventurer in guild.Adventurers)
+        {
+            mainHallPanel.AddAdventurer(adventurer);
+        }
+    }
+
+    public override void ResetGame()
+    {
+        mainHallPanel.RemoveAllAdventurers();
+    }
+
     public void SpawnFirstAdventurer()
     {
-        GameObject gameObject = Instantiate(adventurerPrefab);
-        Adventurer adventurer = gameObject.GetComponent<Adventurer>();
-        gameObject.transform.SetParent(adventurersObject.transform, false);
-        adventurers.Add(adventurer);
+        Adventurer adventurer = new Adventurer(guild);
+        adventurer.Name = "Adventurer A";
+        guild.Adventurers.Add(adventurer);
         mainHallPanel.AddAdventurer(adventurer);
     }
 }

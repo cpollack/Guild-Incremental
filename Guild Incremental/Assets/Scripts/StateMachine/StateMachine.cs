@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine
 {
     private Dictionary<Type, BaseState> availableStates;
 
@@ -15,7 +15,7 @@ public class StateMachine : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         if (CurrentState == null)
         {
@@ -35,5 +35,10 @@ public class StateMachine : MonoBehaviour
         CurrentState?.OnBeforeStateChange();
         CurrentState = availableStates[newState];
         CurrentState?.OnStateChange();
+    }
+
+    public void ForceState(Type newState)
+    {
+        CurrentState = availableStates[newState];
     }
 }

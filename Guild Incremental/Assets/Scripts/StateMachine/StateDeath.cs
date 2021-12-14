@@ -44,6 +44,17 @@ public class StateDeath : AdventurerBaseState
         return null;
     }
 
+    public override int GetSubState()
+    {
+        return (int)deathStatus;
+    }
+
+    public override void Load()
+    {
+        base.Load();
+        deathStatus = (DeathStatus)Adventurer.currentSubState;
+    }
+
     public override void OnStateChange()
     {
         base.OnStateChange();

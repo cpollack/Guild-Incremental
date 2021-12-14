@@ -20,7 +20,6 @@ public class StateIdle : AdventurerBaseState
         Location,
     }
     private IdleSubState idleSubState = IdleSubState.None;
-    private bool resting = false;
 
     public override Type Tick()
     {
@@ -48,15 +47,26 @@ public class StateIdle : AdventurerBaseState
         return type;
     }
 
+    public override int GetSubState()
+    {
+        return (int)idleSubState;
+    }
+
+    public override void Load()
+    {
+        base.Load();
+        idleSubState = (IdleSubState)Adventurer.currentSubState;
+    }
+
     public override void OnStateChange()
     {
         idleSubState = IdleSubState.None;
-        resting = false;
+        Adventurer.Resting = false;
     }
 
     private Type HandleMorning()
     {
-        resting = false;
+        Adventurer.Resting = false;
 
         switch (idleSubState)
         {
@@ -200,10 +210,10 @@ public class StateIdle : AdventurerBaseState
 
     private Type HandleNight()
     {
-        if (!resting)
+        if (!Adventurer.Resting)
         {
             ResetStartTime();
-            resting = true;
+            Adventurer.Resting = true;
             Adventurer.HideActionPercent();
         }
         else

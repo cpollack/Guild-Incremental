@@ -62,7 +62,7 @@ public class Location
         //check for resulting events
     }
 
-    public Quest GenerateRandomQuest()
+    public Quest GenerateRandomQuest(Guild guild)
     {
         List<QuestType> availTypes = new List<QuestType>();
         if (data.monsters.Count > 0) availTypes.Add(QuestType.Kill);
@@ -71,7 +71,7 @@ public class Location
         if (availTypes.Count == 0) return null;
 
         QuestType questType = availTypes[UnityEngine.Random.Range(0, availTypes.Count)];
-        Quest quest = new Quest(QuestCategory.Guild, questType);
+        Quest quest = new Quest(QuestCategory.Guild, questType, guild);
 
         int count = 0;
         switch (questType)

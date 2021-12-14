@@ -24,11 +24,19 @@ public enum EquipmentSlot
 }
 
 [Serializable]
-public class Adventurer : MonoBehaviour, IFighter
-{
-    public StateMachine StateMachine => GetComponent<StateMachine>();
+public class Adventurer : IFighter
+{    
+    public Adventurer(Guild guild)
+    {
+        currentLocation = null;
+        targetLocation = null;
+        this.guild = guild;
 
-    public Guild guild;
+        InitializeStateMachine();
+    }
+
+    [NonSerialized] public Guild guild;
+    [NonSerialized] public AdventurerPanel adventurerPanel;
 
     [Header("Attributes")]
     public string Name;
@@ -42,32 +50,34 @@ public class Adventurer : MonoBehaviour, IFighter
     public int speed = 3;
     public float recoverPerHour = 0.1f;
 
-    [Header("Items")]
-    public Dictionary<EquipmentSlot, ItemData> equipment = new Dictionary<EquipmentSlot, ItemData>();
-    public Dictionary<string, int> inventory = new Dictionary<string, int>(); //If stack size or unstackable items will exist, move to class
+    //[Serializable] public class DictionaryEquipment : SerializableDictionary<EquipmentSlot, Item> { }
+    //[Serializable] public class DictionaryMonsterInt : SerializableDictionary<MonsterData, int> { }
 
-    private Dictionary<MonsterData, int> monsterSlayHistory = new Dictionary<MonsterData, int>();
-    [SerializeReference] public Quest currentQuest = null;
+    [Header("Items")]    
+    public Dictionary<EquipmentSlot, Item> equipment = new Dictionary<EquipmentSlot, Item>();
+    public Dictionary<string,int> inventory = new Dictionary<string, int>(); //If stack size or unstackable items will exist, move to class    
+    public Dictionary<MonsterData, int> monsterSlayHistory = new Dictionary<MonsterData, int>();
 
     [Header("Adventuring")]
-    [SerializeReference] public Location currentLocation; //null implies guild
-    [SerializeReference] public Location targetLocation;
-    public string actionString;
-    public float actionPerc;
+    public string actionString = "";
+    public float actionPerc = 0f;
+    public string currentLocationID = "";
+    [NonSerialized] [SerializeReference] public Location currentLocation; //null implies guild
+    public string targetLocationID = "";
+    [NonSerialized] [SerializeReference] public Location targetLocation;
+    [NonSerialized] [SerializeReference] public Quest currentQuest = null;
 
-    private void Awake()
-    {
-        currentLocation = null;
-        targetLocation = null;
-        currentLife = life;
-
-        guild = GameObject.Find("Guild").GetComponent<Guild>();
-
-        InitializeStateMachine();
-    }
+    [Header("States")]
+    [NonSerialized] public StateMachine StateMachine;    
+    public Type currentState;
+    public int currentSubState;
+    public GameTime stateStartTime;
+    public GameTime stateLength;
+    public bool Resting;
 
     private void InitializeStateMachine()
     {
+        StateMachine = new StateMachine();
         var states = new Dictionary<Type, BaseState>
         {
             { typeof(StateIdle), new StateIdle(this) },
@@ -79,16 +89,30 @@ public class Adventurer : MonoBehaviour, IFighter
         StateMachine.SetStates(states);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    // Update is called once per frame
+    public void Update()
     {
-        //
+        StateMachine.Update();      
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Save()
     {
-        //HandleActionState();
+        StateMachine.CurrentState?.Save();
+        currentState = StateMachine.CurrentState?.GetType();
+        currentSubState = StateMachine.CurrentState == null ? 0 : StateMachine.CurrentState.GetSubState();
+    }
+
+    public void Load()
+    {
+        if (currentLocationID.Length > 0 && currentLocation == null)
+            currentLocation = guild.GetLocation(currentLocationID);
+
+        if (targetLocationID.Length > 0 && targetLocation == null)
+            targetLocation = guild.GetLocation(targetLocationID);
+
+        InitializeStateMachine();
+        StateMachine.ForceState(currentState);
+        StateMachine.CurrentState.Load();
     }
 
     public void SetActionText(string text)
@@ -140,11 +164,16 @@ public class Adventurer : MonoBehaviour, IFighter
 
     public bool ChooseLocation()
     {
-        if (currentQuest != null) targetLocation = currentQuest.targetLocation;
+        if (currentQuest != null)
+        {            
+            targetLocation = currentQuest.targetLocation;
+            targetLocationID = targetLocation.data.locationID;
+        }
         else
         {
             //rules for choosing a random location?
             targetLocation = guild.locations[0];
+            targetLocationID = targetLocation.data.locationID;
         }
         return targetLocation != null ? true : false;        
     }
@@ -226,8 +255,8 @@ public class Adventurer : MonoBehaviour, IFighter
 
     public void UpdateSlayHistory(MonsterData monster, int count = 1)
     {
-        if (monsterSlayHistory.ContainsKey(monster)) monsterSlayHistory[monster] += count;
-        else monsterSlayHistory.Add(monster, count);
+        //if (monsterSlayHistory.ContainsKey(monster)) monsterSlayHistory[monster] += count;
+        //else monsterSlayHistory.Add(monster, count);
         if (currentQuest != null) currentQuest.UpdateStatus(monster, count);
     }
 
