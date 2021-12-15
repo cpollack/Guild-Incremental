@@ -53,6 +53,7 @@ public class QuestBoard : GuildHall
     {
         LoadResources();
         questBoardPanel.RemoveAllQuests();
+        questBoardPanel.SetLockState(false);
     }
 
     public void CompleteQuest(Quest quest)

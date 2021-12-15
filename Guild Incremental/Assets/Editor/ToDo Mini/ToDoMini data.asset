@@ -40,3 +40,5 @@ MonoBehaviour:
     isComplete: 1
   - task: '[BUG] HoverInfo can exceed bounds of viewport'
     isComplete: 0
+  - task: '[BUG] on reset quests can be issued befre questboard is built'
+    isComplete: 1
