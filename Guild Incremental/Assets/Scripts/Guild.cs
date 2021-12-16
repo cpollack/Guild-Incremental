@@ -36,7 +36,7 @@ public class Guild : MonoBehaviour
     public TimeOfDay timeOfDay;
 
     private float elapsed = 0;
-    public float autoSaveTimer = 30;
+    public float autoSaveTimer = 5;
 
     [Header("Guild Halls")]
     public MainMenu mainMenu;
@@ -53,6 +53,7 @@ public class Guild : MonoBehaviour
     public PopupPanel popupPanel;
     public List<ResourceImage> resourceImages;
     public StoryButton storyButton;
+    public StoryPanel storyPanel;
 
     [Header("Game Data")]
     private GameData gameData;
@@ -82,7 +83,7 @@ public class Guild : MonoBehaviour
 
     private void OnDestroy()
     {
-        Save();
+        //Save();
     }
 
     // Update is called once per frame

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 
 [System.Serializable]
-public struct StoryEntry
+public class StoryEntry
 {
     public bool read;
     public GameTime time;
