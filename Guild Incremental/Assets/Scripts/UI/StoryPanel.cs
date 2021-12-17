@@ -42,6 +42,7 @@ public class StoryPanel : MonoBehaviour
     private void OnDisable()
     {
         canvasGroup.blocksRaycasts = false;
+        guild.storyButton.UpdateButtonState();
     }
 
     // Start is called before the first frame update
@@ -57,8 +58,7 @@ public class StoryPanel : MonoBehaviour
     }
 
     public void OnCloseClick()
-    {
-        guild.storyButton.UpdateButtonState();
+    {        
         gameObject.SetActive(false);
     }
 
@@ -69,5 +69,6 @@ public class StoryPanel : MonoBehaviour
         activeEntry = clickEntry;
         activeEntry.SetActive();
         storyText.text = activeEntry.storyEntry.text;
+        guild.storyButton.UpdateButtonState();
     }
 }
