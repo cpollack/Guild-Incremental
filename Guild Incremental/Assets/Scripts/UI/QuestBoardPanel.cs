@@ -5,17 +5,18 @@ using UnityEngine.UI;
 
 public class QuestBoardPanel : MonoBehaviour
 {
-    public QuestBoard questBoard;
-    public GameObject prefabQuestPanel;
+    public QuestBoard questBoard;        
     public GameObject contentPanel;
 
     [Header("Main Quests")]
     public GameObject contentPanelMain;
     public GameObject contentPanelMainQuests;
+    public GameObject prefabQuestMainPanel;
 
     [Header("Guild Quests")]
-    public GameObject contentPanelGuildQuests;
+    public GameObject contentPanelGuildQuests;  
     public Text textGuildQuest;
+    public GameObject prefabQuestGuildPanel;
     public List<QuestPanel> questPanels;
     
 
@@ -69,20 +70,25 @@ public class QuestBoardPanel : MonoBehaviour
         if (QuestExists(quest)) return;
 
         GameObject destPanel;
+        GameObject prefab;
         switch (quest.category)
         {
             case QuestCategory.Guild:
                 destPanel = contentPanelGuildQuests;
+                prefab = prefabQuestGuildPanel;
                 break;
             case QuestCategory.Main:
                 destPanel = contentPanelMainQuests;
+                prefab = prefabQuestMainPanel;
                 break;
             default:
-                destPanel = contentPanel;
+                destPanel = null;
+                prefab = null;
+                Debug.LogError("QuestBoardPanel::AddQuest unhandled quest category [" + quest.category + "]");
                 break;
         }
 
-        GameObject objPanel = Instantiate(prefabQuestPanel, destPanel.transform, false);
+        GameObject objPanel = Instantiate(prefab, destPanel.transform, false);
         QuestPanel questPanel = objPanel.GetComponent<QuestPanel>();
         questPanel.quest = quest;
         questPanel.adventurer = quest.adventurer;

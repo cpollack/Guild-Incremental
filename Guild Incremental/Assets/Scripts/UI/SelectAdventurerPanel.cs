@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class SelectAdventurerPanel : MonoBehaviour
+{
+    public CanvasGroup canvasGroup;
+    public GameObject content;
+    public GameObject adventurerRowPrefab;
+
+    public List<AdventurerRow> rows;
+    public AdventurerRow focusedRow;
+
+    public delegate void OnSelect(Adventurer adventurer);
+    public OnSelect onSelectDelegate;
+
+    public Guild guild;
+
+    // Start is called before the first frame update
+    void Awake()
+    {
+        guild = GameObject.Find("Guild").GetComponent<Guild>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (GameLib.HideIfClickedOutside(gameObject))
+            Select(null);
+    }
+
+    private void OnEnable()
+    {
+        canvasGroup.blocksRaycasts = true;
+
+        foreach (var row in rows)
+            Destroy(row.gameObject);
+        rows.Clear();
+
+        foreach (Adventurer adventurer in guild.Adventurers)
+        {
+            GameObject advObj = Instantiate(adventurerRowPrefab, content.transform, false);
+            AdventurerRow row = advObj.GetComponent<AdventurerRow>();
+            row.selectAdventurerPanel = this;
+            row.adventurer = adventurer;
+            rows.Add(row);
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (var row in rows)
+            Destroy(row.gameObject);
+        rows.Clear();
+
+        canvasGroup.blocksRaycasts = false;
+        onSelectDelegate = null;
+    }
+
+    public void OnCloseClick()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void SetFocused(AdventurerRow row)
+    {
+        focusedRow = row;
+    }
+
+    public void LoseFocus(AdventurerRow row)
+    {
+        if (focusedRow == row) row = null;
+    }
+
+    public void Select(AdventurerRow row)
+    {
+        if (onSelectDelegate != null) 
+            onSelectDelegate(row.adventurer);
+        gameObject.SetActive(false);
+    }
+}

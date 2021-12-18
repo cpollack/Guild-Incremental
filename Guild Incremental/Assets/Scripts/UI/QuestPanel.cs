@@ -9,6 +9,7 @@ public class QuestPanel : MonoBehaviour
     public Image imageClaimed;
     public GameObject rewardsPanel;
     public GameObject rewardPrefab;
+    public Text TextRequisition;
 
     public Quest quest;
     public Adventurer adventurer;
@@ -17,6 +18,7 @@ public class QuestPanel : MonoBehaviour
     void Start()
     {
         questText.text = quest.ToString();
+        SetMainQuestState();
         LayoutRebuilder.ForceRebuildLayoutImmediate(gameObject.GetComponent<RectTransform>());
     }
 
@@ -50,5 +52,25 @@ public class QuestPanel : MonoBehaviour
                 break;
         }
         rewardPanel.hoverInfo.info = hover;
+    }
+
+    private void SetMainQuestState()
+    {
+        if (quest.category != QuestCategory.Main) return;
+        if (quest.adventurer == null) TextRequisition.text = "Requisition";
+        else TextRequisition.text = "Rescind";
+    }
+
+    public void ButtonRequisitionClick()
+    {
+        SelectAdventurerPanel panel = GameObject.Find("Guild").GetComponent<Guild>().selectAdventurerPanel;
+        panel.onSelectDelegate = OnAdventurerSelect;
+        panel.gameObject.SetActive(true);
+    }
+
+    public void OnAdventurerSelect(Adventurer adv)
+    {
+        //quest.Claim(adv);
+        //SetMainQuestState();
     }
 }

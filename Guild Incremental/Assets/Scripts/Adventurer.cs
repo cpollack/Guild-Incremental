@@ -4,6 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Race
+{
+    Human,
+    Elf,
+    Dwarf,
+    Halfling,
+}
+
+public enum HeroClass
+{
+    Adventurer,
+    Warrior,
+    Thief,
+    Hunter,
+    Priest,
+    Wizard,
+}
+
 public enum EquipmentSlot
 {
     Head,
@@ -40,6 +58,8 @@ public class Adventurer : IFighter
 
     [Header("Attributes")]
     public string Name;
+    public Race race = Race.Human;
+    public HeroClass heroClass = HeroClass.Adventurer;
     public int level = 1;
     public int experience = 0;
     public int gold = 0;

@@ -54,6 +54,7 @@ public class Guild : MonoBehaviour
     public List<ResourceImage> resourceImages;
     public StoryButton storyButton;
     public StoryPanel storyPanel;
+    public SelectAdventurerPanel selectAdventurerPanel;
 
     [Header("Game Data")]
     private GameData gameData;

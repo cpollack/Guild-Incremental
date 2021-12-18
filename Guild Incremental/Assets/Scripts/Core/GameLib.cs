@@ -31,7 +31,7 @@ namespace UnityEngine.UI
             LayoutRebuilder.ForceRebuildLayoutImmediate(obj.GetComponent<RectTransform>());
         }
 
-        public static void HideIfClickedOutside(GameObject panel)
+        public static bool HideIfClickedOutside(GameObject panel)
         {
             if (Input.GetMouseButton(0) && panel.activeSelf &&
                 !RectTransformUtility.RectangleContainsScreenPoint(
@@ -40,7 +40,9 @@ namespace UnityEngine.UI
                     Camera.main))
             {
                 panel.SetActive(false);
+                return true;
             }
+            return false;
         }
     }
 }
