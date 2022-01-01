@@ -8,6 +8,7 @@ public enum EncounterType
     None,
     Battle,
     Resource,
+    BossBattle,
     Treasure,
     Secret,
 }

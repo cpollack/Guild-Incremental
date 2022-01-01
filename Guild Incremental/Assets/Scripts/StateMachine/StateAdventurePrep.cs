@@ -12,10 +12,10 @@ public class StateAdventurePrep : AdventurerBaseState
 
     public override Type Tick()
     {
-        Adventurer.SetActionText("Preparing for an Adventure");
+        adventurer.SetActionText("Preparing for an Adventure");
         float elapsedTime = GetElapsedTime().GetHours();
         float actionPerc = elapsedTime / stateLength.GetHours();
-        Adventurer.SetActionPercent(actionPerc);
+        adventurer.SetActionPercent(actionPerc);
 
         if (actionPerc >= 1)
         {

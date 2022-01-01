@@ -14,12 +14,12 @@ public class StateTravel : AdventurerBaseState
 
     public override Type Tick()
     {        
-        Adventurer.SetActionText((Adventurer.targetLocation != null ? "Traveling to " + Adventurer.targetLocation.data.Name : "Returning from " + Adventurer.currentLocation.data.Name));
+        adventurer.SetActionText((adventurer.targetLocation != null ? "Traveling to " + adventurer.targetLocation.data.Name : "Returning from " + adventurer.currentLocation.data.Name));
 
         UpdateActionPercent();
         if (HasStateLengthBeenFulfilled())
         {
-            if (Adventurer.targetLocation != null) return typeof(StateExplore);
+            if (adventurer.targetLocation != null) return typeof(StateExplore);
             else return typeof(StateIdle);
         }
 
@@ -31,13 +31,13 @@ public class StateTravel : AdventurerBaseState
         base.OnStateChange();
 
         //At a location, return home
-        if (Adventurer.currentLocation != null)
+        if (adventurer.currentLocation != null)
         {
-            stateLength.hour = Adventurer.currentLocation.data.distance * Adventurer.GetTravelSpeed();
+            stateLength.hour = adventurer.currentLocation.data.distance * adventurer.GetTravelSpeed();
         }
         else
         {
-            stateLength.hour = Adventurer.targetLocation.data.distance * Adventurer.GetTravelSpeed();
+            stateLength.hour = adventurer.targetLocation.data.distance * adventurer.GetTravelSpeed();
         }
 
         if (stateLength.hour < MinimumTravelTime) stateLength.hour = MinimumTravelTime;
@@ -45,9 +45,9 @@ public class StateTravel : AdventurerBaseState
 
     public override void OnBeforeStateChange()
     {
-        Adventurer.currentLocationID = Adventurer.targetLocationID;
-        Adventurer.currentLocation = Adventurer.targetLocation;        
-        Adventurer.targetLocationID = "";
-        Adventurer.targetLocation = null;
+        adventurer.currentLocationID = adventurer.targetLocationID;
+        adventurer.currentLocation = adventurer.targetLocation;        
+        adventurer.targetLocationID = "";
+        adventurer.targetLocation = null;
     }
 }

@@ -66,7 +66,8 @@ MonoBehaviour:
   imageClaimed: {fileID: 4108276579805463041}
   rewardsPanel: {fileID: 4436249178761423007}
   rewardPrefab: {fileID: 4083438154733905037, guid: ba758b2a61a935746aa39904ccfc7ea8, type: 3}
-  TextRequisition: {fileID: 2205889874554198433}
+  ButtonAssign: {fileID: 7343584612612076933}
+  TextAssign: {fileID: 2205889874554198433}
   quest:
     questID: 
     category: 0
@@ -106,6 +107,7 @@ MonoBehaviour:
     actionPerc: 0
     currentLocationID: 
     targetLocationID: 
+    assignedQuestID: 
     currentSubState: 0
     stateStartTime:
       day: 0
@@ -664,7 +666,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Requisition
+  m_Text: Assign
 --- !u!1 &4060330993809541871
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,7 +1191,7 @@ GameObject:
   - component: {fileID: 7343584612612076933}
   - component: {fileID: 1737544278765967860}
   m_Layer: 5
-  m_Name: btnRequisition
+  m_Name: btnAssign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1300,7 +1302,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7013304294162391088}
         m_TargetAssemblyTypeName: QuestPanel, Assembly-CSharp
-        m_MethodName: ButtonRequisitionClick
+        m_MethodName: ButtonAssignClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

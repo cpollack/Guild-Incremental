@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: Soverign of the grand City Sewer domain, the rat king sends his vile
     pawns to harass the surface dwellers, and bring him back delicious morsels of
     pets.
-  health: 10
+  health: 1000
   attack: 3
   defence: 1
   speed: 2

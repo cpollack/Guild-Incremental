@@ -9,7 +9,9 @@ public class QuestPanel : MonoBehaviour
     public Image imageClaimed;
     public GameObject rewardsPanel;
     public GameObject rewardPrefab;
-    public Text TextRequisition;
+
+    public Button ButtonAssign;
+    public Text TextAssign;
 
     public Quest quest;
     public Adventurer adventurer;
@@ -26,8 +28,17 @@ public class QuestPanel : MonoBehaviour
     void Update()
     {
         questText.text = quest.ToString();
-        if (quest.claimed) imageClaimed.gameObject.SetActive(true);
-        else imageClaimed.gameObject.SetActive(false);
+        if (quest.claimed)
+        {
+            imageClaimed.gameObject.SetActive(true);
+            if (quest.category == QuestCategory.Main && adventurer.currentLocation != null) ButtonAssign.enabled = false;
+            else ButtonAssign.enabled = true;
+        }
+        else
+        {
+            imageClaimed.gameObject.SetActive(false);
+            if (quest.category == QuestCategory.Main) ButtonAssign.enabled = true;
+        }
     }
 
     public void AddReward(Resource reward)
@@ -57,20 +68,22 @@ public class QuestPanel : MonoBehaviour
     private void SetMainQuestState()
     {
         if (quest.category != QuestCategory.Main) return;
-        if (quest.adventurer == null) TextRequisition.text = "Requisition";
-        else TextRequisition.text = "Rescind";
+        if (quest.adventurer == null) TextAssign.text = "Assign";
+        else TextAssign.text = "Rescind";
     }
 
-    public void ButtonRequisitionClick()
+    public void ButtonAssignClick()
     {
         SelectAdventurerPanel panel = GameObject.Find("Guild").GetComponent<Guild>().selectAdventurerPanel;
         panel.onSelectDelegate = OnAdventurerSelect;
+        panel.ClearFilters();
+        panel.AddFilter(AdventurerFilter.HasAssignedQuest);
         panel.gameObject.SetActive(true);
     }
 
     public void OnAdventurerSelect(Adventurer adv)
     {
-        //quest.Claim(adv);
-        //SetMainQuestState();
+        quest.Claim(adv);
+        SetMainQuestState();
     }
 }

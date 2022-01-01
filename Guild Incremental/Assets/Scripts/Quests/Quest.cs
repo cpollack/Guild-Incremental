@@ -115,6 +115,13 @@ public class Quest
 
         this.adventurer = adventurer;
         adventurerName = adventurer.Name;
+
+        if (category == QuestCategory.Main)
+        {
+            adventurer.assignedQuest = this;
+            adventurer.assignedQuestID = questID;
+        }
+
         objectiveMet = false;
         claimed = true;
         claimTime.day = guild.CurrentTime.day;

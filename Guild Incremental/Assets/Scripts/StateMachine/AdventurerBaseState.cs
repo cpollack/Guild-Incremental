@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AdventurerBaseState : BaseState
 {
-    protected Adventurer Adventurer;
+    protected Adventurer adventurer;
     protected Guild Guild;
 
     protected GameTime startTime = new GameTime();
@@ -13,7 +13,7 @@ public class AdventurerBaseState : BaseState
 
     public AdventurerBaseState(Adventurer adventurer) : base(null)
     {
-        this.Adventurer = adventurer;
+        this.adventurer = adventurer;
         this.Guild = adventurer.guild;
     }
 
@@ -49,25 +49,25 @@ public class AdventurerBaseState : BaseState
     {
         float elapsedHours = GetElapsedTime().GetHours();
         float actionPerc = elapsedHours / stateLength.GetHours();
-        Adventurer.SetActionPercent(actionPerc);
+        adventurer.SetActionPercent(actionPerc);
     }
 
     protected void HideActionPercent()
     {
-        Adventurer.SetActionPercent(-1);
+        adventurer.SetActionPercent(-1);
     }
 
     public override void Save()
     {
-        Adventurer.stateStartTime = startTime;
-        Adventurer.stateLength = stateLength;
+        adventurer.stateStartTime = startTime;
+        adventurer.stateLength = stateLength;
     }
 
     public override void Load()
     {
-        startTime = Adventurer.stateStartTime;
+        startTime = adventurer.stateStartTime;
         if (startTime == null) startTime = new GameTime();
-        stateLength = Adventurer.stateLength;
+        stateLength = adventurer.stateLength;
         if (stateLength == null) stateLength = new GameTime();
     }
 }

@@ -4,14 +4,34 @@ using UnityEngine;
 
 public class Monster : IFighter
 {
-    public MonsterData data;
+    public string monsterID;
+    public string Name;
+    public string Description;
+    public int health;
+    public int attack;
+    public int defence;
+    public int speed;
 
-    private float currentHealth;
+    public float currentHealth;
+
+    public int experience;
+    public int gold;
+    public List<ItemDrop> itemDrops;
 
     public Monster(MonsterData data)
     {
-        this.data = data;
+        monsterID = data.monsterID;
+        Name = data.Name;
+        Description = data.Description;
+        health = data.health;
         currentHealth = data.health;
+        attack = data.attack;
+        defence = data.defence;
+        speed = data.speed;
+
+        experience = data.experience;
+        gold = data.gold;
+        itemDrops = data.itemDrops;
     }
 
     /* IFighter */
@@ -22,22 +42,22 @@ public class Monster : IFighter
 
     public int GetMaxLife()
     {
-        return data.health;
+        return health;
     }
 
     public int GetAttack()
     {
-        return data.attack;
+        return attack;
     }
 
     public int GetDefence()
     {
-        return data.defence;
+        return defence;
     }   
 
     public int GetSpeed()
     {
-        return data.speed;
+        return speed;
     }
 
     public bool IsAlive()

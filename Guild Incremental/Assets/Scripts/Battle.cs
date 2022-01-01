@@ -1,9 +1,10 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
+[Serializable]
 public class Battle
 {
     public Battle()
@@ -11,13 +12,15 @@ public class Battle
 
     }
 
-    private List<Adventurer> team = new List<Adventurer>();
+    private List<string> teamIDs = new List<string>();
+    [NonSerialized] private List<Adventurer> team = new List<Adventurer>();
     private List<Monster> monsters = new List<Monster>();
 
     private bool ranAway = false;
 
     public void addAdventurer(Adventurer adventurer)
     {
+        teamIDs.Add(adventurer.Name);
         team.Add(adventurer);
     }
 
@@ -27,38 +30,56 @@ public class Battle
         monsters.Add(monster);
     }
 
+    public void Load(Guild guild)
+    {
+        if (team == null) team = new List<Adventurer>();
+        //Monsters are cached, so we only need to reload the adventurer list
+        foreach (string id in teamIDs)
+        {
+            Adventurer adventurer = guild.GetAdventurer(id);
+            if (adventurer == null) Debug.LogError("Battle::Load failed to reload adventurer: " + id);
+            team.Add(adventurer);
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>
     /// <returns>Bool - Whether the adventurer(s) were victorious</returns>
     public bool Process()
     {
-        bool continueBattle = true;
+        bool battleEnded = false;
 
-        while (continueBattle)
+        while (!battleEnded)
         {
-            List<IFighter> pool = GetFighterPool();
-
-            while (pool.Count > 0)
-            {
-                IFighter nextFighter = pool[0];
-                pool.RemoveAt(0);
-
-                if (nextFighter.CanAct())
-                {
-                    List<IFighter> targets = GetTargetPool(nextFighter);
-                    nextFighter.Attack(targets[0]);
-                }
-
-                if (!CanContinue())
-                {
-                    continueBattle = false;
-                    break;
-                }
-            }
+            battleEnded = DoRound();
         }
 
         return DidTeamWin();
+    }
+
+    public bool DoRound()
+    {
+        List<IFighter> pool = GetFighterPool();
+
+        while (pool.Count > 0)
+        {
+            IFighter nextFighter = pool[0];
+            pool.RemoveAt(0);
+
+            if (nextFighter.CanAct())
+            {
+                List<IFighter> targets = GetTargetPool(nextFighter);
+                nextFighter.Attack(targets[0]);
+            }
+
+            if (!CanContinue())
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private List<IFighter> GetFighterPool()
@@ -139,7 +160,7 @@ public class Battle
         return alive;
     }
 
-    private bool DidTeamWin()
+    public bool DidTeamWin()
     {
         bool alive = false;
         foreach (IFighter fighter in team)
@@ -159,7 +180,7 @@ public class Battle
         {
             foreach (Monster monster in monsters)
             {
-                adventurer.UpdateSlayHistory(monster.data, 1);
+                adventurer.UpdateSlayHistory(monster.monsterID, 1);
             }
         }
     }
@@ -169,7 +190,7 @@ public class Battle
         int exp = 0;
         foreach (Monster monster in monsters)
         {
-            exp += monster.data.experience;
+            exp += monster.experience;
         }
 
         foreach (Adventurer adventurer in team)
@@ -183,7 +204,7 @@ public class Battle
         int gold = 0;
         foreach (Monster monster in monsters)
         {
-            gold += monster.data.gold;
+            gold += monster.gold;
         }
 
         foreach (Adventurer adventurer in team)
@@ -199,7 +220,7 @@ public class Battle
         //Roll the drop list
         foreach (Monster monster in monsters)
         {
-            foreach (ItemDrop drop in monster.data.itemDrops)
+            foreach (ItemDrop drop in monster.itemDrops)
             {
                 float rand = UnityEngine.Random.Range(0, 1f);
                 if (rand >= drop.dropChance)

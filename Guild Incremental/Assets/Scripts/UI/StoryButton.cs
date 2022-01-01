@@ -22,7 +22,7 @@ public class StoryButton : MonoBehaviour
     private Guild guild;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         guild = GameObject.Find("Guild").GetComponent<Guild>();
     }

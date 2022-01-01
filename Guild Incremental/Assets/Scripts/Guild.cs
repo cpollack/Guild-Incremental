@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -229,7 +230,7 @@ public class Guild : MonoBehaviour
     public void AddLogEntry(LogEntry entry)
     {
         GameObject entryObj = Instantiate(logEntryPrefab);
-        entryObj.GetComponent<Text>().text = entry.time.GetFormattedTime() + " - " + entry.text;
+        entryObj.GetComponent<TextMeshProUGUI>().text = entry.time.GetFormattedTime() + " - " + entry.text;
         entryObj.transform.SetParent(logPanel.transform, false);
         LayoutRebuilder.ForceRebuildLayoutImmediate(logPanel.GetComponent<RectTransform>());
     }

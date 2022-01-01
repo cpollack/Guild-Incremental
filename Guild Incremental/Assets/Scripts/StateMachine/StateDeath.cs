@@ -28,13 +28,13 @@ public class StateDeath : AdventurerBaseState
             {
                 case DeathStatus.Revive:
                     ResetStartTime();
-                    Adventurer.SetActionText("Recuperating.");
+                    adventurer.SetActionText("Recuperating.");
                     stateLength.Set(0, 1);
                     deathStatus = DeathStatus.Recover;
                     break;
 
                 case DeathStatus.Recover:
-                    Adventurer.ResetLife();
+                    adventurer.ResetLife();
                     return typeof(StateIdle);
             }            
         }
@@ -52,14 +52,14 @@ public class StateDeath : AdventurerBaseState
     public override void Load()
     {
         base.Load();
-        deathStatus = (DeathStatus)Adventurer.currentSubState;
+        deathStatus = (DeathStatus)adventurer.currentSubState;
     }
 
     public override void OnStateChange()
     {
         base.OnStateChange();
-        Adventurer.currentLocation = null;
-        Adventurer.SetActionText("Reviving.");
+        adventurer.currentLocation = null;
+        adventurer.SetActionText("Reviving.");
         stateLength.Set(0, 1);
         deathStatus = DeathStatus.Revive;
     }

@@ -86,6 +86,9 @@ public class Adventurer : IFighter
     public string targetLocationID = "";
     [NonSerialized] [SerializeReference] public Location targetLocation;
     [NonSerialized] [SerializeReference] public Quest currentQuest = null;
+    public string assignedQuestID = "";
+    [NonSerialized] [SerializeReference] public Quest assignedQuest = null;
+    public Battle bossBattle = null;
 
     [Header("States")]
     [NonSerialized] public StateMachine StateMachine;    
@@ -129,6 +132,9 @@ public class Adventurer : IFighter
 
         if (targetLocationID.Length > 0 && targetLocation == null)
             targetLocation = guild.GetLocation(targetLocationID);
+
+        if (bossBattle != null)
+            bossBattle.Load(guild);
 
         InitializeStateMachine();
         StateMachine.ForceState(currentState);
@@ -180,6 +186,26 @@ public class Adventurer : IFighter
         {
             currentQuest = null;
         }
+    }
+
+    public bool IsMainQuesting()
+    {
+        if (currentQuest == null) return false;
+        if (currentQuest.category == QuestCategory.Main) return true;
+        return false;
+    }
+
+    public bool IsHuntingBoss()
+    {
+        if (!IsMainQuesting()) return false;
+        if (currentQuest.type == QuestType.Boss) return true;
+        return false;
+    }
+
+    public bool IsInBossBattle()
+    {
+        if (bossBattle != null) return true;
+        return false;
     }
 
     public bool ChooseLocation()
@@ -273,11 +299,12 @@ public class Adventurer : IFighter
         }
     }
 
-    public void UpdateSlayHistory(MonsterData monster, int count = 1)
+    public void UpdateSlayHistory(string monsterID, int count = 1)
     {
+        MonsterData data = guild.GetMonsterData(monsterID);
         //if (monsterSlayHistory.ContainsKey(monster)) monsterSlayHistory[monster] += count;
         //else monsterSlayHistory.Add(monster, count);
-        if (currentQuest != null) currentQuest.UpdateStatus(monster, count);
+        if (currentQuest != null) currentQuest.UpdateStatus(data, count);
     }
 
     public void Recover(float hoursElapsed)

@@ -40,7 +40,7 @@ public class StateIdle : AdventurerBaseState
 
             case TimeOfDay.Night:
                 type = HandleNight();
-                Adventurer.SetActionText("Sleeping...");
+                adventurer.SetActionText("Sleeping...");
                 break;
         }
 
@@ -55,25 +55,25 @@ public class StateIdle : AdventurerBaseState
     public override void Load()
     {
         base.Load();
-        idleSubState = (IdleSubState)Adventurer.currentSubState;
+        idleSubState = (IdleSubState)adventurer.currentSubState;
     }
 
     public override void OnStateChange()
     {
         idleSubState = IdleSubState.None;
-        Adventurer.Resting = false;
+        adventurer.Resting = false;
     }
 
     private Type HandleMorning()
     {
-        Adventurer.Resting = false;
+        adventurer.Resting = false;
 
         switch (idleSubState)
         {
             case IdleSubState.None:
-                if (Adventurer.currentQuest != null)
+                if (adventurer.currentQuest != null)
                 {
-                    if (Adventurer.currentQuest.objectiveMet) idleSubState = IdleSubState.TurnIn;
+                    if (adventurer.currentQuest.objectiveMet) idleSubState = IdleSubState.TurnIn;
                     else idleSubState = IdleSubState.Location;
 
                 }
@@ -81,8 +81,8 @@ public class StateIdle : AdventurerBaseState
                 break;
 
             case IdleSubState.TurnIn:
-                Adventurer.TurnInQuest();
-                Adventurer.SetActionText("Turning in a quest and collecting the rewards.");
+                adventurer.TurnInQuest();
+                adventurer.SetActionText("Turning in a quest and collecting the rewards.");
                 ResetStartTime();
                 stateLength.hour = 0.25f;
                 idleSubState = IdleSubState.WaitTurnIn;
@@ -96,11 +96,11 @@ public class StateIdle : AdventurerBaseState
                 break;
 
             case IdleSubState.Quest:
-                if (Adventurer.currentQuest == null)
+                if (adventurer.currentQuest == null)
                 {
-                    if (Adventurer.ChooseQuest())
+                    if (adventurer.ChooseQuest())
                     {
-                        Adventurer.SetActionText("Visiting the quest board.");
+                        adventurer.SetActionText("Visiting the quest board.");
                         ResetStartTime();
                         stateLength.hour = 0.25f;
                         idleSubState = IdleSubState.WaitQuest;
@@ -118,9 +118,9 @@ public class StateIdle : AdventurerBaseState
                 break;
 
             case IdleSubState.Location:
-                if (Adventurer.targetLocation == null)
+                if (adventurer.targetLocation == null)
                 {
-                    if (Adventurer.ChooseLocation())
+                    if (adventurer.ChooseLocation())
                     {
                         return typeof(StateAdventurePrep);
                     }
@@ -137,14 +137,14 @@ public class StateIdle : AdventurerBaseState
         switch (idleSubState)
         {
             case IdleSubState.None:
-                if (Adventurer.currentQuest != null)
+                if (adventurer.currentQuest != null)
                 {
-                    if (Adventurer.currentQuest.objectiveMet) idleSubState = IdleSubState.TurnIn;
+                    if (adventurer.currentQuest.objectiveMet) idleSubState = IdleSubState.TurnIn;
                 }
 
                 if (idleSubState == IdleSubState.None)
                 {
-                    Adventurer.SetActionText("Daydreaming about being a hero...");
+                    adventurer.SetActionText("Daydreaming about being a hero...");
                     ResetStartTime();
                     HideActionPercent();
                 }
@@ -152,8 +152,8 @@ public class StateIdle : AdventurerBaseState
                 break;
 
             case IdleSubState.TurnIn:
-                Adventurer.TurnInQuest();
-                Adventurer.SetActionText("Turning in a quest and collecting the rewards.");
+                adventurer.TurnInQuest();
+                adventurer.SetActionText("Turning in a quest and collecting the rewards.");
                 ResetStartTime();
                 stateLength.hour = 0.25f;
                 idleSubState = IdleSubState.WaitTurnIn;
@@ -175,15 +175,15 @@ public class StateIdle : AdventurerBaseState
         switch (idleSubState)
         {
             case IdleSubState.None:
-                if (Adventurer.currentQuest != null)
+                if (adventurer.currentQuest != null)
                 {
-                    if (Adventurer.currentQuest.objectiveMet)
+                    if (adventurer.currentQuest.objectiveMet)
                         idleSubState = IdleSubState.TurnIn;
                 }
 
                 if (idleSubState == IdleSubState.None)
                 {
-                    Adventurer.SetActionText("Loitering around the guild...");
+                    adventurer.SetActionText("Loitering around the guild...");
                     ResetStartTime();
                     HideActionPercent();
                 }
@@ -191,8 +191,8 @@ public class StateIdle : AdventurerBaseState
                 break;
 
             case IdleSubState.TurnIn:
-                Adventurer.TurnInQuest();
-                Adventurer.SetActionText("Turning in a quest and collecting the rewards.");
+                adventurer.TurnInQuest();
+                adventurer.SetActionText("Turning in a quest and collecting the rewards.");
                 stateLength.hour = 0.25f;
                 idleSubState = IdleSubState.WaitTurnIn;
                 break;
@@ -210,16 +210,16 @@ public class StateIdle : AdventurerBaseState
 
     private Type HandleNight()
     {
-        if (!Adventurer.Resting)
+        if (!adventurer.Resting)
         {
             ResetStartTime();
-            Adventurer.Resting = true;
-            Adventurer.HideActionPercent();
+            adventurer.Resting = true;
+            adventurer.HideActionPercent();
         }
         else
         {
             float elapsedTime = GetElapsedTime().GetHours();
-            Adventurer.Recover(elapsedTime);
+            adventurer.Recover(elapsedTime);
             ResetStartTime();
         }
         
