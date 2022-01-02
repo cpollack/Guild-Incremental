@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 119.07104, y: -8.705}
-  m_SizeDelta: {x: 230.14207, y: 13.41}
+  m_AnchoredPosition: {x: 119.071045, y: -8.704987}
+  m_SizeDelta: {x: 230.14207, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8364258200863178288
 CanvasRenderer:
@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Day 1 6am - Guild Founded
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 98a11ec36d36fd5449ed987250dfd36b, type: 2}
+  m_sharedMaterial: {fileID: 4455503282421557751, guid: 98a11ec36d36fd5449ed987250dfd36b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
