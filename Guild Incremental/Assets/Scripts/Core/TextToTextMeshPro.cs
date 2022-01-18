@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine.UI;
 using TMPro;
 
+#if UNITY_EDITOR
 public class TextToTextMeshPro : Editor
 {
     public class TextMeshProSettings
@@ -156,3 +157,4 @@ public class TextToTextMeshPro : Editor
         return TextAlignmentOptions.TopLeft;
     }
 }
+#endif
