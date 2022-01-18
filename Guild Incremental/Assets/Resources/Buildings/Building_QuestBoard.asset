@@ -18,9 +18,7 @@ MonoBehaviour:
     them to their doom. Unlocks [Quest Board]
   completeLog: Built a Quest Board. You can now issue Guild Quests.
   requiredRenown: 0
-  cost:
-  - resourceType: 1
-    value: 10
+  cost: []
   buildTimeDays: 0
   buildTimeHours: 1
   requiresBuilding: Start

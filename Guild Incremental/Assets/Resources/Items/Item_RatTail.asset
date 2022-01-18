@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b949eb30fe9d2924380292a1d5f66d31, type: 3}
-  m_Name: Item_RatFang
+  m_Name: Item_RatTail
   m_EditorClassIdentifier: 
-  itemID: RatFang
-  Name: Rat Fang
-  Description: An oversized fang from a Giant Rat.
+  itemID: RatTail
+  Name: Rat Tail
+  Description: A large meaty tail from an oversized rat.

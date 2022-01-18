@@ -155,7 +155,7 @@ public class Guild : MonoBehaviour
                     gameData.renown += reward.value;
                     break;
                 case ResourceType.Gold:
-                    adventurer.GainGold(reward.value);
+                    gameData.gold += reward.value;
                     break;
                 default:
                     Debug.LogWarning("Guild::CompleteQuest unhandled ResourceType [" + reward.type + "]");

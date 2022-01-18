@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class QuestPanel : MonoBehaviour
 {
-    public Text questText;
+    public TextMeshProUGUI questText;
     public Image imageClaimed;
     public GameObject rewardsPanel;
     public GameObject rewardPrefab;
 
     public Button ButtonAssign;
-    public Text TextAssign;
+    public TextMeshProUGUI TextAssign;
 
     public Quest quest;
     public Adventurer adventurer;
@@ -54,9 +55,6 @@ public class QuestPanel : MonoBehaviour
         {
             case ResourceType.Renown:
                 hover = "Renown";
-                break;
-            case ResourceType.Bank:
-                hover = "Coffers";
                 break;
             case ResourceType.Gold:
                 hover = "Gold";

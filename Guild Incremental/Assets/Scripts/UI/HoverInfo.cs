@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class HoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    [TextArea(3, 10)]
     public string info;
     private HoverInfoPanel hoverInfoPanel;
     private bool MouseIn = false;

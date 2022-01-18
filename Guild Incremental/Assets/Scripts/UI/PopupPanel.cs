@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PopupPanel : MonoBehaviour
 {
     public CanvasGroup canvasGroup;
-    public Text textTime;
-    public Text textContent;
+    public TextMeshProUGUI textTime;
+    public TextMeshProUGUI textContent;
 
     public int displayForMS;
     public int fadeOutMS;

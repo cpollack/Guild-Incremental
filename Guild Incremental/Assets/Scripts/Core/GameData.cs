@@ -27,7 +27,7 @@ public class GameData
     {
         currentTime = new GameTime(1, 5);
         renown = 0;
-        gold = 1000;
+        gold = 0;
 
         adventurers = new List<Adventurer>();
 

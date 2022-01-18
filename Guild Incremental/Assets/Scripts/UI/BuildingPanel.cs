@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BuildingPanel : MonoBehaviour
 {
-    public Text textName;
-    public Text textTime;
-    public Text textFlavor;
+    public TextMeshProUGUI textName;
+    public TextMeshProUGUI textTime;
+    public TextMeshProUGUI textFlavor;
     public GameObject costPanel;
     public GameObject resourcePrefab;
     public Button button;
-    public Text textButton;
+    public TextMeshProUGUI textButton;
     public ProgressBar progressBar;
     public Building building;
 
@@ -50,9 +51,6 @@ public class BuildingPanel : MonoBehaviour
         {
             case ResourceType.Renown:
                 hover = "Renown";
-                break;
-            case ResourceType.Bank:
-                hover = "Coffers";
                 break;
             case ResourceType.Gold:
                 hover = "Gold";

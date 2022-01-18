@@ -28,4 +28,5 @@ MonoBehaviour:
   monsters:
   - {fileID: 11400000, guid: 732ba13a96b631f4d9d3c9625a78b907, type: 2}
   boss: {fileID: 11400000, guid: 01a2afd7c3618c2459dc8e94510616b7, type: 2}
-  gatherables: []
+  gatherables:
+  - {fileID: 11400000, guid: fa77e52a5539b1448aead97b6744ffae, type: 2}

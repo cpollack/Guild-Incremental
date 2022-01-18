@@ -124,9 +124,9 @@ public class Building
     private void StartConstruction()
     {
         if (guild.Renown < data.requiredRenown) return;
-        if (guild.Gold < GetCost(ResourceType.Bank)) return;
+        if (guild.Gold < GetCost(ResourceType.Gold)) return;
 
-        guild.Gold -= GetCost(ResourceType.Bank);
+        guild.Gold -= GetCost(ResourceType.Gold);
         Started = true;
         startTime.day = guild.CurrentTime.day;
         startTime.hour = guild.CurrentTime.hour;

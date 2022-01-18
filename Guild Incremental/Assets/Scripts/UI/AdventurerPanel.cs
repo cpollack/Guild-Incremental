@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AdventurerPanel : MonoBehaviour
 {
     public Adventurer adventurer;
-    public Text textName;
-    public Text textLevel;
-    public Text textAction;
-    public Text textPercent;
+    public TextMeshProUGUI textName;
+    public TextMeshProUGUI textLevel;
+    public TextMeshProUGUI textAction;
+    public TextMeshProUGUI textPercent;
 
     // Start is called before the first frame update
     void Start()

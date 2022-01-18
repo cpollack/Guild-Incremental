@@ -93,7 +93,7 @@ public class Location
                 float goldReward = 10 * (0.9f + (0.1f * (float)difficulty));
 
                 quest.AddReward(ResourceType.Renown, (int)renownReward);
-                quest.AddReward(ResourceType.Gold, (int)goldReward);
+                quest.AddReward(ResourceType.Merit, (int)goldReward);
 
                 break;
             case QuestType.Gather:

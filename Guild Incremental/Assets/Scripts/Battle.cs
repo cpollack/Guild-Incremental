@@ -199,7 +199,7 @@ public class Battle
         }
     }
 
-    public void AwardGold()
+    /*public void AwardGold()
     {
         int gold = 0;
         foreach (Monster monster in monsters)
@@ -211,7 +211,7 @@ public class Battle
         {
             adventurer.GainGold(gold);
         }
-    }
+    }*/
 
     public void RollDrops()
     {

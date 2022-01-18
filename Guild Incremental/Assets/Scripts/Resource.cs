@@ -6,9 +6,11 @@ using UnityEngine;
 public enum ResourceType
 {
     Renown,
-    Bank,
     Gold,
     Merit,
+    Item,
+    Blueprint,
+    Recipe,
 }
 
 [Serializable]

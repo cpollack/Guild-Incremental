@@ -21,7 +21,7 @@ MonoBehaviour:
   - task: Adventurer:Load() state machine
     isComplete: 1
   - task: Implement Story
-    isComplete: 0
+    isComplete: 1
   - task: Tavern
     isComplete: 0
   - task: Rank Up!
@@ -42,3 +42,7 @@ MonoBehaviour:
     isComplete: 0
   - task: '[BUG] on reset quests can be issued befre questboard is built'
     isComplete: 1
+  - task: Update all text to TMP
+    isComplete: 0
+  - task: Display Tavern Recipes on quest board
+    isComplete: 0

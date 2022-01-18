@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ResourcePanel : MonoBehaviour
 {
     public Image resourceImage;
-    public Text resourceText;
+    public TextMeshProUGUI resourceText;
     public HoverInfo hoverInfo;
 
     // Start is called before the first frame update

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class StoryPanel : MonoBehaviour
     private Guild guild;
     public CanvasGroup canvasGroup;
     public GameObject contentPanel;
-    public Text storyText;
+    public TextMeshProUGUI storyText;
     public string defaultText;
 
     public List<StoryEntryPanel> entryPanels = new List<StoryEntryPanel>();

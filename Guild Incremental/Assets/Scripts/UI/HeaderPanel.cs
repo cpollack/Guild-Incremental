@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +8,9 @@ public class HeaderPanel : MonoBehaviour
 {
     public Guild guild;
 
-    public Text textRenown;
-    public Text textGold;
-    public Text textDate;
+    public TextMeshProUGUI textRenown;
+    public TextMeshProUGUI textGold;
+    public TextMeshProUGUI textDate;
 
     // Start is called before the first frame update
     void Start()

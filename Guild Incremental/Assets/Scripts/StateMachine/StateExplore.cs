@@ -110,7 +110,7 @@ public class StateExplore : AdventurerBaseState
             //Victory
             battle.UpdateMonsterKills();
             battle.AwardExp();
-            battle.AwardGold();
+            //battle.AwardGold();
             battle.RollDrops();
             location.GainProgress(1);
         }

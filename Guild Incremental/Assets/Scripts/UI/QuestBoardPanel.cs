@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,7 @@ public class QuestBoardPanel : MonoBehaviour
 
     [Header("Guild Quests")]
     public GameObject contentPanelGuildQuests;  
-    public Text textGuildQuest;
+    public TextMeshProUGUI textGuildQuest;
     public GameObject prefabQuestGuildPanel;
     public List<QuestPanel> questPanels;
     

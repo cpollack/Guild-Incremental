@@ -4,6 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Rank
+{
+    F,
+    E,
+    D,
+    C,
+    B,
+    A,
+    S,
+}
+
 public enum Race
 {
     Human,
@@ -60,9 +71,9 @@ public class Adventurer : IFighter
     public string Name;
     public Race race = Race.Human;
     public HeroClass heroClass = HeroClass.Adventurer;
+    public Rank rank = Rank.F;
     public int level = 1;
     public int experience = 0;
-    public int gold = 0;
     public float currentLife = 10;
     public int life = 10;
     public int attack = 1;
@@ -262,11 +273,6 @@ public class Adventurer : IFighter
         speed += 1;
         life += 5;
         currentLife = life;
-    }
-
-    public void GainGold(int amount)
-    {
-        gold += amount;
     }
 
     public void GainItem(ItemData itemData, int count = 1)

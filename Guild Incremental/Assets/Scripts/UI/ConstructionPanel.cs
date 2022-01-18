@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ConstructionPanel : MonoBehaviour
 {
-    public Text activeText;
+    public TextMeshProUGUI activeText;
     public GameObject contentPanel;    
 
     // Start is called before the first frame update
