@@ -131,14 +131,18 @@ public class StateExplore : AdventurerBaseState
         {
             adventurer.bossBattle = new Battle();
             adventurer.bossBattle.addAdventurer(adventurer);
-            adventurer.bossBattle.addMonster(adventurer.currentQuest.targetMonster);
+            foreach (var objective in adventurer.currentQuest.objectives)
+            {
+                MonsterData monsterData = Guild.GetMonsterData(objective.id); 
+                if (monsterData != null) adventurer.bossBattle.addMonster(monsterData);
+            }                      
         }
 
-        adventurer.SetActionText("In an epic Boss Battle with a " + adventurer.currentQuest.targetMonster.Name);
+        adventurer.SetActionText("In an epic Boss Battle with a " + adventurer.bossBattle.GetMonsterName());
         bool battleEnded = adventurer.bossBattle.DoRound();      
         if (battleEnded)
         {
-            adventurer.SetActionText("The " + adventurer.currentQuest.targetMonster.Name + " has been slain!");
+            adventurer.SetActionText("The " + adventurer.bossBattle.GetMonsterName() + " has been slain!");
             adventurer.targetLocationID = "";
             adventurer.targetLocation = null; //Return home
             return typeof(StateTravel);

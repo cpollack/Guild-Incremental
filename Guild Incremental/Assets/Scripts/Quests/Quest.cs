@@ -7,6 +7,7 @@ public enum QuestCategory
 {
     Main,
     Guild,
+    Project,
 }
 
 public enum QuestType
@@ -14,6 +15,22 @@ public enum QuestType
     Kill,
     Gather,
     Boss,
+}
+
+[Serializable]
+public class QuestObjective
+{
+    public QuestObjective(string id, string name, int count, int current = 0)
+    {
+        this.id = id;
+        this.name = name;
+        this.count = count;
+        this.current = current;
+    }
+    public string id;
+    public string name;
+    public int count;
+    public int current;
 }
 
 [Serializable]
@@ -40,15 +57,22 @@ public class Quest
 
         targetLocationID = data.locationID;
         targetLocation = guild.GetLocation(targetLocationID);
+
         if (data.monsterId.Length > 0)
         {
-            targetMonsterID = data.monsterId;
-            targetMonster = guild.GetMonsterData(targetMonsterID);
+            MonsterData monsterData = guild.GetMonsterData(data.monsterId);
+            if (monsterData != null)
+            {
+                objectives.Add(new QuestObjective(data.monsterId, monsterData.Name, questData.count));
+            }
         }
         if (data.itemID.Length > 0)
         {
-            targetItemID = data.itemID;
-            targetItem = guild.GetItemData(targetItemID);
+            ItemData itemData = guild.GetItemData(data.itemID);
+            if (itemData != null)
+            {
+                objectives.Add(new QuestObjective(data.itemID, itemData.Name, questData.count));
+            }
         }
         rewards = data.rewards;
 
@@ -67,14 +91,12 @@ public class Quest
 
     public string targetLocationID = "";
     [NonSerialized] [SerializeReference] public Location targetLocation;
-    public string targetMonsterID = "";
-    [NonSerialized] [SerializeReference] public MonsterData targetMonster;
-    public string targetItemID = "";
-    [NonSerialized] [SerializeReference] public ItemData targetItem;
+    
+    public List<QuestObjective> objectives = new List<QuestObjective>();
 
-    public int killCount;
-    public int itemCount;
-    public int currentCount = 0;
+    public string projectSource = "";
+    public string projectID = "";
+
     public int minLevel = 1;
     public int maxLevel = 1;
 
@@ -95,12 +117,6 @@ public class Quest
 
         if (targetLocationID.Length > 0 && targetLocation == null)
             targetLocation = guild.GetLocation(targetLocationID);
-
-        if (targetMonsterID.Length > 0 && targetMonster == null)
-            targetMonster = guild.GetMonsterData(targetMonsterID);
-
-        if (targetItemID.Length > 0 && targetItem == null)
-            targetItem = guild.GetItemData(targetItemID);
 
         if (adventurerName.Length > 0 && adventurer == null)
         {
@@ -134,9 +150,7 @@ public class Quest
     {
         targetLocationID = loc.data.locationID;
         targetLocation = loc;
-        targetMonsterID = monster.monsterID;
-        targetMonster = monster;
-        killCount = count;
+        objectives.Add(new QuestObjective(monster.monsterID, monster.name, count));
         minLevel = loc.data.minLevel;
         maxLevel = loc.data.maxLevel;
     }
@@ -145,9 +159,7 @@ public class Quest
     {
         targetLocationID = loc.data.Name;
         targetLocation = loc;
-        targetItemID = item.itemID;
-        targetItem = item;
-        itemCount = count;
+        objectives.Add(new QuestObjective(item.itemID, item.Name, count));
     }
 
     public void AddReward(ResourceType type, int value)
@@ -158,26 +170,51 @@ public class Quest
     public bool UpdateStatus(MonsterData monster, int count = 1)
     {
         if (type != QuestType.Kill) return objectiveMet;
-        if (monster != targetMonster) return objectiveMet;
-        currentCount += count;
-        if (currentCount >= killCount) objectiveMet = true;
+
+        for (int i = 0; i < objectives.Count; i++)
+        {
+           if (objectives[i].id == monster.monsterID)
+            {
+                objectives[i].current += count;
+                if (objectives[i].current > objectives[i].count) objectives[i].current = objectives[i].count;
+                break;
+            }
+        }
+
+        UpdateObjectiveState();
         return objectiveMet;
     }
 
     public bool UpdateStatus(ItemData item, int count)
     {
         if (type != QuestType.Gather) return objectiveMet;
-        if (item != targetItem) return objectiveMet;
-        currentCount = count;
-        if (currentCount >= itemCount) objectiveMet = true;
+
+        for (int i = 0; i < objectives.Count; i++)
+        {
+            if (objectives[i].id == item.itemID)
+            {
+                objectives[i].current += count;
+                if (objectives[i].current > objectives[i].count) objectives[i].current = objectives[i].count;
+                break;
+            }
+        }
+
+        UpdateObjectiveState();
         return objectiveMet;
+    }
+
+    public void UpdateObjectiveState()
+    {
+        objectiveMet = true;
+        foreach (QuestObjective obj in objectives)
+        {
+            if (obj.current < obj.count) { objectiveMet = false; break; }
+        }
     }
 
     public override string ToString()
     {
-        string output = "";
-        //output += "[" + category + "] ";
-        output += targetLocation.data.Name + " - ";
+        string output = "";       
 
         if (data != null)
         {
@@ -185,32 +222,84 @@ public class Quest
             return output;
         }
 
+        if (category == QuestCategory.Project)
+            return GetProjectString();
+
+        int count = 1;
         switch (type)
         {
             case QuestType.Kill:
-                output += "Slay ";
-                if (claimed)
+                output += targetLocation.data.Name + " - Slay ";
+
+                count = 1;
+                foreach (QuestObjective obj in objectives)
                 {
-                    output += targetMonster.Name + "s ";
-                    output += Math.Min(currentCount, killCount).ToString() + "/" + killCount.ToString();
+                    MonsterData monsterData = guild.GetMonsterData(obj.id);
+                    if (monsterData == null) continue;
+
+                    if (count > 1) output += " and ";
+                    if (claimed)
+                    {
+                        output += monsterData.Name + "s ";
+                        output += obj.current.ToString() + "/" + obj.count.ToString();
+                    }
+                    else output += obj.count.ToString() + " " + monsterData.Name + "s";
+                    count++;
                 }
-                else output += killCount.ToString() + " " + targetMonster.Name + "s";
 
                 break;
             case QuestType.Gather:
+                if (targetLocation != null) output += targetLocation.data.Name + " - ";
                 output += "Collect ";
-                if (claimed)
+
+                count = 1;
+                foreach (QuestObjective obj in objectives)
                 {
-                    output += targetItem.Name + "s ";
-                    output += Math.Min(currentCount, itemCount).ToString() + "/" + itemCount.ToString();
+                    ItemData itemData = guild.GetItemData(obj.id);
+                    if (itemData == null) continue;
+
+                    if (count > 1) output += " and ";
+                    if (claimed)
+                    {
+                        output += itemData.Name + "s ";
+                        output += obj.current.ToString() + "/" + obj.count.ToString();
+                    }
+                    else output += obj.count.ToString() + " " + itemData.Name + "s";
+                    count++;
                 }
-                else output += itemCount.ToString() + " " + targetItem.Name + "s";
 
                 break;
         }
-        //if (claimed) output += " (claimed)";
 
-        //output += "\nReward:" + (rewardGold > 0 ? " " + rewardGold.ToString() + " Gold" : "") + (rewardRenown > 0 ? " " + rewardRenown.ToString() + " Renown" : "");
+        return output;
+    }
+
+    public string GetProjectString()
+    {
+        if (category != QuestCategory.Project)
+            return "";
+
+        string output = "";
+        switch (projectSource)
+        {
+            case "Tavern":
+                TavernRecipeData tavernRecipeData = guild.GetTavernRecipeData(projectID);
+                if (tavernRecipeData != null) 
+                {
+                    output = "Recipe Research: " + tavernRecipeData.name;
+
+                    foreach (var objective in objectives)
+                    {
+                        output += "\n" + objective.name + " " + objective.current.ToString() + "/" + objective.count.ToString();
+                    }
+                }
+
+                break;
+
+            default:
+                Debug.LogError("Quest::GetProjectString unhandled project source [" + projectSource + "]");
+                break;
+        }
 
         return output;
     }

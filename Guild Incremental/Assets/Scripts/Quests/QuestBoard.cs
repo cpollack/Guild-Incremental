@@ -151,6 +151,30 @@ public class QuestBoard : GuildHall
         else Debug.LogError("QuestBoard:GenerateGuildQuest failed to generate a quest for " + questLoc.data.Name);
     }
 
+    public void GenerateProjects()
+    {
+        //Tavern Projects
+        Tavern tavern = GameObject.Find("Tavern").GetComponent<Tavern>();
+        foreach ( var recipe in tavern.recipes)
+        {
+            if (! ProjectExists("Tavern", recipe))
+            {
+                TavernRecipeData tavernRecipeData = tavern.GetRecipeData(recipe);
+                if (tavernRecipeData != null) 
+                    AddQuest(tavernRecipeData);
+            }
+        }
+    }
+
+    public bool ProjectExists(string source, string id)
+    {
+        foreach (var quest in guild.Quests)
+        {
+            if (quest.category == QuestCategory.Project && quest.projectSource == source && quest.projectID == id) return true;
+        }
+        return false;
+    }
+
     public List<Quest> GetQuests()
     {
         return guild.Quests;
@@ -185,5 +209,19 @@ public class QuestBoard : GuildHall
 
         if (data.unlockStory.Length > 0) guild.AddStoryEntry(data.unlockStoryHeader, data.unlockStory);
         if (data.unlockLog.Length > 0) guild.AddLogEntry(data.unlockLog);
+    }
+
+    public void AddQuest(TavernRecipeData data)
+    {
+        Quest quest = new Quest(QuestCategory.Project, QuestType.Gather, guild);
+        quest.projectSource = "Tavern";
+        quest.projectID = data.id;
+        foreach (var entry in data.requiredItems)
+        {            
+            quest.objectives.Add(new QuestObjective(entry.item.itemID, entry.item.Name, entry.count));
+        }
+
+        guild.Quests.Add(quest);
+        questBoardPanel.AddQuest(quest);
     }
 }

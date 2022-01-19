@@ -66,7 +66,7 @@ public class Tavern : GuildHall
 
     private void AddMenuItem(string menuItemName)
     {
-        TavernRecipeData menuItemData = FindRecipeData(menuItemName);
+        TavernRecipeData menuItemData = GetRecipeData(menuItemName);
         if (menuItemData == null) return;
         TavernMenuItem menuitem = CreateMenuItem(menuItemData);
         if (menuitem.id.Length == 0) return;
@@ -75,12 +75,16 @@ public class Tavern : GuildHall
 
     private void AddRecipe(string recipeName)
     {
-        TavernRecipeData tavernRecipeData = FindRecipeData(recipeName);
+        TavernRecipeData tavernRecipeData = GetRecipeData(recipeName);
         if (tavernRecipeData == null) return;
         recipes.Add(tavernRecipeData.id);
+
+        //TEMP TESTING, projects are only available if issued by the guild master
+        QuestBoard questBoard = GameObject.Find("Quest Board").GetComponent<QuestBoard>();
+        questBoard.GenerateProjects();
     }
 
-    private TavernRecipeData FindRecipeData(string id)
+    public TavernRecipeData GetRecipeData(string id)
     {
         foreach (KeyValuePair<string, TavernRecipeData> kvp in allRecipes)
         {

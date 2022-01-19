@@ -185,6 +185,12 @@ public class Battle
         }
     }
 
+    public string GetMonsterName(int position = 0)
+    {
+        if (position > monsters.Count) return "";
+        return monsters[position].Name;
+    }
+
     public void AwardExp()
     {
         int exp = 0;

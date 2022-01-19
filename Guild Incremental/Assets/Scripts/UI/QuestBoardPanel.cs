@@ -6,20 +6,24 @@ using UnityEngine.UI;
 
 public class QuestBoardPanel : MonoBehaviour
 {
-    public QuestBoard questBoard;        
+    public QuestBoard questBoard;
     public GameObject contentPanel;
 
     [Header("Main Quests")]
-    public GameObject contentPanelMain;
-    public GameObject contentPanelMainQuests;
+    public GameObject panelMain;
+    public GameObject panelMainContent;
     public GameObject prefabQuestMainPanel;
 
     [Header("Guild Quests")]
-    public GameObject contentPanelGuildQuests;  
+    public GameObject contentPanelGuildQuests;
     public TextMeshProUGUI textGuildQuest;
     public GameObject prefabQuestGuildPanel;
     public List<QuestPanel> questPanels;
-    
+
+    [Header("Projects")]
+    public GameObject panelProjects;
+    public GameObject panelProjectsContent;
+    public GameObject prefabQuestProjectsPanel;
 
     bool reloadLayout = false;
 
@@ -79,8 +83,12 @@ public class QuestBoardPanel : MonoBehaviour
                 prefab = prefabQuestGuildPanel;
                 break;
             case QuestCategory.Main:
-                destPanel = contentPanelMainQuests;
+                destPanel = panelMainContent;
                 prefab = prefabQuestMainPanel;
+                break;
+            case QuestCategory.Project:
+                destPanel = panelProjects;
+                prefab = prefabQuestProjectsPanel;
                 break;
             default:
                 destPanel = null;
@@ -143,8 +151,10 @@ public class QuestBoardPanel : MonoBehaviour
 
     public void UpdateCategoryPanels()
     {
-        if (QuestCountByCategory(QuestCategory.Main) > 0) contentPanelMain.SetActive(true);
-        else contentPanelMain.SetActive(false);
+        if (QuestCountByCategory(QuestCategory.Main) > 0) panelMain.SetActive(true);
+        else panelMain.SetActive(false);
+        if (QuestCountByCategory(QuestCategory.Project) > 0) panelProjects.SetActive(true);
+        else panelProjects.SetActive(false);
     }
 
     public void UpdateGuildQuestText()

@@ -18,7 +18,7 @@ MonoBehaviour:
   completeLog: RANK UP! The guild is now Rank E!
   requiredRenown: 10
   cost:
-  - resourceType: 2
+  - resourceType: 0
     value: 10
   buildTimeDays: 1
   buildTimeHours: 0

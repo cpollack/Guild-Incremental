@@ -23,6 +23,8 @@ public class GameData
     public int maxGuildQuests;
     public int totalGuildQuestsIssued;
 
+    //public List<RecipeEntry>
+
     public GameData()
     {
         currentTime = new GameTime(1, 5);

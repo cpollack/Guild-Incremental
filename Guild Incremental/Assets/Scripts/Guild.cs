@@ -297,6 +297,13 @@ public class Guild : MonoBehaviour
         return Resources.Load<ItemData>("Items/" + fileName);
     }
 
+    public TavernRecipeData GetTavernRecipeData(string recipeID)
+    {
+        string fileName = "TavernRecipe_" + recipeID;
+
+        return Resources.Load<TavernRecipeData>("Tavern/" + fileName);
+    }
+
     public void Save()
     {
         foreach (Adventurer adventurer in Adventurers)
