@@ -9,7 +9,8 @@ public class AdventurerBaseState : BaseState
     protected Guild Guild;
 
     protected GameTime startTime = new GameTime();
-    protected GameTime stateLength = new GameTime();
+    protected GameTime secondaryTime = new GameTime();
+    protected GameTime stateLength = new GameTime();    
 
     public AdventurerBaseState(Adventurer adventurer) : base(null)
     {
@@ -25,6 +26,7 @@ public class AdventurerBaseState : BaseState
     public override void OnStateChange()
     {
         ResetStartTime();
+        ResetSecondaryTime();
     }
 
     protected bool HasStateLengthBeenFulfilled()
@@ -34,15 +36,34 @@ public class AdventurerBaseState : BaseState
         return false;
     }
 
+    protected bool HasSecondaryLengthBeenFulfilled(float hours)
+    {
+        if (secondaryTime.GetHours() == 0) return false;
+        GameTime length = new GameTime(0, hours);
+        if (Guild.GetElapsedTime(secondaryTime) >= length) return true;
+        return false;
+    }
+
     protected GameTime GetElapsedTime()
     {
         return Guild.GetElapsedTime(startTime);
+    }
+
+    protected GameTime GetSecondaryElapsedTime()
+    {
+        return Guild.GetElapsedTime(secondaryTime);
     }
 
     protected void ResetStartTime()
     {
         startTime.day = Guild.CurrentTime.day;
         startTime.hour = Guild.CurrentTime.hour;
+    }
+
+    protected void ResetSecondaryTime()
+    {
+        secondaryTime.day = Guild.CurrentTime.day;
+        secondaryTime.hour = Guild.CurrentTime.hour;
     }
 
     protected void UpdateActionPercent()
@@ -61,6 +82,7 @@ public class AdventurerBaseState : BaseState
     {
         adventurer.stateStartTime = startTime;
         adventurer.stateLength = stateLength;
+        adventurer.subStateStartTime = secondaryTime;
     }
 
     public override void Load()
@@ -69,5 +91,7 @@ public class AdventurerBaseState : BaseState
         if (startTime == null) startTime = new GameTime();
         stateLength = adventurer.stateLength;
         if (stateLength == null) stateLength = new GameTime();
+        secondaryTime = adventurer.subStateStartTime;
+        if (secondaryTime == null) secondaryTime = new GameTime();
     }
 }

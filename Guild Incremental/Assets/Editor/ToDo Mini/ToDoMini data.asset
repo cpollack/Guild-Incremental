@@ -27,7 +27,7 @@ MonoBehaviour:
   - task: Rank Up!
     isComplete: 0
   - task: Boss Battle
-    isComplete: 0
+    isComplete: 1
   - task: Accepting Main Quests
     isComplete: 0
   - task: BinaryFormater >  JSON
@@ -43,6 +43,8 @@ MonoBehaviour:
   - task: '[BUG] on reset quests can be issued befre questboard is built'
     isComplete: 1
   - task: Update all text to TMP
-    isComplete: 0
+    isComplete: 1
   - task: Display Tavern Recipes on quest board
+    isComplete: 1
+  - task: Day/Night Icons
     isComplete: 0

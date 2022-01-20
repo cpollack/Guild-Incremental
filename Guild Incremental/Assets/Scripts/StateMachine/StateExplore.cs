@@ -12,48 +12,48 @@ public class StateExplore : AdventurerBaseState
 
     private Location location;
 
-    private const float encounterTimer = 0.25f;
-    private const float battleTimer = 0.0167f;
+    private const float encounterTimer = 0.25f; //15 minutes
+    private const float battleTimer = 0.0167f; //~1 minute per round
+    private const int maxExploreHours = 8;
 
     public override Type Tick()
     {
-        if (HasStateLengthBeenFulfilled())
+        Type newState = null;
+        //Boss Battle!
+        if (adventurer.IsInBossBattle())
         {
-            if ((Guild.timeOfDay == TimeOfDay.Evening && !adventurer.IsHuntingBoss()) || Guild.timeOfDay == TimeOfDay.Night)
-            {
-                adventurer.targetLocationID = "";
-                adventurer.targetLocation = null; //Return home
-                return typeof(StateTravel);
-            }
+            if (HasSecondaryLengthBeenFulfilled(battleTimer))
+                newState = HandleEncounterByType(EncounterType.BossBattle);
+            if (newState != null)
+                ResetSecondaryTime();
+            return newState;
+        }
 
-            Type newState = null;
+        //Return to the Guild after 8 hours of exploring
+        if (HasStateLengthBeenFulfilled() && !adventurer.IsHuntingBoss())
+        {            
+            adventurer.targetLocationID = "";
+            adventurer.targetLocation = null;
+            return typeof(StateTravel);
+        }
+
+        //Run encounters
+        if (HasSecondaryLengthBeenFulfilled(encounterTimer))
+        {
             if (adventurer.IsHuntingBoss())
             {
                 EncounterType encounterType;
-                //Boss battles will currently always begin once evening hits
-                if (Guild.timeOfDay == TimeOfDay.Evening || adventurer.IsInBossBattle()) encounterType = EncounterType.BossBattle;
+                //Boss battles occure once adventurer reaches the end of the zone
+                if (GetElapsedTime().GetHours() >= location.data.depthInHours)
+                    encounterType = EncounterType.BossBattle;
                 else encounterType = location.RollEncounter();
                 newState = HandleEncounterByType(encounterType);
             }
             else newState = HandleEncounterByType(location.RollEncounter());
 
-            if (newState != null)
-            {
-                return newState;
-            }
-
-            ResetStartTime();
+            ResetSecondaryTime();
+            return newState;
         }
-
-        /*float elapsedHours = Guild.ElapsedTimeHours(stateStartTime);
-        float actionPerc = elapsedHours / stateLengthHours;
-        Adventurer.SetActionPercent(actionPerc);
-
-        if (actionPerc >= 1)
-        {
-            if (Adventurer.targetLocation != null) return typeof(StateExplore);
-            //else return typeof(StateReturnToGuild);
-        }*/
 
         return null;
     }
@@ -64,7 +64,7 @@ public class StateExplore : AdventurerBaseState
         location = adventurer.currentLocation;
         adventurer.SetActionText("Exploring " + location.data.Name);
         adventurer.HideActionPercent();
-        stateLength.Set(0, encounterTimer);
+        stateLength.Set(0, maxExploreHours);
     }
 
     public override void Load()
@@ -140,6 +140,7 @@ public class StateExplore : AdventurerBaseState
 
         adventurer.SetActionText("In an epic Boss Battle with a " + adventurer.bossBattle.GetMonsterName());
         bool battleEnded = adventurer.bossBattle.DoRound();      
+
         if (battleEnded)
         {
             adventurer.SetActionText("The " + adventurer.bossBattle.GetMonsterName() + " has been slain!");

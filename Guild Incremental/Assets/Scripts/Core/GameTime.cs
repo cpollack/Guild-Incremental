@@ -135,10 +135,10 @@ public class GameTime
         return strTime;
     }
 
-    public string GetFormattedTime()
+    public string GetFormattedTime(bool showHours = false)
     {
         int clock12 = Mathf.FloorToInt(hour) % 12;
         if (clock12 == 0) clock12 = 12;
-        return "Day " + day.ToString() + " " + clock12.ToString() + (Mathf.Floor(hour) <= 11 ? "am" : "pm");
+        return "Day " + day.ToString() + (showHours ? " " + clock12.ToString() + (Mathf.Floor(hour) <= 11 ? "am" : "pm") : "");
     }
 }

@@ -23,6 +23,7 @@ public class HoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     void Update()
     {
         if (!MouseIn) return;
+        if (info.Length == 0) return;
         hoverTime += Time.deltaTime;
         if (!Hovering)
         {

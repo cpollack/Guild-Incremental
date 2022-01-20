@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177679fe67c903744a0154a5f324ad61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info: Renown
+  info: 
 --- !u!114 &8171093425290616399
 MonoBehaviour:
   m_ObjectHideFlags: 0

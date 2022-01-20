@@ -19,6 +19,7 @@ namespace UnityEngine.UI
         {
             yield return new WaitForEndOfFrame();
             RebuildLayoutRecursive(obj);
+            RebuildLayoutRecursive(obj);
         }
 
         private static void RebuildLayoutRecursive(GameObject obj)

@@ -106,6 +106,7 @@ public class Adventurer : IFighter
     public Type currentState;
     public int currentSubState;
     public GameTime stateStartTime;
+    public GameTime subStateStartTime;
     public GameTime stateLength;
     public bool Resting;
 
@@ -176,6 +177,10 @@ public class Adventurer : IFighter
         foreach (Quest quest in availableQuests)
         {
             //if (level / quest.recommendedLevel >= 0.9 && level / quest.recommendedLevel <= 1.2) questPool.Add(quest);
+            
+            //Skip projects for now
+            if (quest.category == QuestCategory.Project) continue;
+
             if (level >= quest.minLevel && level <= quest.maxLevel) questPool.Add(quest);
         }
 

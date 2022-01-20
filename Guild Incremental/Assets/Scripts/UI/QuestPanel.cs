@@ -7,9 +7,10 @@ using UnityEngine.UI;
 public class QuestPanel : MonoBehaviour
 {
     public TextMeshProUGUI questText;
-    public Image imageClaimed;
+    public Image imageIcon;
+    public GameObject objectivePanel;
     public GameObject rewardsPanel;
-    public GameObject rewardPrefab;
+    public GameObject resourcePrefab;
 
     public Button ButtonAssign;
     public TextMeshProUGUI TextAssign;
@@ -29,26 +30,67 @@ public class QuestPanel : MonoBehaviour
     void Update()
     {
         questText.text = quest.ToString();
+        if (quest.category == QuestCategory.Project)
+        {
+            UpdateObjectives();
+            return;
+        }
+
         if (quest.claimed)
         {
-            imageClaimed.gameObject.SetActive(true);
+            if (imageIcon != null) imageIcon.gameObject.SetActive(true);
+            if (ButtonAssign == null) return;
             if (quest.category == QuestCategory.Main && adventurer.currentLocation != null) ButtonAssign.enabled = false;
             else ButtonAssign.enabled = true;
         }
         else
         {
-            imageClaimed.gameObject.SetActive(false);
+            if (imageIcon != null) imageIcon.gameObject.SetActive(false);
+            if (ButtonAssign == null) return;
             if (quest.category == QuestCategory.Main) ButtonAssign.enabled = true;
         }
     }
 
+    private void UpdateObjectives()
+    {
+        if (objectivePanel == null) return;
+        if (quest.objectives == null) return;
+
+        //objectivePanel.transform.childCount
+        int itr = 0;
+        foreach (Transform child in objectivePanel.transform)
+        {
+            if (quest.objectives.Count < itr) break;
+            QuestObjective questObjective = quest.objectives[itr];
+            ResourcePanel resourcePanel = child.GetComponent<ResourcePanel>();
+            resourcePanel.resourceImage.sprite = quest.guild.GetResourceImage(questObjective.type);
+            resourcePanel.resourceText.text = questObjective.name + " " + questObjective.current.ToString() + "/" + questObjective.count.ToString();
+            itr++;
+        }
+
+        while (itr < quest.objectives.Count)
+        {
+            AddObjective(quest.objectives[itr]);
+            itr++;
+        }
+    }
+
+    public void AddObjective(QuestObjective questObjective)
+    {
+        GameObject obj = Instantiate(resourcePrefab, objectivePanel.transform, false);
+        ResourcePanel resourcePanel = obj.GetComponent<ResourcePanel>();
+
+        resourcePanel.resourceImage.sprite = quest.guild.GetResourceImage(questObjective.type);
+        resourcePanel.resourceText.text = questObjective.name + " " + questObjective.current.ToString() + "/" + questObjective.count.ToString();
+    }
+
     public void AddReward(Resource reward)
     {
-        GameObject obj = Instantiate(rewardPrefab, rewardsPanel.transform, false);
-        ResourcePanel rewardPanel = obj.GetComponent<ResourcePanel>();
+        GameObject obj = Instantiate(resourcePrefab, rewardsPanel.transform, false);
+        ResourcePanel resourcePanel = obj.GetComponent<ResourcePanel>();
 
-        rewardPanel.resourceImage.sprite = quest.guild.GetResourceImage(reward.type);
-        rewardPanel.resourceText.text = reward.value.ToString();
+        resourcePanel.resourceImage.sprite = quest.guild.GetResourceImage(reward.type);
+        resourcePanel.resourceText.text = reward.value.ToString();
 
         string hover = "";
         switch (reward.type)
@@ -59,8 +101,11 @@ public class QuestPanel : MonoBehaviour
             case ResourceType.Gold:
                 hover = "Gold";
                 break;
+            case ResourceType.Merit:
+                hover = "Merit";
+                break;
         }
-        rewardPanel.hoverInfo.info = hover;
+        resourcePanel.hoverInfo.info = hover;
     }
 
     private void SetMainQuestState()

@@ -218,7 +218,7 @@ public class QuestBoard : GuildHall
         quest.projectID = data.id;
         foreach (var entry in data.requiredItems)
         {            
-            quest.objectives.Add(new QuestObjective(entry.item.itemID, entry.item.Name, entry.count));
+            quest.objectives.Add(new QuestObjective(entry.item.itemID, entry.item.Name, entry.item.resourceType, entry.count));
         }
 
         guild.Quests.Add(quest);

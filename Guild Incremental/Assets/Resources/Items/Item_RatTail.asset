@@ -15,3 +15,4 @@ MonoBehaviour:
   itemID: RatTail
   Name: Rat Tail
   Description: A large meaty tail from an oversized rat.
+  resourceType: 200

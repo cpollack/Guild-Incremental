@@ -24,7 +24,10 @@ public class StateIdle : AdventurerBaseState
     public override Type Tick()
     {
         Type type = null;
-        switch (Guild.timeOfDay)
+        type = HandleIdleState();
+        return type;
+
+        /*switch (Guild.timeOfDay)
         {
             case TimeOfDay.Morning:
                 type = HandleMorning();
@@ -44,7 +47,7 @@ public class StateIdle : AdventurerBaseState
                 break;
         }
 
-        return type;
+        return type;*/
     }
 
     public override int GetSubState()
@@ -64,7 +67,7 @@ public class StateIdle : AdventurerBaseState
         adventurer.Resting = false;
     }
 
-    private Type HandleMorning()
+    private Type HandleIdleState()
     {
         adventurer.Resting = false;
 

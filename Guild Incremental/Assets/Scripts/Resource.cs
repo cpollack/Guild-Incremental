@@ -11,6 +11,17 @@ public enum ResourceType
     Item,
     Blueprint,
     Recipe,
+
+    Fire = 100,
+    Water,
+    Plant,
+
+    MonsterPart = 200,
+    Food,
+    Drink,
+
+    //Misc
+    Monster = 900,
 }
 
 [Serializable]

@@ -9,4 +9,5 @@ public class ItemData : ScriptableObject
     public string itemID;
     public string Name;
     public string Description;
+    public ResourceType resourceType;
 }

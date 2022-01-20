@@ -20,15 +20,17 @@ public enum QuestType
 [Serializable]
 public class QuestObjective
 {
-    public QuestObjective(string id, string name, int count, int current = 0)
+    public QuestObjective(string id, string name, ResourceType type, int count, int current = 0)
     {
         this.id = id;
         this.name = name;
+        this.type = type;
         this.count = count;
         this.current = current;
     }
     public string id;
     public string name;
+    public ResourceType type;
     public int count;
     public int current;
 }
@@ -63,7 +65,7 @@ public class Quest
             MonsterData monsterData = guild.GetMonsterData(data.monsterId);
             if (monsterData != null)
             {
-                objectives.Add(new QuestObjective(data.monsterId, monsterData.Name, questData.count));
+                objectives.Add(new QuestObjective(data.monsterId, monsterData.Name, ResourceType.Monster, questData.count));
             }
         }
         if (data.itemID.Length > 0)
@@ -71,7 +73,7 @@ public class Quest
             ItemData itemData = guild.GetItemData(data.itemID);
             if (itemData != null)
             {
-                objectives.Add(new QuestObjective(data.itemID, itemData.Name, questData.count));
+                objectives.Add(new QuestObjective(data.itemID, itemData.Name, itemData.resourceType, questData.count));
             }
         }
         rewards = data.rewards;
@@ -150,16 +152,16 @@ public class Quest
     {
         targetLocationID = loc.data.locationID;
         targetLocation = loc;
-        objectives.Add(new QuestObjective(monster.monsterID, monster.name, count));
+        objectives.Add(new QuestObjective(monster.monsterID, monster.name, ResourceType.Monster, count));
         minLevel = loc.data.minLevel;
         maxLevel = loc.data.maxLevel;
     }
 
     public void SetObjective(Location loc, ItemData item, int count)
     {
-        targetLocationID = loc.data.Name;
+        targetLocationID = loc.data.locationID;
         targetLocation = loc;
-        objectives.Add(new QuestObjective(item.itemID, item.Name, count));
+        objectives.Add(new QuestObjective(item.itemID, item.Name, item.resourceType, count));
     }
 
     public void AddReward(ResourceType type, int value)
@@ -287,11 +289,11 @@ public class Quest
                 if (tavernRecipeData != null) 
                 {
                     output = "Recipe Research: " + tavernRecipeData.name;
-
-                    foreach (var objective in objectives)
+                    output += "\n\nIngredients:";
+                    /*foreach (var objective in objectives)
                     {
                         output += "\n" + objective.name + " " + objective.current.ToString() + "/" + objective.count.ToString();
-                    }
+                    }*/
                 }
 
                 break;

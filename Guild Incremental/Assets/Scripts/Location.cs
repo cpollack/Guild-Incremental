@@ -72,34 +72,55 @@ public class Location
 
         QuestType questType = availTypes[UnityEngine.Random.Range(0, availTypes.Count)];
         Quest quest = new Quest(QuestCategory.Guild, questType, guild);
+        quest.targetLocationID = data.locationID;
+        quest.targetLocation = this;
 
         int count = 0;
+        int min, max, range, challengeValue, difficulty;
+        float renownReward, meritReward;
         switch (questType)
         {
             case QuestType.Kill:
                 MonsterData monster = data.monsters[UnityEngine.Random.Range(0, data.monsters.Count)];
 
-                int min = 5;
-                int max = 20;
-                int range = max - min;
-                int challengeValue = range / 3;                
+                min = 5;
+                max = 20;
+                range = max - min;
+                challengeValue = range / 3;                
 
-                count = UnityEngine.Random.Range(5, 20);
+                count = UnityEngine.Random.Range(min, max);
                 quest.SetObjective(this, monster, count);
-                int difficulty = (count - min) / challengeValue;
+                difficulty = (count - min) / challengeValue;
 
-                float renownReward = 1 * (0.9f + (0.1f * (float)difficulty));
+                renownReward = 1 * (0.9f + (0.1f * (float)difficulty));
                 renownReward = Math.Max(renownReward, 1);
-                float goldReward = 10 * (0.9f + (0.1f * (float)difficulty));
+                meritReward = 10 * (0.9f + (0.1f * (float)difficulty));
+                meritReward = Math.Max(meritReward, 1);
 
                 quest.AddReward(ResourceType.Renown, (int)renownReward);
-                quest.AddReward(ResourceType.Merit, (int)goldReward);
+                quest.AddReward(ResourceType.Merit, (int)meritReward);
 
                 break;
             case QuestType.Gather:
                 ItemData item = data.gatherables[UnityEngine.Random.Range(0, data.gatherables.Count)];
-                count = UnityEngine.Random.Range(5, 20);
+
+                min = 5;
+                max = 20;
+                range = max - min;
+                challengeValue = range / 3;
+
+                count = UnityEngine.Random.Range(min, max);
                 quest.SetObjective(this, item, count);
+                difficulty = (count - min) / challengeValue;
+
+                renownReward = 1 * (0.9f + (0.1f * (float)difficulty));
+                renownReward = Math.Max(renownReward, 1);
+                meritReward = 10 * (0.9f + (0.1f * (float)difficulty));
+                meritReward = Math.Max(meritReward, 1);
+
+                quest.AddReward(ResourceType.Renown, (int)renownReward);
+                quest.AddReward(ResourceType.Merit, (int)meritReward);
+
                 break;
 
             default:
