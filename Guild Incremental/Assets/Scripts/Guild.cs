@@ -29,6 +29,9 @@ public struct LogEntry
 
 public class Guild : MonoBehaviour
 {
+    [Header("Game")]
+    public string version = "v0.0.0";
+
     [Header("Time")]
     public bool timePaused = false;
     public float secondsPerDay = 1.0f;

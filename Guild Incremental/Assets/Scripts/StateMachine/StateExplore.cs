@@ -31,11 +31,7 @@ public class StateExplore : AdventurerBaseState
 
         //Return to the Guild after 8 hours of exploring
         if (HasStateLengthBeenFulfilled() && !adventurer.IsHuntingBoss())
-        {            
-            adventurer.targetLocationID = "";
-            adventurer.targetLocation = null;
-            return typeof(StateTravel);
-        }
+            return ReturnHome();
 
         //Run encounters
         if (HasSecondaryLengthBeenFulfilled(encounterTimer))
@@ -89,7 +85,7 @@ public class StateExplore : AdventurerBaseState
                 return HandleBossBattle();
 
             case EncounterType.Resource:
-                //Roll resource gain
+                return HandleGather();
                 break;
 
         }
@@ -105,21 +101,22 @@ public class StateExplore : AdventurerBaseState
         battle.addMonster(monster);
         adventurer.SetActionText("Battling a " + monster.Name);
 
-        if (battle.Process())
-        {
-            //Victory
-            battle.UpdateMonsterKills();
-            battle.AwardExp();
-            //battle.AwardGold();
-            battle.RollDrops();
-            location.GainProgress(1);
-        }
-        else
-        {
+        if (!battle.Process())
+        { 
             //Defeat, either died or ran
-
             //if the party did not wipe, they may be able to revive fallen team mates
             return typeof(StateDeath);
+        }
+
+        //Victory
+        battle.UpdateMonsterKills();
+        battle.AwardExp();
+        battle.RollDrops();
+        location.GainProgress(1);
+
+        if (adventurer.currentQuest != null)
+        {
+            if (adventurer.currentQuest.objectiveMet) return ReturnHome();
         }
 
         return null;
@@ -144,11 +141,33 @@ public class StateExplore : AdventurerBaseState
         if (battleEnded)
         {
             adventurer.SetActionText("The " + adventurer.bossBattle.GetMonsterName() + " has been slain!");
-            adventurer.targetLocationID = "";
-            adventurer.targetLocation = null; //Return home
-            return typeof(StateTravel);
+            return ReturnHome();
         }
 
         return null;
+    }
+
+    private Type HandleGather()
+    {
+        ItemData item = location.RollGather(adventurer);
+        if (item != null)
+        {
+            adventurer.SetActionText("Gathering a " + item.Name);
+            adventurer.GainItem(item);
+        }
+        
+        if (adventurer.currentQuest != null)
+        {
+            if (adventurer.currentQuest.objectiveMet) return ReturnHome();
+        }
+
+        return null;
+    }
+
+    private Type ReturnHome()
+    {
+        adventurer.targetLocationID = "";
+        adventurer.targetLocation = null;
+        return typeof(StateTravel);
     }
 }

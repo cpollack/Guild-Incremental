@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingID: RankE
   buildingTitle: Upgrade to Rank E
-  description: Increase Guild Rank from F > E. Demon King, here I come!
+  description: Coming Soon to an Upgrade near you...
   completeLog: RANK UP! The guild is now Rank E!
   requiredRenown: 10
   cost:

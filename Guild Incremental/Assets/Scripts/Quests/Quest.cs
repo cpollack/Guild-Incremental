@@ -15,6 +15,7 @@ public enum QuestType
     Kill,
     Gather,
     Boss,
+    Event,
 }
 
 [Serializable]
@@ -60,12 +61,12 @@ public class Quest
         targetLocationID = data.locationID;
         targetLocation = guild.GetLocation(targetLocationID);
 
-        if (data.monsterId.Length > 0)
+        if (data.monsterID.Length > 0)
         {
-            MonsterData monsterData = guild.GetMonsterData(data.monsterId);
+            MonsterData monsterData = guild.GetMonsterData(data.monsterID);
             if (monsterData != null)
             {
-                objectives.Add(new QuestObjective(data.monsterId, monsterData.Name, ResourceType.Monster, questData.count));
+                objectives.Add(new QuestObjective(data.monsterID, monsterData.Name, ResourceType.Monster, questData.count));
             }
         }
         if (data.itemID.Length > 0)
@@ -162,6 +163,8 @@ public class Quest
         targetLocationID = loc.data.locationID;
         targetLocation = loc;
         objectives.Add(new QuestObjective(item.itemID, item.Name, item.resourceType, count));
+        minLevel = loc.data.minLevel;
+        maxLevel = loc.data.maxLevel;
     }
 
     public void AddReward(ResourceType type, int value)

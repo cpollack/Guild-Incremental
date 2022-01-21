@@ -7,13 +7,14 @@ public class QuestData : ScriptableObject
 {
     public string questID;
     public string questName;
+    [TextArea(3, 10)]
     public string questDescription;
 
     public QuestCategory category;
     public QuestType type;
 
     public string locationID;
-    public string monsterId;
+    public string monsterID;
     public string itemID;
     public int count;
 

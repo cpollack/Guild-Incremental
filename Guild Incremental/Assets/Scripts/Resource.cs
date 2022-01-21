@@ -20,8 +20,14 @@ public enum ResourceType
     Food,
     Drink,
 
+    //Time
+    Day = 800,
+    Night,
+
     //Misc
     Monster = 900,
+    Map,
+    Dungeon,
 }
 
 [Serializable]
@@ -47,5 +53,10 @@ public class Resource
         }
 
         return false;
+    }
+
+    public bool Met(Guild guild)
+    {
+        return HasResource(guild);
     }
 }

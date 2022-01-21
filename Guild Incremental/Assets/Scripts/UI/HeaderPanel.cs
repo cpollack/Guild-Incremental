@@ -16,7 +16,7 @@ public class HeaderPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        textTitle.text = "Guild Incremental - v" + Application.version + " (Alpha)";
+        textTitle.text = "Guild Incremental - " + guild.version;
     }
 
     // Update is called once per frame

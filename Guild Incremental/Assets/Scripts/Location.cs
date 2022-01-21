@@ -41,6 +41,32 @@ public class Location
         return pool[UnityEngine.Random.Range(0, pool.Count)];
     }
 
+    public ItemData RollGather(Adventurer adventurer)
+    {
+        if (data.gatherables.Count == 0)
+        {
+            Debug.LogError("Location " + data.Name + " has no gatherable items.");
+            return null;
+        }
+
+        //Get rate range
+        int maxRate = 0;
+        foreach (var gatherable in data.gatherables)
+            maxRate += gatherable.weightedRate;
+
+        int roll = UnityEngine.Random.Range(1, maxRate);
+
+        //Get the randomly rolled item
+        int offset = 0;
+        foreach (var gatherable in data.gatherables)
+        {
+            if (gatherable.weightedRate <= roll + offset) return gatherable.item;
+            offset += gatherable.weightedRate;
+        }
+
+        return null;
+    }
+
     private List<MonsterData> GetMonsterPool(Adventurer adventurer)
     {
         List<MonsterData> pool = new List<MonsterData>();
@@ -102,7 +128,7 @@ public class Location
 
                 break;
             case QuestType.Gather:
-                ItemData item = data.gatherables[UnityEngine.Random.Range(0, data.gatherables.Count)];
+                ItemData item = data.gatherables[UnityEngine.Random.Range(0, data.gatherables.Count)].item;
 
                 min = 5;
                 max = 20;

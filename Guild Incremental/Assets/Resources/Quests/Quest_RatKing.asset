@@ -18,7 +18,7 @@ MonoBehaviour:
   category: 0
   type: 2
   locationID: Sewer
-  monsterId: GiantRatKing
+  monsterID: GiantRatKing
   itemID: 
   count: 0
   rewards:
