@@ -64,6 +64,7 @@ public class Guild : MonoBehaviour
     private GameData gameData;
     /* Accessors */
     public GameTime CurrentTime { get { return gameData.currentTime; } private set { } }
+    public Rank Rank { get { return gameData.rank; } set { gameData.rank = value; } }
     public int Renown { get { return gameData.renown; } set { gameData.renown = value; } }
     public int Gold { get { return gameData.gold; } set { gameData.gold = value; } }
     public List<Adventurer> Adventurers { get { return gameData.adventurers; } private set { } }
@@ -78,6 +79,8 @@ public class Guild : MonoBehaviour
     public List<Quest> Quests { get { return gameData.quests; } private set { } }
     public int MaxGuildQuests { get { return gameData.maxGuildQuests; } set { gameData.maxGuildQuests = value; } }
     public int TotalGuildQuestsIssued { get { return gameData.totalGuildQuestsIssued; } set { gameData.totalGuildQuestsIssued = value; } }
+
+    public Dictionary<string,int> ItemStatistics { get { return gameData.itemStatistics; } private set { } }
 
     // Start is called before the first frame update
     void Start()
@@ -305,6 +308,19 @@ public class Guild : MonoBehaviour
         string fileName = "TavernRecipe_" + recipeID;
 
         return Resources.Load<TavernRecipeData>("Tavern/" + fileName);
+    }
+
+    public void UpdateItemStats(string itemID, int count = 1)
+    {
+        if (ItemStatistics.ContainsKey(itemID))
+        {
+            ItemStatistics[itemID] += count;
+        }
+        else
+        {
+            ItemStatistics.Add(itemID, count);
+            //Inform recipes they may need to update?
+        }
     }
 
     public void Save()

@@ -4,6 +4,8 @@ namespace UnityEngine.UI
 {
     public class GameLib
     {
+        public static Guild Guild() { return GameObject.Find("Guild").GetComponent<Guild>(); }
+
         public static void RebuildLayout(MonoBehaviour monoBehaviour, GameObject obj)
         {
             /*foreach (Transform child in obj.transform)

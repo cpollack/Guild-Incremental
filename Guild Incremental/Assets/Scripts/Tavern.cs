@@ -29,6 +29,8 @@ public class Tavern : GuildHall
     [SerializeField]
     public List<string> recipes = new List<string>();
 
+    public TavernPanel tavernPanel;
+
     new void Awake()
     {
         base.Awake();
@@ -58,9 +60,11 @@ public class Tavern : GuildHall
         LoadResources();
         
         //Add default menu items
+        tavernPanel.ClearMenu();
         AddMenuItem("WateryAle");
         AddMenuItem("HardBread");
 
+        tavernPanel.ClearRecipes();
         AddRecipe("RatTailSoup");
     }
 
@@ -71,6 +75,7 @@ public class Tavern : GuildHall
         TavernMenuItem menuitem = CreateMenuItem(menuItemData);
         if (menuitem.id.Length == 0) return;
         menuItems.Add(menuitem);
+        tavernPanel.AddMenuItem(menuitem);
     }
 
     private void AddRecipe(string recipeName)
@@ -78,6 +83,7 @@ public class Tavern : GuildHall
         TavernRecipeData tavernRecipeData = GetRecipeData(recipeName);
         if (tavernRecipeData == null) return;
         recipes.Add(tavernRecipeData.id);
+        tavernPanel.AddRecipe(tavernRecipeData);
 
         //TEMP TESTING, projects are only available if issued by the guild master
         QuestBoard questBoard = GameObject.Find("Quest Board").GetComponent<QuestBoard>();

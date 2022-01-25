@@ -21,7 +21,7 @@ public class SelectAdventurerPanel : MonoBehaviour
     public GameObject adventurerRowPrefab;
 
     public List<AdventurerRow> rows;
-    private List<AdvFilterSet> filters;
+    private List<AdvFilterSet> filters = new List<AdvFilterSet>();
     public AdventurerRow focusedRow;
 
     public delegate void OnSelect(Adventurer adventurer);
@@ -104,7 +104,7 @@ public class SelectAdventurerPanel : MonoBehaviour
 
     public void ClearFilters()
     {
-        filters.Clear();
+        filters?.Clear();
     }
 
     public void AddFilter(AdventurerFilter filter, int value = 0)
