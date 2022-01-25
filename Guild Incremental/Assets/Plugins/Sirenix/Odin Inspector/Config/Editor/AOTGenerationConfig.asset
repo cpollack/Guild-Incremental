@@ -16,8 +16,11 @@ MonoBehaviour:
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 0900000014000000
-  lastScan: 637786643054440490
+  lastScan: 637786659576369130
   supportSerializedTypes:
+  - TypeName: System.Collections.Generic.List`1[[LogEntry, Assembly-CSharp]], mscorlib
+    IsCustom: 1
+    Emit: 1
   - TypeName: LogEntry, Assembly-CSharp
     IsCustom: 1
     Emit: 1
