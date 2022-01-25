@@ -1,3 +1,4 @@
+using Sirenix.Serialization;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -14,24 +15,12 @@ public class DataAccessor
 
     public static void Save(GameData gameData)
     {
-        string dataPath = string.Format("{0}/GameData.dat", Application.persistentDataPath);
-        BinaryFormatter binaryFormatter = new BinaryFormatter();
-        FileStream fileStream;
+        string dataPath = string.Format("{0}/GameData.dat", Application.persistentDataPath);      
 
         try
         {
-            if (File.Exists(dataPath))
-            {
-                File.WriteAllText(dataPath, string.Empty);
-                fileStream = File.Open(dataPath, FileMode.Open);
-            }
-            else
-            {
-                fileStream = File.Create(dataPath);
-            }
-
-            binaryFormatter.Serialize(fileStream, gameData);
-            fileStream.Close();
+            byte[] bytes = SerializationUtility.SerializeValue(gameData, DataFormat.JSON);
+            File.WriteAllBytes(dataPath, bytes);
 
             if (Application.platform == RuntimePlatform.WebGLPlayer)
             {
@@ -41,7 +30,7 @@ public class DataAccessor
         catch (Exception e)
         {
             PlatformSafeMessage("Failed to Save: " + e.Message);
-        }
+        }        
     }
 
     public static GameData Load()
@@ -53,11 +42,8 @@ public class DataAccessor
         {
             if (File.Exists(dataPath))
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                FileStream fileStream = File.Open(dataPath, FileMode.Open);
-
-                gameData = (GameData)binaryFormatter.Deserialize(fileStream);
-                fileStream.Close();
+                byte[] bytes = File.ReadAllBytes(dataPath);
+                gameData = SerializationUtility.DeserializeValue<GameData>(bytes, DataFormat.JSON);
             }
         }
         catch (Exception e)
