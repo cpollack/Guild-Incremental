@@ -251,7 +251,7 @@ public class Adventurer : IFighter
 
     public int NextLevel()
     {
-        return level * (level + 1);
+        return (int)Math.Round((0.7f * Mathf.Pow(level, 3)) + (level * 20));
     }
 
     public void GainExp(int exp)
@@ -259,7 +259,7 @@ public class Adventurer : IFighter
         experience += exp;
 
         int nextLevel = NextLevel();
-        while (experience > nextLevel)
+        while (experience >= nextLevel)
         {
             LevelUp();
             experience -= nextLevel;
@@ -270,12 +270,10 @@ public class Adventurer : IFighter
     public void LevelUp()
     {
         level++;
-        //other bonuses?
 
-        /*TEMP*/
-        strength += 1;
-        agility += 1;
-        intellect += 1;
+        strength += Dice.Roll("2d2");
+        agility += Dice.Roll("2d2");
+        intellect += Dice.Roll("2d2");
         life += 5;
         currentLife = life;
     }
