@@ -693,6 +693,7 @@ MonoBehaviour:
     rank: 0
     level: 0
     experience: 0
+    merit: 0
     currentLife: 0
     life: 0
     currentMagic: 0
@@ -720,6 +721,8 @@ MonoBehaviour:
       hour: 0
     Resting: 0
   textName: {fileID: 2197976484903761900}
+  textRace: {fileID: 4154659487526356716}
+  textClass: {fileID: 1332038459508874769}
   textLevel: {fileID: 7491498267709941762}
   textAction: {fileID: 7445567259763957698}
   textPercent: {fileID: 1069463865081436392}
@@ -1240,8 +1243,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 151.5311, y: 0}
+  m_SizeDelta: {x: 291.0622, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3013501248248262869
 MonoBehaviour:
@@ -1652,8 +1655,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 200, y: 0}
+  m_SizeDelta: {x: 388, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4530203033399547876
 MonoBehaviour:
