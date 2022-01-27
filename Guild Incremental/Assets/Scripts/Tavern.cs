@@ -65,7 +65,6 @@ public class Tavern : GuildHall
         AddMenuItem("HardBread");
 
         tavernPanel.ClearRecipes();
-        AddRecipe("RatTailSoup");
     }
 
     private void AddMenuItem(string menuItemName)

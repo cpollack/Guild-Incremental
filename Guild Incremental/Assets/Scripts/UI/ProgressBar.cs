@@ -5,10 +5,12 @@ using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ProgressBar : MonoBehaviour
 {
     public Slider slider;
+    public TextMeshProUGUI text;
 
     // Start is called before the first frame update
     void Start()
@@ -36,5 +38,10 @@ public class ProgressBar : MonoBehaviour
     public void SetPercent(float value)
     {
         slider.value = value;
+    }
+
+    public void SetText(string str)
+    {
+        text.text = str;
     }
 }

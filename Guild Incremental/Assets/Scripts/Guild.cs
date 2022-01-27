@@ -59,6 +59,7 @@ public class Guild : MonoBehaviour
     public StoryButton storyButton;
     public StoryPanel storyPanel;
     public SelectAdventurerPanel selectAdventurerPanel;
+    public AdventurerInfoPanel adventurerInfoPanel;
 
     [Header("Game Data")]
     private GameData gameData;
@@ -162,6 +163,9 @@ public class Guild : MonoBehaviour
                     break;
                 case ResourceType.Gold:
                     gameData.gold += reward.value;
+                    break;
+                case ResourceType.Merit:
+                    adventurer.merit += reward.value;
                     break;
                 default:
                     Debug.LogWarning("Guild::CompleteQuest unhandled ResourceType [" + reward.type + "]");

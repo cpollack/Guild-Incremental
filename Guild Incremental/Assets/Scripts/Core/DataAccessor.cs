@@ -19,7 +19,7 @@ public class DataAccessor
 
         try
         {
-            byte[] bytes = SerializationUtility.SerializeValue(gameData, DataFormat.JSON);
+            byte[] bytes = SerializationUtility.SerializeValue(gameData, DataFormat.Binary);
             File.WriteAllBytes(dataPath, bytes);
 
             if (Application.platform == RuntimePlatform.WebGLPlayer)
@@ -43,7 +43,7 @@ public class DataAccessor
             if (File.Exists(dataPath))
             {
                 byte[] bytes = File.ReadAllBytes(dataPath);
-                gameData = SerializationUtility.DeserializeValue<GameData>(bytes, DataFormat.JSON);
+                gameData = SerializationUtility.DeserializeValue<GameData>(bytes, DataFormat.Binary);
             }
         }
         catch (Exception e)

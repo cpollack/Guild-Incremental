@@ -86,7 +86,6 @@ public class StateExplore : AdventurerBaseState
 
             case EncounterType.Resource:
                 return HandleGather();
-                break;
 
         }
 

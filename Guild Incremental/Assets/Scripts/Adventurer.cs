@@ -35,21 +35,16 @@ public enum HeroClass
 
 public enum EquipmentSlot
 {
+    Weapon,
+    Shield,
+
     Head,
     Body,
     Hands,
-    Waist,
-    Legs,
     Feet,
 
-    Lefthand,
-    RightHand,
-    TwoHand,
-
-    Ring1,
-    Ring2,
-    Earring,
-    Necklace,
+    Ring,
+    Rune,
 }
 
 [Serializable]
@@ -74,11 +69,16 @@ public class Adventurer : IFighter
     public Rank rank = Rank.F;
     public int level = 1;
     public int experience = 0;
+    public int merit = 0;
+
     public float currentLife = 10;
     public int life = 10;
-    public int attack = 1;
-    public int defence = 1;
-    public int speed = 3;
+    public float currentMagic = 0;
+    public int magic = 0;
+
+    public int strength = 1;
+    public int agility = 1;
+    public int intellect = 1;
     public float recoverPerHour = 0.1f;
 
     //[Serializable] public class DictionaryEquipment : SerializableDictionary<EquipmentSlot, Item> { }
@@ -99,7 +99,7 @@ public class Adventurer : IFighter
     [NonSerialized] [SerializeReference] public Quest currentQuest = null;
     public string assignedQuestID = "";
     [NonSerialized] [SerializeReference] public Quest assignedQuest = null;
-    public Battle bossBattle = null;
+    [SerializeReference] public Battle bossBattle = null;
 
     [Header("States")]
     [NonSerialized] public StateMachine StateMachine;    
@@ -273,9 +273,9 @@ public class Adventurer : IFighter
         //other bonuses?
 
         /*TEMP*/
-        attack += 1;
-        defence += 1;
-        speed += 1;
+        strength += 1;
+        agility += 1;
+        intellect += 1;
         life += 5;
         currentLife = life;
     }
@@ -310,6 +310,21 @@ public class Adventurer : IFighter
         }
     }
 
+    public void Equip(ItemData itemData)
+    {
+        return;
+    }
+
+    public void UnEquip(EquipmentSlot slot)
+    {
+
+    }
+
+    public Item GetEquipedItem(EquipmentSlot slot)
+    {
+        return equipment.ContainsKey(slot) ? equipment[slot] : null;
+    }
+
     public void UpdateSlayHistory(string monsterID, int count = 1)
     {
         MonsterData data = guild.GetMonsterData(monsterID);
@@ -327,17 +342,17 @@ public class Adventurer : IFighter
     /* IFighter */
     public int GetAttack()
     {
-        return attack;
+        return strength;
     }
 
     public int GetDefence()
     {
-        return defence;
+        return 1;
     }
 
     public int GetSpeed()
     {
-        return speed;
+        return agility;
     }
 
     public int GetMaxLife()

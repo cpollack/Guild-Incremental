@@ -16,10 +16,20 @@ MonoBehaviour:
   deleteDllAfterBuilds: 1
   AutomateForAllAOTPlatforms: 1
   automateForPlatforms: 0900000014000000
-  lastScan: 637786669115026412
+  lastScan: 637788096347393778
   supportSerializedTypes:
+  - TypeName: System.Collections.Generic.Dictionary`2[[EquipmentSlot, Assembly-CSharp],[Item,
+      Assembly-CSharp]], mscorlib
+    IsCustom: 1
+    Emit: 1
   - TypeName: System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Int32,
       mscorlib]], mscorlib
+    IsCustom: 1
+    Emit: 1
+  - TypeName: EquipmentSlot
+    IsCustom: 1
+    Emit: 1
+  - TypeName: Item, Assembly-CSharp
     IsCustom: 1
     Emit: 1
   - TypeName: System.Collections.Generic.List`1[[LogEntry, Assembly-CSharp]], mscorlib

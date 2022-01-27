@@ -35,6 +35,9 @@ public class TavernPanel : MonoBehaviour
 
     public void LoadMenuCategories()
     {
+        if (guild == null)
+            guild = GameObject.Find("Guild").GetComponent<Guild>();
+
         int rank = (int)guild.Rank;
         while (rank >= 0)
         {

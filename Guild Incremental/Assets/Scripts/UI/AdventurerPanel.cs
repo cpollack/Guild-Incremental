@@ -34,4 +34,9 @@ public class AdventurerPanel : MonoBehaviour
         }
         else textPercent.enabled = false;
     }
+
+    public void OnClick()
+    {
+        GameLib.Guild().adventurerInfoPanel.SetAndShow(adventurer);
+    }
 }
