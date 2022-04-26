@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+/*
+ * Modified from Domenic via Stack Overflow: https://stackoverflow.com/a/1775909
+ */
 public class Dice
 {
     private static readonly Regex numberToken = new Regex("^[0-9]+$");
