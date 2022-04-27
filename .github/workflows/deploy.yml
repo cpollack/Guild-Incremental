@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     name: Deploy 🚀
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -30,6 +30,8 @@ jobs:
         uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           projectPath: Guild Incremental
           unityVersion: 2021.3.1f1
