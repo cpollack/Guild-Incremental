@@ -32,7 +32,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: Guild Incremental
-          unityVersion: 2020.3.21f1
+          unityVersion: 2021.3.1f1
           targetPlatform: WebGL
 
       - name: Deploy to GitHub Pages
