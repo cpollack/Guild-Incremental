@@ -329,8 +329,13 @@ public class Guild : MonoBehaviour
 
     public void Save()
     {
+        string saveData;
         foreach (Adventurer adventurer in Adventurers)
+        {
             adventurer.Save();
+            string str = JsonUtility.ToJson(Adventurers[0]);
+        }
+        string str2 = JsonUtility.ToJson(gameData);
 
         DataAccessor.Save(gameData);
     }

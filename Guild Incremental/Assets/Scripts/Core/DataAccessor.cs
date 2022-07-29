@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using UnityEngine;
 
 public class DataAccessor
@@ -19,7 +20,10 @@ public class DataAccessor
 
         try
         {
-            byte[] bytes = SerializationUtility.SerializeValue(gameData, DataFormat.Binary);
+            string jsonData = JsonUtility.ToJson(gameData);
+            byte[] bytes = Encoding.ASCII.GetBytes(jsonData);
+
+            //byte[] bytes = SerializationUtility.SerializeValue(gameData, DataFormat.Binary);
             File.WriteAllBytes(dataPath, bytes);
 
             if (Application.platform == RuntimePlatform.WebGLPlayer)
@@ -42,8 +46,10 @@ public class DataAccessor
         {
             if (File.Exists(dataPath))
             {
-                byte[] bytes = File.ReadAllBytes(dataPath);
-                gameData = SerializationUtility.DeserializeValue<GameData>(bytes, DataFormat.Binary);
+                string jsonData = Encoding.ASCII.GetString(File.ReadAllBytes(dataPath));
+                gameData = JsonUtility.FromJson<GameData>(jsonData);
+                //byte[] bytes = File.ReadAllBytes(dataPath);
+                //gameData = SerializationUtility.DeserializeValue<GameData>(bytes, DataFormat.Binary);
             }
         }
         catch (Exception e)
