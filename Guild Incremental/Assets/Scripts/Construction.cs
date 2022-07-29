@@ -55,8 +55,9 @@ public class Construction : GuildHall
         foreach (string buildID in guild.CompletedBuildings)
             allJobs.Remove(buildID);
 
+        constructionPanel.RemoveAllJobs();
         foreach (Building building in guild.CurrentBuildProjects)
-        {
+        {            
             AddConstructionJob(building);
             building.OnLoad();
         }

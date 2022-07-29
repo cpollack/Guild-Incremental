@@ -16,14 +16,13 @@ public class DataAccessor
 
     public static void Save(GameData gameData)
     {
-        string dataPath = string.Format("{0}/GameData.dat", Application.persistentDataPath);      
+        string dataPath = string.Format("{0}/GameData.json", Application.persistentDataPath);      
 
         try
         {
             string jsonData = JsonUtility.ToJson(gameData);
             byte[] bytes = Encoding.ASCII.GetBytes(jsonData);
 
-            //byte[] bytes = SerializationUtility.SerializeValue(gameData, DataFormat.Binary);
             File.WriteAllBytes(dataPath, bytes);
 
             if (Application.platform == RuntimePlatform.WebGLPlayer)
@@ -40,7 +39,7 @@ public class DataAccessor
     public static GameData Load()
     {
         GameData gameData = null;
-        string dataPath = string.Format("{0}/GameData.dat", Application.persistentDataPath);
+        string dataPath = string.Format("{0}/GameData.json", Application.persistentDataPath);
 
         try
         {
@@ -48,8 +47,6 @@ public class DataAccessor
             {
                 string jsonData = Encoding.ASCII.GetString(File.ReadAllBytes(dataPath));
                 gameData = JsonUtility.FromJson<GameData>(jsonData);
-                //byte[] bytes = File.ReadAllBytes(dataPath);
-                //gameData = SerializationUtility.DeserializeValue<GameData>(bytes, DataFormat.Binary);
             }
         }
         catch (Exception e)
