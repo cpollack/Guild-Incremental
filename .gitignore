@@ -29,3 +29,6 @@ sysinfo.txt
 
 #Build Path
 Guild-Incremental Builds/
+Guild-Incremental Builds/WebGL/Build/WebGL.data
+Guild-Incremental Builds/WebGL/Build/WebGL.framework.js
+Guild-Incremental Builds/WebGL/Build/WebGL.wasm
