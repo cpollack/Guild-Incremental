@@ -5,14 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum TimeOfDay
-{
-    Morning,    //7
-    Afternoon,  //5
-    Evening,    //5
-    Night,      //7
-}
-
 [Serializable]
 public struct ResourceImage
 {
@@ -69,6 +61,7 @@ public class Guild : MonoBehaviour
     public int Renown { get { return gameData.renown; } set { gameData.renown = value; } }
     public int Gold { get { return gameData.gold; } set { gameData.gold = value; } }
     public List<Adventurer> Adventurers { get { return gameData.adventurers; } private set { } }
+    public List<Battle> Battles { get { return gameData.activeBattles; } private set { } }
     public List<StoryEntry> StoryEntries { get { return gameData.storyEntries; } private set { } }
     public List<LogEntry> LogEntries { get { return gameData.logEntries; } private set { } }
 
@@ -118,12 +111,6 @@ public class Guild : MonoBehaviour
         if (timePaused) return;
 
         CurrentTime.AddHours(Time.deltaTime / secondsPerDay * 24);      
-
-        if (CurrentTime.hour < 5) timeOfDay = TimeOfDay.Night;
-        else if (CurrentTime.hour < 12) timeOfDay = TimeOfDay.Morning;
-        else if (CurrentTime.hour < 17) timeOfDay = TimeOfDay.Afternoon;
-        else if (CurrentTime.hour <= 22) timeOfDay = TimeOfDay.Evening;
-        else timeOfDay = TimeOfDay.Night;
     }
 
     public GameTime GetElapsedTime(GameTime startTime)
@@ -209,6 +196,19 @@ public class Guild : MonoBehaviour
     public void SpawnAdventurer()
     {
         //
+    }
+
+    /* Battles */
+    //Once teams are implemented, this should apply the team members to the battle
+    public void StartBattle(Battle battle)
+    {
+        gameData.activeBattles.Add(battle);
+    }
+
+    public void EndBattle(Battle battle)
+    {
+        gameData.activeBattles.Remove(battle);
+        battle.ClearTeamBossBattle(this);
     }
 
     /* Utility */
@@ -364,6 +364,11 @@ public class Guild : MonoBehaviour
         {
             adventurer.guild = this;
             adventurer.Load();
+        }
+
+        foreach (Battle battle in Battles)
+        {
+            battle.Load(this);
         }
 
         foreach (Quest quest in Quests)

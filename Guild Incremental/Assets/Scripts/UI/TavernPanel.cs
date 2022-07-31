@@ -76,6 +76,7 @@ public class TavernPanel : MonoBehaviour
     {
         foreach (var panel in menuCategoryPanels)
             Destroy(panel.gameObject);
+        menuCategoryPanels.Clear();
     }
 
     public void AddRecipe(TavernRecipeData tavernRecipeData)

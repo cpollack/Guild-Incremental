@@ -9,13 +9,15 @@ public class Battle
 {
     public Battle()
     {
-
+        currentRound = 0;
     }
 
     private List<string> teamIDs = new List<string>();
     [NonSerialized] private List<Adventurer> team = new List<Adventurer>();
     private List<Monster> monsters = new List<Monster>();
 
+    private int currentRound = 0;
+    private const int maxRounds = 100;
     private bool ranAway = false;
 
     public void addAdventurer(Adventurer adventurer)
@@ -38,7 +40,18 @@ public class Battle
         {
             Adventurer adventurer = guild.GetAdventurer(id);
             if (adventurer == null) Debug.LogError("Battle::Load failed to reload adventurer: " + id);
+            adventurer.bossBattle = this;
             team.Add(adventurer);
+        }
+    }
+
+    public void ClearTeamBossBattle(Guild guild)
+    {
+        foreach (string id in teamIDs)
+        {
+            Adventurer adventurer = guild.GetAdventurer(id);
+            if (adventurer == null) Debug.LogError("Battle::ClearTeamBossBattle failed to reload adventurer: " + id);
+            adventurer.bossBattle = null;
         }
     }
 
@@ -79,6 +92,7 @@ public class Battle
             }
         }
 
+        currentRound++;
         return false;
     }
 
@@ -137,6 +151,12 @@ public class Battle
 
     private bool CanContinue()
     {
+        if (currentRound >= maxRounds)
+        {
+            ranAway = true;
+            return false;
+        }
+
         bool alive = false;
         foreach (IFighter fighter in team)
         {
@@ -162,6 +182,8 @@ public class Battle
 
     public bool DidTeamWin()
     {
+        if (ranAway) return false;
+
         bool alive = false;
         foreach (IFighter fighter in team)
         {

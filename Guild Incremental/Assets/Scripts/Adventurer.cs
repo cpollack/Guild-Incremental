@@ -50,6 +50,11 @@ public enum EquipmentSlot
 [Serializable]
 public class Adventurer : IFighter
 {    
+    public Adventurer()
+    {
+        //empty constructor for json utility
+    }
+
     public Adventurer(Guild guild)
     {
         currentLocation = null;
@@ -99,11 +104,15 @@ public class Adventurer : IFighter
     [NonSerialized] [SerializeReference] public Quest currentQuest = null;
     public string assignedQuestID = "";
     [NonSerialized] [SerializeReference] public Quest assignedQuest = null;
-    [SerializeReference] public Battle bossBattle = null;
+    [NonSerialized] [SerializeReference] public Battle bossBattle = null;
+
+    [Header("Party")]
+    public bool isLeader = true;
+    //Party class?
 
     [Header("States")]
-    [NonSerialized] public StateMachine StateMachine;    
-    public Type currentState;
+    [NonSerialized] public StateMachine StateMachine;
+    public string currentState;
     public int currentSubState;
     public GameTime stateStartTime;
     public GameTime subStateStartTime;
@@ -133,7 +142,7 @@ public class Adventurer : IFighter
     public void Save()
     {
         StateMachine.CurrentState?.Save();
-        currentState = StateMachine.CurrentState?.GetType();
+        currentState = StateMachine.CurrentState?.GetType().ToString();
         currentSubState = StateMachine.CurrentState == null ? 0 : StateMachine.CurrentState.GetSubState();
     }
 
@@ -145,12 +154,21 @@ public class Adventurer : IFighter
         if (targetLocationID.Length > 0 && targetLocation == null)
             targetLocation = guild.GetLocation(targetLocationID);
 
-        if (bossBattle != null)
-            bossBattle.Load(guild);
+        //if (bossBattle != null)
+        //    bossBattle.Load(guild);
 
         InitializeStateMachine();
-        StateMachine.ForceState(currentState);
-        StateMachine.CurrentState.Load();
+
+        try
+        {
+            Type stateType = Type.GetType(currentState, true);
+            StateMachine.ForceState(stateType);
+            StateMachine.CurrentState.Load();
+        }
+        catch (TypeLoadException e)
+        {
+            Debug.LogError("Unable to load adventurer state [" + currentState + "]");
+        }
     }
 
     public void SetActionText(string text)

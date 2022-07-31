@@ -21,6 +21,11 @@ public class ConstructionPanel : MonoBehaviour
         
     }
 
+    private void OnEnable()
+    {
+        GameLib.RebuildLayout(this, contentPanel);
+    }
+
     public void AddBuilding(GameObject buildObj)
     {
         buildObj.transform.SetParent(contentPanel.transform, false);

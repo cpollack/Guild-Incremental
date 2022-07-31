@@ -13,6 +13,7 @@ public class GameData
     public int gold;
 
     public List<Adventurer> adventurers;
+    public List<Battle> activeBattles;
     public List<StoryEntry> storyEntries;
     public List<LogEntry> logEntries;
 
@@ -41,6 +42,7 @@ public class GameData
         gold = 0;
 
         adventurers = new List<Adventurer>();
+        activeBattles = new List<Battle>();
 
         storyEntries = new List<StoryEntry>();
         logEntries = new List<LogEntry>();
@@ -62,6 +64,7 @@ public class GameData
         if (currentTime == null) currentTime = new GameTime(1, 5);
 
         if (adventurers == null) adventurers = new List<Adventurer>();
+        if (activeBattles == null) activeBattles = new List<Battle>();
         if (logEntries == null) logEntries = new List<LogEntry>();
         if (storyEntries == null) storyEntries = new List<StoryEntry>();
 

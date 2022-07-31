@@ -40,7 +40,7 @@ public class QuestPanel : MonoBehaviour
         {
             if (imageIcon != null) imageIcon.gameObject.SetActive(true);
             if (ButtonAssign == null) return;
-            if (quest.category == QuestCategory.Main && adventurer.currentLocation != null) ButtonAssign.enabled = false;
+            if (quest.category == QuestCategory.Main && quest.adventurer.currentLocation != null) ButtonAssign.enabled = false;
             else ButtonAssign.enabled = true;
         }
         else

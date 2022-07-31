@@ -3,9 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TimeOfDay
+{
+    Morning,    //5a - 12p (7h)
+    Afternoon,  //12p - 5p (5h)
+    Evening,    //5p - 10p (5h)
+    Night,      //10p - 5a (7h)
+}
+
 [Serializable]
 public class GameTime
 {
+    public GameTime()
+    {
+        day = 0;
+        hour = 0;
+    }
+
     public GameTime(int day = 0, float hour = 0f)
     {
         this.day = day;
@@ -130,6 +144,15 @@ public class GameTime
         {
             strTime = day + " Day" + (day > 1 ? "s" : "");
         }
+        if (day > 10) return strTime;
+
+        int remHour = (int)hour;
+        if (day > 0 && remHour == 0) return strTime;
+        if (day == 0 && remHour == 0)
+        {
+            return "0 Hours";
+        }
+
         if (strTime.Length > 0) strTime += " ";
         strTime += ((int)hour).ToString("0") + " Hour" + ((int)hour == 1 ? "" : "s");
         return strTime;
@@ -140,5 +163,14 @@ public class GameTime
         int clock12 = Mathf.FloorToInt(hour) % 12;
         if (clock12 == 0) clock12 = 12;
         return "Day " + day.ToString() + (showHours ? " " + clock12.ToString() + (Mathf.Floor(hour) <= 11 ? "am" : "pm") : "");
+    }
+
+    public TimeOfDay GetTimeOfDay()
+    {
+        if (hour < 5) return TimeOfDay.Night;
+        else if (hour < 12) return TimeOfDay.Morning;
+        else if (hour < 17) return TimeOfDay.Afternoon;
+        else if (hour <= 22) return TimeOfDay.Evening;
+        return TimeOfDay.Night;
     }
 }

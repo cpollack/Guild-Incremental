@@ -39,6 +39,12 @@ public class QuestObjective
 [Serializable]
 public class Quest
 {
+    public Quest()
+    {
+        //empty constructor for json utility
+    }
+    
+
     public Quest(QuestCategory cat, QuestType type, Guild guild)
     {
         data = null;

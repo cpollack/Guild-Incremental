@@ -23,7 +23,7 @@ public class StateExplore : AdventurerBaseState
         if (adventurer.IsInBossBattle())
         {
             if (HasSecondaryLengthBeenFulfilled(battleTimer))
-                newState = HandleEncounterByType(EncounterType.BossBattle);
+                newState = HandleBossBattle();
             if (newState != null)
                 ResetSecondaryTime();
             return newState;
@@ -123,15 +123,25 @@ public class StateExplore : AdventurerBaseState
 
     private Type HandleBossBattle()
     {
+        //Only the pary leader handles/updates the boss battle!
+        //We still need the battle ended state change though
+        //How should party death be handled?
+        if (!adventurer.isLeader) return null;
+
         if (adventurer.bossBattle == null)
-        {
-            adventurer.bossBattle = new Battle();
-            adventurer.bossBattle.addAdventurer(adventurer);
+        {          
+            Battle bossBattle = new Battle();
+            bossBattle.addAdventurer(adventurer);
+            //add team members
+            
+            adventurer.bossBattle = bossBattle;
             foreach (var objective in adventurer.currentQuest.objectives)
             {
                 MonsterData monsterData = Guild.GetMonsterData(objective.id); 
                 if (monsterData != null) adventurer.bossBattle.addMonster(monsterData);
-            }                      
+            }
+
+            Guild.StartBattle(bossBattle);
         }
 
         adventurer.SetActionText("In an epic Boss Battle with a " + adventurer.bossBattle.GetMonsterName());
@@ -139,7 +149,15 @@ public class StateExplore : AdventurerBaseState
 
         if (battleEnded)
         {
+            if (!adventurer.bossBattle.DidTeamWin())
+            {
+                adventurer.SetActionText("Slain by " + adventurer.bossBattle.GetMonsterName() + ".");
+                Guild.EndBattle(adventurer.bossBattle);
+                return typeof(StateDeath);
+            }
+
             adventurer.SetActionText("The " + adventurer.bossBattle.GetMonsterName() + " has been slain!");
+            Guild.EndBattle(adventurer.bossBattle);
             return ReturnHome();
         }
 

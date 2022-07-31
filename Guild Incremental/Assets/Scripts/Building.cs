@@ -19,6 +19,11 @@ public struct BuildingResource
 [Serializable]
 public class Building
 {
+    public Building()
+    {
+        //empty constructor for json utility
+    }
+
     public Building(Guild guild, BuildingData buildingData, BuildingPanel buildingUI)
     {
         this.guild = guild;
@@ -62,10 +67,6 @@ public class Building
         if (Started && !Paused && !Completed)
         {
             GameTime elapsedTime = guild.GetElapsedTime(startTime);
-            GameTime remTime = new GameTime(data.buildTimeDays, data.buildTimeHours);
-            remTime = remTime.GetDifference(elapsedTime);
-            buildingPanel.textTime.text = remTime.ToString() + " Remaining";
-
             float elapsed = elapsedTime.GetHours();
             float required = (data.buildTimeDays * 24) + data.buildTimeHours;
             float perc = Mathf.Min(elapsed / required, 1f);
@@ -74,6 +75,7 @@ public class Building
             {
                 OnComplete();
             }
+            SetRemainingTime();
         }
     }
 
@@ -82,19 +84,35 @@ public class Building
         UpdateButton();
         SetBuildData();
         if (Started)
-        {
+        {         
             GameTime elapsedTime;
             if (Paused) elapsedTime = pauseTime.GetDifference(startTime);
             else elapsedTime = guild.GetElapsedTime(startTime);
-            GameTime remTime = new GameTime(data.buildTimeDays, data.buildTimeHours);
-            remTime = remTime.GetDifference(elapsedTime);
-            buildingPanel.textTime.text = remTime.ToString() + " Remaining";
-
             float elapsed = elapsedTime.GetHours();
             float required = (data.buildTimeDays * 24) + data.buildTimeHours;
             float perc = Mathf.Min(elapsed / required, 1f);
             buildingPanel.progressBar.SetPercent(perc);
+
+            SetRemainingTime();
         }
+    }
+
+    void SetRemainingTime()
+    {
+        GameTime elapsedTime;
+        if (Paused) elapsedTime = pauseTime.GetDifference(startTime);
+        else elapsedTime = guild.GetElapsedTime(startTime);
+        GameTime remTime = new GameTime(data.buildTimeDays, data.buildTimeHours);
+        remTime = remTime.GetDifference(elapsedTime);
+        string strRem;
+        if (remTime.day == 0 && remTime.hour < 1)
+        {
+            int mins = (int)(60 * remTime.hour);
+            if (mins < 1) mins = 1;
+            strRem = mins.ToString() + " Minute" + (mins == 1 ? "" : "s") + " Remaining";
+        }
+        else strRem = remTime.ToString() + " Remaining";
+        buildingPanel.textTime.text = strRem;
     }
 
     public void OnClick()

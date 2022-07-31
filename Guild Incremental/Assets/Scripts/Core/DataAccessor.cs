@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Sirenix.Serialization;
 using System;
 using System.IO;
@@ -20,7 +21,8 @@ public class DataAccessor
 
         try
         {
-            string jsonData = JsonUtility.ToJson(gameData);
+            //string jsonData = JsonUtility.ToJson(gameData);
+            string jsonData = JsonConvert.SerializeObject(gameData);
             byte[] bytes = Encoding.ASCII.GetBytes(jsonData);
 
             File.WriteAllBytes(dataPath, bytes);
@@ -46,7 +48,8 @@ public class DataAccessor
             if (File.Exists(dataPath))
             {
                 string jsonData = Encoding.ASCII.GetString(File.ReadAllBytes(dataPath));
-                gameData = JsonUtility.FromJson<GameData>(jsonData);
+                //gameData = JsonUtility.FromJson<GameData>(jsonData);
+                gameData = JsonConvert.DeserializeObject<GameData>(jsonData);
             }
         }
         catch (Exception e)
