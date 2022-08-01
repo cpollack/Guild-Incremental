@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct BuildingResource
+public struct UpgradeResource
 {
     public ResourceType resourceType;
     public int value;
 
-    public BuildingResource(ResourceType type, int val)
+    public UpgradeResource(ResourceType type, int val)
     {
         resourceType = type;
         value = val;
@@ -17,33 +17,33 @@ public struct BuildingResource
 }
 
 [Serializable]
-public class Building
+public class Upgrade
 {
-    public Building()
+    public Upgrade()
     {
         //empty constructor for json utility
     }
 
-    public Building(Guild guild, BuildingData buildingData, BuildingPanel buildingUI)
+    public Upgrade(Guild guild, UpgradeData upgradeData, UpgradePanel upgradeUI)
     {
         this.guild = guild;
-        data = buildingData;
-        buildingID = data.buildingID;
-        this.buildingPanel = buildingUI;
-        this.buildingPanel.building = this;
+        data = upgradeData;
+        upgradeID = data.upgradeID;
+        this.upgradePanel = upgradeUI;
+        this.upgradePanel.upgrade = this;
 
-        buildMode = BuildMode.None;
+        upgradeMode = UpgradeMode.None;
         Started = false;
         Paused = false;
         Completed = false;
         UpdateButton();
-        SetBuildData();
+        SetUpgradeData();
     }
 
-    public string buildingID;
-    [NonSerialized] public BuildingData data;
+    public string upgradeID;
+    [NonSerialized] public UpgradeData data;
     [NonSerialized] public Guild guild;
-    [NonSerialized] public BuildingPanel buildingPanel;
+    [NonSerialized] public UpgradePanel upgradePanel;
 
     public bool Started;
     public bool Paused;
@@ -52,14 +52,14 @@ public class Building
     public GameTime startTime = new GameTime();
     public GameTime pauseTime = new GameTime();
 
-    public enum BuildMode
+    public enum UpgradeMode
     {
         None,
-        Build,
+        Upgrade,
         Pause,
         Continue,
     }
-    public BuildMode buildMode;
+    public UpgradeMode upgradeMode;
 
     // Update is called once per frame
     public void Update()
@@ -68,9 +68,9 @@ public class Building
         {
             GameTime elapsedTime = guild.GetElapsedTime(startTime);
             float elapsed = elapsedTime.GetHours();
-            float required = (data.buildTimeDays * 24) + data.buildTimeHours;
+            float required = (data.timeDays * 24) + data.timeHours;
             float perc = Mathf.Min(elapsed / required, 1f);
-            buildingPanel.progressBar.SetPercent(perc);
+            upgradePanel.progressBar.SetPercent(perc);
             if (perc == 1)
             {
                 OnComplete();
@@ -82,16 +82,16 @@ public class Building
     public void OnLoad()
     {
         UpdateButton();
-        SetBuildData();
+        SetUpgradeData();
         if (Started)
         {         
             GameTime elapsedTime;
             if (Paused) elapsedTime = pauseTime.GetDifference(startTime);
             else elapsedTime = guild.GetElapsedTime(startTime);
             float elapsed = elapsedTime.GetHours();
-            float required = (data.buildTimeDays * 24) + data.buildTimeHours;
+            float required = (data.timeDays * 24) + data.timeHours;
             float perc = Mathf.Min(elapsed / required, 1f);
-            buildingPanel.progressBar.SetPercent(perc);
+            upgradePanel.progressBar.SetPercent(perc);
 
             SetRemainingTime();
         }
@@ -102,7 +102,7 @@ public class Building
         GameTime elapsedTime;
         if (Paused) elapsedTime = pauseTime.GetDifference(startTime);
         else elapsedTime = guild.GetElapsedTime(startTime);
-        GameTime remTime = new GameTime(data.buildTimeDays, data.buildTimeHours);
+        GameTime remTime = new GameTime(data.timeDays, data.timeHours);
         remTime = remTime.GetDifference(elapsedTime);
         string strRem;
         if (remTime.day == 0 && remTime.hour < 1)
@@ -112,16 +112,16 @@ public class Building
             strRem = mins.ToString() + " Minute" + (mins == 1 ? "" : "s") + " Remaining";
         }
         else strRem = remTime.ToString() + " Remaining";
-        buildingPanel.textTime.text = strRem;
+        upgradePanel.textTime.text = strRem;
     }
 
     public void OnClick()
     {
-        switch (buildMode) {
-            case BuildMode.Build:
-                StartConstruction();
+        switch (upgradeMode) {
+            case UpgradeMode.Upgrade:
+                StartUpgrade();
                 break;
-            case BuildMode.Pause:
+            case UpgradeMode.Pause:
                 GameTime dif = new GameTime();
                 dif.Set(pauseTime.GetDifference(startTime));
                 startTime.Set(guild.CurrentTime);
@@ -131,7 +131,7 @@ public class Building
                 Paused = false;
                 UpdateButton();
                 break;
-            case BuildMode.Continue:
+            case UpgradeMode.Continue:
                 Paused = true;
                 pauseTime.Set(guild.CurrentTime);
                 UpdateButton();
@@ -139,7 +139,7 @@ public class Building
         }
     }
 
-    private void StartConstruction()
+    private void StartUpgrade()
     {
         if (guild.Renown < data.requiredRenown) return;
         if (guild.Gold < GetCost(ResourceType.Gold)) return;
@@ -156,51 +156,50 @@ public class Building
         if (!Started)
         {
             if (guild.Renown < data.requiredRenown)
-                buildMode = BuildMode.None;
+                upgradeMode = UpgradeMode.None;
             else
-                buildMode = BuildMode.Build;
+                upgradeMode = UpgradeMode.Upgrade;
         }
         else
         {
             if (Paused)
-                buildMode = BuildMode.Pause;
+                upgradeMode = UpgradeMode.Pause;
             else
-                buildMode = BuildMode.Continue;
+                upgradeMode = UpgradeMode.Continue;
         }
 
-        switch (buildMode) {
-            case BuildMode.None:
-                buildingPanel.textButton.text = data.requiredRenown.ToString("0") + " Renown";
+        switch (upgradeMode) {
+            case UpgradeMode.None:
+                upgradePanel.textButton.text = data.requiredRenown.ToString("0") + " Renown";
                 break;
-            case BuildMode.Build:
-                buildingPanel.textButton.text = "Build";
+            case UpgradeMode.Upgrade:
+                upgradePanel.textButton.text = "Upgrade";
                 break;
-            case BuildMode.Pause:
-                buildingPanel.textButton.text = "Resume";
+            case UpgradeMode.Pause:
+                upgradePanel.textButton.text = "Resume";
                 break;
-            case BuildMode.Continue:
-                buildingPanel.textButton.text = "Pause";
+            case UpgradeMode.Continue:
+                upgradePanel.textButton.text = "Pause";
                 break;
         }
     }
 
-    private void SetBuildData()
+    private void SetUpgradeData()
     {
-        buildingPanel.textName.text = data.buildingTitle;
-        GameTime buildTime = new GameTime(data.buildTimeDays, data.buildTimeHours);
-        buildingPanel.textTime.text = buildTime.ToString();
-        buildingPanel.textFlavor.text = data.description;
+        upgradePanel.textName.text = data.title;
+        GameTime upgradeTime = new GameTime(data.timeDays, data.timeHours);
+        upgradePanel.textTime.text = upgradeTime.ToString();
+        upgradePanel.textFlavor.text = data.description;
 
-        foreach (BuildingResource resource in data.cost)
-            buildingPanel.AddCost(resource);
-        //buildingUI.textCost.text = (data.costGold > 0 ? data.costGold.ToString() +  " Gold" : "");
+        foreach (UpgradeResource resource in data.cost)
+            upgradePanel.AddCost(resource);
     }
 
     private void OnComplete()
     {
         Completed = true;
-        guild.CompleteBuilding(data.buildingID);
-        buildingPanel.OnComplete();
+        guild.CompleteUpgrade(data.upgradeID);
+        upgradePanel.OnComplete();
         if (data.completeLog.Length > 0) guild.AddLogEntry(data.completeLog);
     }
 
@@ -211,9 +210,9 @@ public class Building
 
     private int GetCost(ResourceType resource)
     {
-        foreach (BuildingResource buildingResource in data.cost)
-            if (buildingResource.resourceType == resource)
-                return buildingResource.value;
+        foreach (UpgradeResource upgradeResource in data.cost)
+            if (upgradeResource.resourceType == resource)
+                return upgradeResource.value;
         return 0;
     }
 }

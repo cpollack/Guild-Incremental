@@ -7,5 +7,5 @@ public class HallData : ScriptableObject
 {
     public string ID;
     public string Name;    
-    public string requiresBuilding;
+    public string requiresUpgrade;
 }

@@ -25,7 +25,7 @@ public class GuildHall : MonoBehaviour
     public virtual void Load() { }
     public virtual void ResetGame() { }
 
-    public virtual void CompleteBuild(string buildID)
+    public virtual void CompleteUpgrade(string buildID)
     {
         //
     }

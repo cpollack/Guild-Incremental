@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: MainHall
   Name: Main Hall
-  requiresBuilding: Start
+  requiresUpgrade: upgrade_start

@@ -65,9 +65,9 @@ public class Guild : MonoBehaviour
     public List<StoryEntry> StoryEntries { get { return gameData.storyEntries; } private set { } }
     public List<LogEntry> LogEntries { get { return gameData.logEntries; } private set { } }
 
-    public List<string> CompletedBuildings { get { return gameData.completedBuildings; } private set { } }
-    public List<Building> CurrentBuildProjects { get { return gameData.currentBuildProjects; } private set { } }
-    public int MaxConstructionJobs { get { return gameData.maxConstructionJobs; } set { gameData.maxConstructionJobs = value; } }
+    public List<string> CompletedUpgrades { get { return gameData.completedUpgrades; } private set { } }
+    public List<Upgrade> ActiveUpgrades { get { return gameData.activeUpgrades; } private set { } }
+    public int MaxActiveUpgrades { get { return gameData.maxActiveUpgrades; } set { gameData.maxActiveUpgrades = value; } }
 
     public List<string> CompletedQuests { get { return gameData.completedQuests; } private set { } }
     public List<Quest> Quests { get { return gameData.quests; } private set { } }
@@ -118,13 +118,13 @@ public class Guild : MonoBehaviour
         return CurrentTime.GetDifference(startTime);
     }
 
-    /* Construction */
-    public void CompleteBuilding(string buildID)
+    /* Upgrades */
+    public void CompleteUpgrade(string upgradeID)
     {
-        CompletedBuildings.Add(buildID);
-        mainMenu.CompleteBuilding(buildID);
+        CompletedUpgrades.Add(upgradeID);
+        mainMenu.CompleteUpgrade(upgradeID);
         foreach (GuildHall hall in halls)
-            hall.CompleteBuild(buildID);
+            hall.CompleteUpgrade(upgradeID);
     }
 
     /* QUESTS */
@@ -329,13 +329,8 @@ public class Guild : MonoBehaviour
 
     public void Save()
     {
-        string saveData;
         foreach (Adventurer adventurer in Adventurers)
-        {
             adventurer.Save();
-            string str = JsonUtility.ToJson(Adventurers[0]);
-        }
-        string str2 = JsonUtility.ToJson(gameData);
 
         DataAccessor.Save(gameData);
     }
@@ -347,7 +342,7 @@ public class Guild : MonoBehaviour
         foreach (GuildHall hall in halls)
             hall.ResetGame();
 
-        mainMenu.Reset(gameData.completedBuildings, true);
+        mainMenu.Reset(gameData.completedUpgrades, true);
 
         foreach (Transform transform in logPanel.transform)
             Destroy(transform.gameObject);
@@ -380,7 +375,7 @@ public class Guild : MonoBehaviour
         foreach (GuildHall hall in halls)
             hall.Load();
 
-        mainMenu.Reset(gameData.completedBuildings);
+        mainMenu.Reset(gameData.completedUpgrades);
 
         foreach (LogEntry logEntry in LogEntries)
             AddLogEntry(logEntry);

@@ -9,17 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21f10c49533fef446a13fe77ee002fe7, type: 3}
-  m_Name: Building_RankE
+  m_Script: {fileID: 11500000, guid: ae446ff0d9a7c13498218eb33d3726b5, type: 3}
+  m_Name: Upgrade_RankE
   m_EditorClassIdentifier: 
-  buildingID: RankE
-  buildingTitle: Upgrade to Rank E
+  upgradeID: upgrade_rankE
+  title: Upgrade to Rank E
   description: Coming Soon to an Upgrade near you...
   completeLog: RANK UP! The guild is now Rank E!
   requiredRenown: 10
-  cost:
-  - resourceType: 0
-    value: 10
-  buildTimeDays: 1
-  buildTimeHours: 0
-  requiresBuilding: Start
+  cost: []
+  timeDays: 999
+  timeHours: 0
+  requiresUpgrade: upgrade_start

@@ -42,8 +42,8 @@ public class QuestBoard : GuildHall
         foreach (string questID in guild.CompletedQuests)
             allQuests.Remove(questID);
 
-        foreach (string buildID in guild.CompletedBuildings)
-            CompleteBuild(buildID);
+        foreach (string upgradeID in guild.CompletedUpgrades)
+            CompleteUpgrade(upgradeID);
 
         foreach (Quest quest in guild.Quests)
             questBoardPanel.AddQuest(quest);
@@ -192,9 +192,9 @@ public class QuestBoard : GuildHall
         return availableQuests;
     }
 
-    public override void CompleteBuild(string buildID)
+    public override void CompleteUpgrade(string upgradeID)
     {
-        if (buildID == "QuestBoard")
+        if (upgradeID == "upgrade_questBoard")
         {
             Unlocked = true;
             questBoardPanel.SetLockState(Unlocked);

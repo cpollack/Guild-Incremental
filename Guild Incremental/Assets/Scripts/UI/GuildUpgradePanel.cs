@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConstructionPanel : MonoBehaviour
+public class GuildUpgradePanel : MonoBehaviour
 {
     public TextMeshProUGUI activeText;
     public GameObject contentPanel;    
@@ -26,9 +26,9 @@ public class ConstructionPanel : MonoBehaviour
         GameLib.RebuildLayout(this, contentPanel);
     }
 
-    public void AddBuilding(GameObject buildObj)
+    public void AddUpgrade(GameObject upgradeObj)
     {
-        buildObj.transform.SetParent(contentPanel.transform, false);
+        upgradeObj.transform.SetParent(contentPanel.transform, false);
     }
 
     public void SetActiveJobs(int current, int max)

@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 5328463277604629138}
   - component: {fileID: 2171612063263437222}
   m_Layer: 5
-  m_Name: buttonBuild
+  m_Name: buttonUpgrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -523,7 +523,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Build
+  m_text: Upgrade
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e4e5e24a6711b8946b8439dcb4336d67, type: 2}
   m_sharedMaterial: {fileID: -4052156565762599087, guid: e4e5e24a6711b8946b8439dcb4336d67, type: 2}
@@ -606,7 +606,7 @@ GameObject:
   - component: {fileID: 5328463277765341113}
   - component: {fileID: 5328463277765341118}
   m_Layer: 5
-  m_Name: BuildingPanel
+  m_Name: UpgradePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -781,8 +781,8 @@ MonoBehaviour:
   button: {fileID: 5328463277604629138}
   textButton: {fileID: 7117574119220939225}
   progressBar: {fileID: 1776950393300643221}
-  building:
-    buildingID: 
+  upgrade:
+    upgradeID: 
     Started: 0
     Paused: 0
     Completed: 0
@@ -792,7 +792,7 @@ MonoBehaviour:
     pauseTime:
       day: 0
       hour: 0
-    buildMode: 0
+    upgradeMode: 0
 --- !u!1 &5328463277792627529
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +859,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Build Time
+  m_text: Upgrade Time
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e4e5e24a6711b8946b8439dcb4336d67, type: 2}
   m_sharedMaterial: {fileID: -4052156565762599087, guid: e4e5e24a6711b8946b8439dcb4336d67, type: 2}
@@ -1193,7 +1193,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Build Title
+  m_text: Upgrade Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e4e5e24a6711b8946b8439dcb4336d67, type: 2}
   m_sharedMaterial: {fileID: -4052156565762599087, guid: e4e5e24a6711b8946b8439dcb4336d67, type: 2}
@@ -1276,7 +1276,7 @@ GameObject:
   - component: {fileID: 7832783566586627956}
   - component: {fileID: 3789918413248985672}
   m_Layer: 5
-  m_Name: BuildDataPanel
+  m_Name: UpgradeDataPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

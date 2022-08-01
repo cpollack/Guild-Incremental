@@ -6611,7 +6611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedPanels:
   - {fileID: 353870821}
-  requireBuildID: Start
+  requireUpgradeID: upgrade_start
 --- !u!114 &563006585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7665,7 +7665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedPanels:
   - {fileID: 1883572177}
-  requireBuildID: 
+  requireUpgradeID: upgrade_mapRoom
 --- !u!114 &734948766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9889,7 +9889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedPanels:
   - {fileID: 2032149254}
-  requireBuildID: 
+  requireUpgradeID: 
 --- !u!114 &991529595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10950,7 +10950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedPanels:
   - {fileID: 1264431915}
-  requireBuildID: Tavern
+  requireUpgradeID: upgrade_tavern
 --- !u!114 &1097987420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11491,11 +11491,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1121250954}
   - component: {fileID: 1121250956}
+  - component: {fileID: 1121250959}
   - component: {fileID: 1121250955}
-  - component: {fileID: 1121250957}
   - component: {fileID: 1121250958}
   m_Layer: 5
-  m_Name: panelConstruction
+  m_Name: panelUpgrades
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11563,20 +11563,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1121250953}
   m_CullTransparentMesh: 1
---- !u!114 &1121250957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1121250953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd8f3b8817735a14bb2dde08e1801bf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activeText: {fileID: 1715918768}
-  contentPanel: {fileID: 995258173}
 --- !u!114 &1121250958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11597,6 +11583,20 @@ MonoBehaviour:
   m_FlexibleWidth: 2
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &1121250959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121250953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f92936bcc17114ebf8fc83f5a540eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeText: {fileID: 1715918768}
+  contentPanel: {fileID: 995258173}
 --- !u!1 &1125413088
 GameObject:
   m_ObjectHideFlags: 0
@@ -11996,7 +11996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedPanels:
   - {fileID: 663366742}
-  requireBuildID: 
+  requireUpgradeID: 
 --- !u!114 &1144419800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12499,7 +12499,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Construction Projects
+  m_text: Upgrades
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e4e5e24a6711b8946b8439dcb4336d67, type: 2}
   m_sharedMaterial: {fileID: -4052156565762599087, guid: e4e5e24a6711b8946b8439dcb4336d67, type: 2}
@@ -12869,7 +12869,7 @@ GameObject:
   - component: {fileID: 1239129980}
   - component: {fileID: 1239129981}
   m_Layer: 0
-  m_Name: Construction
+  m_Name: UpgradeHall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12904,9 +12904,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 4115f2046a4410f41ad66a3da57df3c9, type: 2}
   Unlocked: 1
-  constructionPanel: {fileID: 1121250957}
-  buildingPanelPrefab: {fileID: 5328463277765341106, guid: 972c7f3300b235b49afd3f717d5c38a6, type: 3}
-  firstBuild: {fileID: 11400000, guid: da3ef6fe014e5804eacf6ec4047764e5, type: 2}
+  upgradePanel: {fileID: 1121250959}
+  upgradePanelPrefab: {fileID: 5328463277765341106, guid: 972c7f3300b235b49afd3f717d5c38a6, type: 3}
+  firstUpgrade: {fileID: 11400000, guid: e3fb22d2fb79faf428816fef2106a325, type: 2}
 --- !u!1 &1253036479
 GameObject:
   m_ObjectHideFlags: 0

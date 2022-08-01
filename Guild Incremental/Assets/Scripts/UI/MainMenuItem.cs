@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MainMenuItem : MonoBehaviour
 {
     public List<GameObject> ownedPanels = new List<GameObject>();
-    public string requireBuildID = "";
+    public string requireUpgradeID = "";
 
     // Start is called before the first frame update
     void Start()
@@ -20,10 +20,10 @@ public class MainMenuItem : MonoBehaviour
         
     }
 
-    public void CompleteBuilding(string buildID)
+    public void CompleteUpgrade(string upgradeID)
     {
         if (gameObject.activeSelf) return;
-        if (requireBuildID == buildID || requireBuildID.Length == 0)
+        if (requireUpgradeID == upgradeID || requireUpgradeID.Length == 0)
         {
             gameObject.SetActive(true);
             if (GetComponent<Toggle>().isOn) OnEnterTab();

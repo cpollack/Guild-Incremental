@@ -21,10 +21,10 @@ public class MainMenu : MonoBehaviour
         
     }
 
-    public void CompleteBuilding(string buildID)
+    public void CompleteUpgrade(string upgradeID)
     {
         foreach (MainMenuItem menuItem in menuItems) {
-            menuItem.CompleteBuilding(buildID);
+            menuItem.CompleteUpgrade(upgradeID);
         }
     }
 
@@ -39,7 +39,7 @@ public class MainMenu : MonoBehaviour
         currentItem.OnEnterTab();
     }
 
-    public void Reset(List<string> completedBuildings, bool gotoDefTab = false)
+    public void Reset(List<string> completedUpgrades, bool gotoDefTab = false)
     {
         if (gotoDefTab)
         {
@@ -48,8 +48,8 @@ public class MainMenu : MonoBehaviour
 
         foreach (MainMenuItem menuItem in menuItems)
         {
-            if (menuItem.requireBuildID.Length == 0) menuItem.gameObject.SetActive(true);
-            else if (completedBuildings.Contains(menuItem.requireBuildID)) menuItem.gameObject.SetActive(true);
+            if (menuItem.requireUpgradeID.Length == 0) menuItem.gameObject.SetActive(true);
+            else if (completedUpgrades.Contains(menuItem.requireUpgradeID)) menuItem.gameObject.SetActive(true);
             else menuItem.gameObject.SetActive(false);
         }
     }

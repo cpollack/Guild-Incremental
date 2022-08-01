@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29bcc29da4dd8c141bc5c423329627ba, type: 3}
-  m_Name: Hall_Construction
+  m_Name: Hall_Upgrade
   m_EditorClassIdentifier: 
-  ID: Construction
-  Name: Construction
+  ID: Upgrade
+  Name: Upgrade
   requiresBuilding: 

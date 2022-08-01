@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingPanel : MonoBehaviour
+public class UpgradePanel : MonoBehaviour
 {
     public TextMeshProUGUI textName;
     public TextMeshProUGUI textTime;
@@ -14,7 +14,7 @@ public class BuildingPanel : MonoBehaviour
     public Button button;
     public TextMeshProUGUI textButton;
     public ProgressBar progressBar;
-    public Building building;
+    public Upgrade upgrade;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class BuildingPanel : MonoBehaviour
 
     public void OnClick()
     {
-        building.OnClick();
+        upgrade.OnClick();
     }
 
     public void OnComplete()
@@ -38,12 +38,12 @@ public class BuildingPanel : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void AddCost(BuildingResource resource)
+    public void AddCost(UpgradeResource resource)
     {
         GameObject obj = Instantiate(resourcePrefab, costPanel.transform, false);
         ResourcePanel rewardPanel = obj.GetComponent<ResourcePanel>();
 
-        rewardPanel.resourceImage.sprite = building.guild.GetResourceImage(resource.resourceType);
+        rewardPanel.resourceImage.sprite = upgrade.guild.GetResourceImage(resource.resourceType);
         rewardPanel.resourceText.text = resource.value.ToString();
 
         string hover = "";

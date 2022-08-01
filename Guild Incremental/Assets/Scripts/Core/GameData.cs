@@ -17,10 +17,10 @@ public class GameData
     public List<StoryEntry> storyEntries;
     public List<LogEntry> logEntries;
 
-    //Buildings
-    public List<string> completedBuildings;
-    public List<Building> currentBuildProjects;
-    public int maxConstructionJobs;
+    //Upgrades
+    public List<string> completedUpgrades;
+    public List<Upgrade> activeUpgrades;
+    public int maxActiveUpgrades;
 
     //Quests
     public List<string> completedQuests;
@@ -47,9 +47,9 @@ public class GameData
         storyEntries = new List<StoryEntry>();
         logEntries = new List<LogEntry>();
 
-        completedBuildings = new List<string>();
-        currentBuildProjects = new List<Building>();
-        maxConstructionJobs = 1;
+        completedUpgrades = new List<string>();
+        activeUpgrades = new List<Upgrade>();
+        maxActiveUpgrades = 1;
 
         quests = new List<Quest>();
         completedQuests = new List<string>();
@@ -68,8 +68,8 @@ public class GameData
         if (logEntries == null) logEntries = new List<LogEntry>();
         if (storyEntries == null) storyEntries = new List<StoryEntry>();
 
-        if (completedBuildings == null) completedBuildings = new List<string>();
-        if (currentBuildProjects == null) currentBuildProjects = new List<Building>();
+        if (completedUpgrades == null) completedUpgrades = new List<string>();
+        if (activeUpgrades == null) activeUpgrades = new List<Upgrade>();
 
         if (completedQuests == null) completedQuests = new List<string>();
         if (quests == null) quests = new List<Quest>();
