@@ -41,7 +41,7 @@ public class HeaderPanel : MonoBehaviour
         if (hour >= 5 && hour <= 17)
         {
             float perc = (hour - 5) / 12;
-            float pos = (perc * 40) - 20;
+            float pos = (perc * 34) - 17;
             sun.rectTransform.anchoredPosition = new Vector2(pos, 0);
         }
         else sun.rectTransform.anchoredPosition = new Vector2(20, 0);
@@ -50,7 +50,7 @@ public class HeaderPanel : MonoBehaviour
         {
             if (hour <= 5) hour += 24;
             float perc = (hour - 17) / 12;
-            float pos = (perc * 40) - 20;
+            float pos = (perc * 34) - 17;
             moon.rectTransform.anchoredPosition = new Vector2(pos, 0);
         }
         else moon.rectTransform.anchoredPosition = new Vector2(20, 0);
