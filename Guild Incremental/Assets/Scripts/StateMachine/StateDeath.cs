@@ -22,7 +22,7 @@ public class StateDeath : AdventurerBaseState
     {
         UpdateActionPercent();
 
-        if (HasStateLengthBeenFulfilled())
+        if (StateTimerMet())
         {
             switch (deathStatus)
             {

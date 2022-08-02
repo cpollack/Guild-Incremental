@@ -27,12 +27,14 @@ public class Guild : MonoBehaviour
     [Header("Time")]
     public bool timePaused = false;
     public float secondsPerDay = 1.0f;
+    public int msPerTick = 1000;
+    public int minutesPerTick = 5;
 
     //public GameTime currentTime = new GameTime(1, 5);
     public TimeOfDay timeOfDay;
 
-    private float elapsed = 0;
-    public float autoSaveTimer = 5;
+    private float autoSaveTimer = 0;
+    public float autoSaveInterval = 5;
 
     [Header("Guild Halls")]
     public MainMenu mainMenu;
@@ -100,17 +102,22 @@ public class Guild : MonoBehaviour
     private void UpdateTime()
     {
         //Real Time
-        elapsed += Time.deltaTime;
-        if (elapsed >= autoSaveTimer)
+        autoSaveTimer += Time.deltaTime;
+        if (autoSaveTimer >= autoSaveInterval)
         {
-            elapsed = 0;
+            autoSaveTimer = 0;
             Save();
         }
 
         //Game Time
         if (timePaused) return;
 
-        CurrentTime.AddHours(Time.deltaTime / secondsPerDay * 24);      
+
+        float elapsedTime = msPerTick / 1000f * Time.deltaTime;
+        elapsedTime *= (minutesPerTick / 60f);
+
+        CurrentTime.AddHours(elapsedTime);
+        //CurrentTime.AddHours(Time.deltaTime / secondsPerDay * 24);      
     }
 
     public GameTime GetElapsedTime(GameTime startTime)
@@ -208,7 +215,7 @@ public class Guild : MonoBehaviour
     public void EndBattle(Battle battle)
     {
         gameData.activeBattles.Remove(battle);
-        battle.ClearTeamBossBattle(this);
+        battle.ClearTeamBattle(this);
     }
 
     /* Utility */

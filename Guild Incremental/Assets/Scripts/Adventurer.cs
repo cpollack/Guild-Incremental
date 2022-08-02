@@ -104,7 +104,7 @@ public class Adventurer : IFighter
     [NonSerialized] [SerializeReference] public Quest currentQuest = null;
     public string assignedQuestID = "";
     [NonSerialized] [SerializeReference] public Quest assignedQuest = null;
-    [NonSerialized] [SerializeReference] public Battle bossBattle = null;
+    [NonSerialized] [SerializeReference] public Battle battle = null;
 
     [Header("Party")]
     public bool isLeader = true;
@@ -195,7 +195,10 @@ public class Adventurer : IFighter
         foreach (Quest quest in availableQuests)
         {
             //if (level / quest.recommendedLevel >= 0.9 && level / quest.recommendedLevel <= 1.2) questPool.Add(quest);
-            
+
+            //Main quests can only be assigned
+            if (quest.category == QuestCategory.Main) continue;
+
             //Skip projects for now
             if (quest.category == QuestCategory.Project) continue;
 
@@ -236,10 +239,9 @@ public class Adventurer : IFighter
         return false;
     }
 
-    public bool IsInBossBattle()
+    public bool InBattle()
     {
-        if (bossBattle != null) return true;
-        return false;
+        return battle != null;
     }
 
     public bool ChooseLocation()

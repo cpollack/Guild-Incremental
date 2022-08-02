@@ -17,7 +17,7 @@ public class StateTravel : AdventurerBaseState
         adventurer.SetActionText((adventurer.targetLocation != null ? "Traveling to " + adventurer.targetLocation.data.Name : "Returning from " + adventurer.currentLocation.data.Name));
 
         UpdateActionPercent();
-        if (HasStateLengthBeenFulfilled())
+        if (StateTimerMet())
         {
             if (adventurer.targetLocation != null) return typeof(StateExplore);
             else return typeof(StateIdle);

@@ -13,33 +13,37 @@ public class StateExplore : AdventurerBaseState
     private Location location;
 
     private const float encounterTimer = 0.25f; //15 minutes
-    private const float battleTimer = 0.0167f; //~1 minute per round
+    //private const float battleTimer = 0.0167f; //~1 minute per round
+    private const float battleTimer = 0.0417f; //~2.5 minute per round
     private const int maxExploreHours = 8;
 
     public override Type Tick()
     {
         Type newState = null;
-        //Boss Battle!
-        if (adventurer.IsInBossBattle())
+        
+        if (adventurer.InBattle())
         {
-            if (HasSecondaryLengthBeenFulfilled(battleTimer))
-                newState = HandleBossBattle();
-            if (newState != null)
+            UpdateSecondaryActionPercent(battleTimer);
+            if (SecondaryStateTimerMet(battleTimer))
+            {
                 ResetSecondaryTime();
+                newState = HandleBattle();
+            }            
             return newState;
         }
 
         //Return to the Guild after 8 hours of exploring
-        if (HasStateLengthBeenFulfilled() && !adventurer.IsHuntingBoss())
+        if (StateTimerMet() && !adventurer.IsHuntingBoss())
             return ReturnHome();
 
         //Run encounters
-        if (HasSecondaryLengthBeenFulfilled(encounterTimer))
+        UpdateSecondaryActionPercent(encounterTimer);
+        if (SecondaryStateTimerMet(encounterTimer))
         {
             if (adventurer.IsHuntingBoss())
             {
                 EncounterType encounterType;
-                //Boss battles occure once adventurer reaches the end of the zone
+                //Boss battles occur once adventurer reaches the end of the zone
                 if (GetElapsedTime().GetHours() >= location.data.depthInHours)
                     encounterType = EncounterType.BossBattle;
                 else encounterType = location.RollEncounter();
@@ -79,10 +83,12 @@ public class StateExplore : AdventurerBaseState
                 break;
 
             case EncounterType.Battle:
+                //return HandleInstantBattle();
                 return HandleBattle();
 
             case EncounterType.BossBattle:
-                return HandleBossBattle();
+                //return HandleBossBattle();
+                return HandleBattle();
 
             case EncounterType.Resource:
                 return HandleGather();
@@ -93,6 +99,64 @@ public class StateExplore : AdventurerBaseState
     }
 
     private Type HandleBattle()
+    {  
+        //Only the pary leader handles/updates the battle!
+        //We still need the battle ended state change though
+        //How should party death be handled?
+        if (!adventurer.isLeader) return null;
+
+        if (adventurer.battle == null)
+        {
+            Battle battle = new Battle();
+            battle.addAdventurer(adventurer);
+            //add team members
+
+            MonsterData monsterData = location.RollMonster(adventurer);
+            battle.addMonster(monsterData);
+
+            //This was for boss battles. How should boss spawn be decided now?
+            /*foreach (var objective in adventurer.currentQuest.objectives)
+            {
+                MonsterData monsterData = Guild.GetMonsterData(objective.id);
+                if (monsterData != null) battle.addMonster(monsterData);
+            }*/
+
+            Guild.StartBattle(battle);
+            return null;
+        }
+
+        if (adventurer.battle.BattleEnd())
+        {
+            if (!adventurer.battle.DidWin())
+            {
+                //check if ran out of rounds
+                adventurer.SetActionText("[DEFEAT] Slain by " + adventurer.battle.GetMonsterName() + ".");
+                Guild.EndBattle(adventurer.battle);
+                return typeof(StateDeath);
+            }
+
+            adventurer.SetActionText("[VICTORY] The " + adventurer.battle.GetMonsterName() + " has been slain!");
+
+            //Victory
+            adventurer.battle.UpdateMonsterKills();
+            adventurer.battle.AwardExp();
+            adventurer.battle.RollDrops();
+            Guild.EndBattle(adventurer.battle);
+            location.GainProgress(1);
+
+            if (adventurer.currentQuest != null)
+            {
+                if (adventurer.currentQuest.objectiveMet) return ReturnHome();
+            }
+            return null;
+        }
+
+        //adventurer.SetActionText("In an epic Boss Battle with a " + adventurer.bossBattle.GetMonsterName());
+        adventurer.battle.DoRound();
+        return null;
+    }
+
+    private Type HandleInstantBattle()
     {
         Battle battle = new Battle();
         battle.addAdventurer(adventurer);
@@ -116,49 +180,6 @@ public class StateExplore : AdventurerBaseState
         if (adventurer.currentQuest != null)
         {
             if (adventurer.currentQuest.objectiveMet) return ReturnHome();
-        }
-
-        return null;
-    }
-
-    private Type HandleBossBattle()
-    {
-        //Only the pary leader handles/updates the boss battle!
-        //We still need the battle ended state change though
-        //How should party death be handled?
-        if (!adventurer.isLeader) return null;
-
-        if (adventurer.bossBattle == null)
-        {          
-            Battle bossBattle = new Battle();
-            bossBattle.addAdventurer(adventurer);
-            //add team members
-            
-            adventurer.bossBattle = bossBattle;
-            foreach (var objective in adventurer.currentQuest.objectives)
-            {
-                MonsterData monsterData = Guild.GetMonsterData(objective.id); 
-                if (monsterData != null) adventurer.bossBattle.addMonster(monsterData);
-            }
-
-            Guild.StartBattle(bossBattle);
-        }
-
-        adventurer.SetActionText("In an epic Boss Battle with a " + adventurer.bossBattle.GetMonsterName());
-        bool battleEnded = adventurer.bossBattle.DoRound();      
-
-        if (battleEnded)
-        {
-            if (!adventurer.bossBattle.DidTeamWin())
-            {
-                adventurer.SetActionText("Slain by " + adventurer.bossBattle.GetMonsterName() + ".");
-                Guild.EndBattle(adventurer.bossBattle);
-                return typeof(StateDeath);
-            }
-
-            adventurer.SetActionText("The " + adventurer.bossBattle.GetMonsterName() + " has been slain!");
-            Guild.EndBattle(adventurer.bossBattle);
-            return ReturnHome();
         }
 
         return null;

@@ -28,6 +28,7 @@ public class StateAdventurePrep : AdventurerBaseState
     public override void OnStateChange()
     {
         base.OnStateChange();
-        stateLength.hour = 1;
+        //stateLength.hour = 1;
+        stateLength.SetByMinutes(30);
     }
 }

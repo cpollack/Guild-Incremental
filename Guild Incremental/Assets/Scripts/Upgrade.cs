@@ -187,9 +187,18 @@ public class Upgrade
     private void SetUpgradeData()
     {
         upgradePanel.textName.text = data.title;
-        GameTime upgradeTime = new GameTime(data.timeDays, data.timeHours);
-        upgradePanel.textTime.text = upgradeTime.ToString();
         upgradePanel.textFlavor.text = data.description;
+
+        GameTime upgradeTime = new GameTime(data.timeDays, data.timeHours);
+        string strRem;
+        if (upgradeTime.day == 0 && upgradeTime.hour < 1)
+        {
+            int mins = (int)(60 * upgradeTime.hour);
+            if (mins < 1) mins = 1;
+            strRem = mins.ToString() + " Minute" + (mins == 1 ? "" : "s");
+        }
+        else strRem = upgradeTime.ToString();
+        upgradePanel.textTime.text = strRem;        
 
         foreach (UpgradeResource resource in data.cost)
             upgradePanel.AddCost(resource);

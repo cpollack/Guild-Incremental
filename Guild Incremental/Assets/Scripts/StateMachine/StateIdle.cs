@@ -87,12 +87,12 @@ public class StateIdle : AdventurerBaseState
                 adventurer.TurnInQuest();
                 adventurer.SetActionText("Turning in a quest and collecting the rewards.");
                 ResetStartTime();
-                stateLength.hour = 0.25f;
+                stateLength.SetByMinutes(5);
                 idleSubState = IdleSubState.WaitTurnIn;
                 break;
 
             case IdleSubState.WaitTurnIn:
-                if (HasStateLengthBeenFulfilled())
+                if (StateTimerMet())
                 {
                     idleSubState = IdleSubState.Quest;
                 }
@@ -105,7 +105,7 @@ public class StateIdle : AdventurerBaseState
                     {
                         adventurer.SetActionText("Visiting the quest board.");
                         ResetStartTime();
-                        stateLength.hour = 0.25f;
+                        stateLength.SetByMinutes(5);
                         idleSubState = IdleSubState.WaitQuest;
                     }
                     else idleSubState = IdleSubState.Location;
@@ -114,7 +114,7 @@ public class StateIdle : AdventurerBaseState
                 break;
 
             case IdleSubState.WaitQuest:
-                if (HasStateLengthBeenFulfilled())
+                if (StateTimerMet())
                 {
                     idleSubState = IdleSubState.Location;
                 }
@@ -158,12 +158,12 @@ public class StateIdle : AdventurerBaseState
                 adventurer.TurnInQuest();
                 adventurer.SetActionText("Turning in a quest and collecting the rewards.");
                 ResetStartTime();
-                stateLength.hour = 0.25f;
+                stateLength.SetByMinutes(10);
                 idleSubState = IdleSubState.WaitTurnIn;
                 break;
 
             case IdleSubState.WaitTurnIn:
-                if (HasStateLengthBeenFulfilled())
+                if (StateTimerMet())
                 {
                     idleSubState = IdleSubState.None;
                 }
@@ -196,12 +196,12 @@ public class StateIdle : AdventurerBaseState
             case IdleSubState.TurnIn:
                 adventurer.TurnInQuest();
                 adventurer.SetActionText("Turning in a quest and collecting the rewards.");
-                stateLength.hour = 0.25f;
+                stateLength.SetByMinutes(10);
                 idleSubState = IdleSubState.WaitTurnIn;
                 break;
 
             case IdleSubState.WaitTurnIn:
-                if (HasStateLengthBeenFulfilled())
+                if (StateTimerMet())
                 {
                     idleSubState = IdleSubState.None;
                 }

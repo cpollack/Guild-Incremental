@@ -57,6 +57,11 @@ public class GameTime
         hour = hours;
     }
 
+    public void SetByMinutes(float minutes)
+    {
+        SetByHours(minutes / 60f);
+    }
+
     public void AddHours(float hours)
     {
         int incDay = (int)hours / 24;

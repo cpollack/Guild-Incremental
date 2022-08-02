@@ -24,6 +24,7 @@ public class Battle
     {
         teamIDs.Add(adventurer.Name);
         team.Add(adventurer);
+        adventurer.battle = this;
     }
 
     public void addMonster(MonsterData data)
@@ -40,18 +41,18 @@ public class Battle
         {
             Adventurer adventurer = guild.GetAdventurer(id);
             if (adventurer == null) Debug.LogError("Battle::Load failed to reload adventurer: " + id);
-            adventurer.bossBattle = this;
+            adventurer.battle = this;
             team.Add(adventurer);
         }
     }
 
-    public void ClearTeamBossBattle(Guild guild)
+    public void ClearTeamBattle(Guild guild)
     {
         foreach (string id in teamIDs)
         {
             Adventurer adventurer = guild.GetAdventurer(id);
             if (adventurer == null) Debug.LogError("Battle::ClearTeamBossBattle failed to reload adventurer: " + id);
-            adventurer.bossBattle = null;
+            adventurer.battle = null;
         }
     }
 
@@ -68,7 +69,7 @@ public class Battle
             battleEnded = DoRound();
         }
 
-        return DidTeamWin();
+        return DidWin();
     }
 
     public bool DoRound()
@@ -86,7 +87,7 @@ public class Battle
                 nextFighter.Attack(targets[0]);
             }
 
-            if (!CanContinue())
+            if (BattleEnd())
             {
                 return true;
             }
@@ -149,12 +150,12 @@ public class Battle
         return pool;
     }
 
-    private bool CanContinue()
+    public bool BattleEnd()
     {
         if (currentRound >= maxRounds)
         {
             ranAway = true;
-            return false;
+            return true;
         }
 
         bool alive = false;
@@ -166,7 +167,7 @@ public class Battle
                 break;
             }
         }
-        if (!alive) return false;
+        if (!alive) return true;
 
         alive = false;
         foreach (IFighter fighter in monsters)
@@ -177,10 +178,10 @@ public class Battle
                 break;
             }
         }
-        return alive;
+        return !alive;
     }
 
-    public bool DidTeamWin()
+    public bool DidWin()
     {
         if (ranAway) return false;
 
@@ -211,6 +212,12 @@ public class Battle
     {
         if (position > monsters.Count) return "";
         return monsters[position].Name;
+    }
+
+    public float GetMonsterHealthPerc(int position = 0)
+    {
+        if (position > monsters.Count) return 0f;
+        return monsters[position].GetCurrentLife() / monsters[position].GetMaxLife();
     }
 
     public void AwardExp()

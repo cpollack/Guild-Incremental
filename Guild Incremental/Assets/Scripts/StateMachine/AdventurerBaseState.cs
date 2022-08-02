@@ -29,14 +29,14 @@ public class AdventurerBaseState : BaseState
         ResetSecondaryTime();
     }
 
-    protected bool HasStateLengthBeenFulfilled()
+    protected bool StateTimerMet()
     {
         if (stateLength.GetHours() == 0) return false;
         if (Guild.GetElapsedTime(startTime) >= stateLength) return true;
         return false;
     }
 
-    protected bool HasSecondaryLengthBeenFulfilled(float hours)
+    protected bool SecondaryStateTimerMet(float hours)
     {
         if (secondaryTime.GetHours() == 0) return false;
         GameTime length = new GameTime(0, hours);
@@ -70,6 +70,13 @@ public class AdventurerBaseState : BaseState
     {
         float elapsedHours = GetElapsedTime().GetHours();
         float actionPerc = elapsedHours / stateLength.GetHours();
+        adventurer.SetActionPercent(actionPerc);
+    }
+
+    protected void UpdateSecondaryActionPercent(float hours)
+    {
+        float elapsedHours = GetSecondaryElapsedTime().GetHours();
+        float actionPerc = elapsedHours / hours;
         adventurer.SetActionPercent(actionPerc);
     }
 
