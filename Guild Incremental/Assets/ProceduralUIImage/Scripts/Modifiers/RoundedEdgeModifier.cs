@@ -3,13 +3,13 @@ using System.Collections;
 using UnityEngine.UI.ProceduralImage;
 
 [ModifierID("Rounded Edge")]
-public class RoundedEdge : ProceduralImageModifier
+public class RoundedEdgeModifier : ProceduralImageModifier
 {
-	public float borderRadius = 0;
-	public bool topLeft = true;
-	public bool topRight = true;
-	public bool bottomLeft = true;
-	public bool bottomRight = true;
+	[SerializeField] private float borderRadius = 0;
+	[SerializeField] private bool topLeft = true;
+	[SerializeField] private bool topRight = true;
+	[SerializeField] private bool bottomLeft = true;
+	[SerializeField] private bool bottomRight = true;
 
 	#region implemented abstract members of ProceduralImageModifier
 	public override Vector4 CalculateRadius(Rect imageRect)
