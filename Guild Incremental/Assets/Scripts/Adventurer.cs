@@ -128,7 +128,8 @@ public class Adventurer : IFighter
             { typeof(StateAdventurePrep), new StateAdventurePrep(this) },
             { typeof(StateTravel), new StateTravel(this) },
             { typeof(StateExplore), new StateExplore(this) },
-            { typeof(StateDeath), new StateDeath(this) },
+            { typeof(StateRest), new StateRest(this) },
+            { typeof(StateDeath), new StateDeath(this) },            
         };
         StateMachine.SetStates(states);
     }
@@ -376,6 +377,11 @@ public class Adventurer : IFighter
     public int GetMaxLife()
     {
         return life;
+    }
+
+    public bool IsMaxLife()
+    {
+        return currentLife == life;
     }
 
     public float GetCurrentLife()

@@ -20,5 +20,5 @@ MonoBehaviour:
   requiredRenown: 0
   cost: []
   timeDays: 0
-  timeHours: 1
+  timeHours: 0.5
   requiresUpgrade: 

@@ -12,8 +12,8 @@ public class UpgradeData : ScriptableObject
     public string description;
     public string completeLog;
 
-    public int requiredRenown = 0;
-    public List<UpgradeResource> cost;
+    public List<GameResource> requires;
+    public List<GameResource> cost;    
 
     public int timeDays = 0;
     public float timeHours = 0f;

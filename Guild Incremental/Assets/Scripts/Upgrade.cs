@@ -4,15 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct UpgradeResource
+public struct GameResource
 {
     public ResourceType resourceType;
     public int value;
+    public string strValue;
 
-    public UpgradeResource(ResourceType type, int val)
+    public GameResource(ResourceType type, int val)
     {
         resourceType = type;
         value = val;
+        strValue = "";
+    }
+
+    public GameResource(ResourceType type, string val)
+    {
+        resourceType = type;
+        value = 0;
+        strValue = val;
     }
 }
 
@@ -141,8 +150,8 @@ public class Upgrade
 
     private void StartUpgrade()
     {
-        if (guild.Renown < data.requiredRenown) return;
-        if (guild.Gold < GetCost(ResourceType.Gold)) return;
+        if (!guild.MeetsResourceRequirements(data.requires)) return;
+        if (!guild.MeetsResourceRequirements(data.cost)) return;
 
         guild.Gold -= GetCost(ResourceType.Gold);
         Started = true;
@@ -155,7 +164,7 @@ public class Upgrade
     {
         if (!Started)
         {
-            if (guild.Renown < data.requiredRenown)
+            if (!guild.MeetsResourceRequirements(data.requires))
                 upgradeMode = UpgradeMode.None;
             else
                 upgradeMode = UpgradeMode.Upgrade;
@@ -170,7 +179,7 @@ public class Upgrade
 
         switch (upgradeMode) {
             case UpgradeMode.None:
-                upgradePanel.textButton.text = data.requiredRenown.ToString("0") + " Renown";
+                upgradePanel.textButton.text = "Locked";
                 break;
             case UpgradeMode.Upgrade:
                 upgradePanel.textButton.text = "Upgrade";
@@ -200,7 +209,7 @@ public class Upgrade
         else strRem = upgradeTime.ToString();
         upgradePanel.textTime.text = strRem;        
 
-        foreach (UpgradeResource resource in data.cost)
+        foreach (GameResource resource in data.cost)
             upgradePanel.AddCost(resource);
     }
 
@@ -219,7 +228,7 @@ public class Upgrade
 
     private int GetCost(ResourceType resource)
     {
-        foreach (UpgradeResource upgradeResource in data.cost)
+        foreach (GameResource upgradeResource in data.cost)
             if (upgradeResource.resourceType == resource)
                 return upgradeResource.value;
         return 0;

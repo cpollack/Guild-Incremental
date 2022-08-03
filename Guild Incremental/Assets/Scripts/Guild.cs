@@ -261,15 +261,7 @@ public class Guild : MonoBehaviour
     {
         AddLogEntry(content);
         TriggerPopup(content);
-    }
-
-    public Sprite GetResourceImage(ResourceType resourceType)
-    {
-        foreach (ResourceImage resourceImage in resourceImages)
-            if (resourceImage.resourceType == resourceType) return resourceImage.image;
-
-        return null;
-    }
+    }    
 
     public Adventurer GetAdventurer(string adventurerName)
     {
@@ -333,6 +325,45 @@ public class Guild : MonoBehaviour
             //Inform recipes they may need to update?
         }
     }
+
+    /* Resource Handling */
+
+    public bool MeetsResourceRequirements(List<GameResource> resources)
+    {
+        foreach (GameResource resource in resources)
+        {
+            if (!HasResource(resource)) return false;
+        }
+
+        return true;
+    }
+
+    public bool HasResource(GameResource resource)
+    {
+        switch (resource.resourceType)
+        {
+            case ResourceType.Renown:
+                return Renown >= resource.value;
+
+            case ResourceType.Gold:
+                return Gold >= resource.value;
+
+            case ResourceType.Upgrade:
+                return CompletedUpgrades.Contains(resource.strValue);
+        }
+
+        return false;
+    }
+
+    public Sprite GetResourceImage(ResourceType resourceType)
+    {
+        foreach (ResourceImage resourceImage in resourceImages)
+            if (resourceImage.resourceType == resourceType) return resourceImage.image;
+
+        return null;
+    }
+
+    /* Save / Load */
 
     public void Save()
     {

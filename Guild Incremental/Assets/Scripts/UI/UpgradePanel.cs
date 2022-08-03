@@ -38,7 +38,7 @@ public class UpgradePanel : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void AddCost(UpgradeResource resource)
+    public void AddCost(GameResource resource)
     {
         GameObject obj = Instantiate(resourcePrefab, costPanel.transform, false);
         ResourcePanel rewardPanel = obj.GetComponent<ResourcePanel>();

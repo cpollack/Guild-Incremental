@@ -11,6 +11,7 @@ public enum ResourceType
     Item,
     Blueprint,
     Recipe,
+    Upgrade,
 
     Fire = 100,
     Water,

@@ -16,8 +16,11 @@ MonoBehaviour:
   title: Upgrade to Rank E
   description: Coming Soon to an Upgrade near you...
   completeLog: RANK UP! The guild is now Rank E!
-  requiredRenown: 10
-  cost: []
+  requires: []
+  cost:
+  - resourceType: 0
+    value: 0
+    strValue: 
   timeDays: 999
   timeHours: 0
   requiresUpgrade: upgrade_start

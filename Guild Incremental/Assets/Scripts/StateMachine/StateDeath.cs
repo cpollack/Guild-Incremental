@@ -28,7 +28,7 @@ public class StateDeath : AdventurerBaseState
             {
                 case DeathStatus.Revive:
                     ResetStartTime();
-                    adventurer.SetActionText("Recuperating.");
+                    adventurer.SetActionText("Recovering from resurrection sickness.");
                     stateLength.Set(0, 1);
                     deathStatus = DeathStatus.Recover;
                     break;
@@ -37,9 +37,7 @@ public class StateDeath : AdventurerBaseState
                     adventurer.ResetLife();
                     return typeof(StateIdle);
             }            
-        }
-
-        
+        }        
 
         return null;
     }
@@ -59,7 +57,7 @@ public class StateDeath : AdventurerBaseState
     {
         base.OnStateChange();
         adventurer.currentLocation = null;
-        adventurer.SetActionText("Reviving.");
+        adventurer.SetActionText("Waiting for the resurrection ceremony to finish.");
         stateLength.Set(0, 1);
         deathStatus = DeathStatus.Revive;
     }

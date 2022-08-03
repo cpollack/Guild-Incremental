@@ -19,7 +19,7 @@ public class StateIdle : AdventurerBaseState
         WaitQuest,
         Location,
     }
-    private IdleSubState idleSubState = IdleSubState.None;
+    private IdleSubState idleSubState = IdleSubState.None;    
 
     public override Type Tick()
     {
@@ -68,12 +68,15 @@ public class StateIdle : AdventurerBaseState
     }
 
     private Type HandleIdleState()
-    {
-        adventurer.Resting = false;
-
+    {    
         switch (idleSubState)
         {
             case IdleSubState.None:
+                if (!adventurer.IsMaxLife())
+                {
+                    return typeof(StateRest);
+                }
+
                 if (adventurer.currentQuest != null)
                 {
                     if (adventurer.currentQuest.objectiveMet) idleSubState = IdleSubState.TurnIn;
@@ -211,21 +214,4 @@ public class StateIdle : AdventurerBaseState
         return null;
     }
 
-    private Type HandleNight()
-    {
-        if (!adventurer.Resting)
-        {
-            ResetStartTime();
-            adventurer.Resting = true;
-            adventurer.HideActionPercent();
-        }
-        else
-        {
-            float elapsedTime = GetElapsedTime().GetHours();
-            adventurer.Recover(elapsedTime);
-            ResetStartTime();
-        }
-        
-        return null;
-    }
 }
