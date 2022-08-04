@@ -22,6 +22,20 @@ namespace UnityEngine.UI.ProceduralImage
 			}
 		}
 
+		protected ProceduralImage proceduralImage;
+
+		protected ProceduralImage _ProceduralImage
+		{
+			get
+			{
+				if (proceduralImage == null)
+				{
+					proceduralImage = this.GetComponent<ProceduralImage>();
+				}
+				return proceduralImage;
+			}
+		}
+
 		public abstract Vector4 CalculateRadius (Rect imageRect);
 	}
 }

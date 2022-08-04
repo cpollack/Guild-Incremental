@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
 /* Author: Josh H.
  * Procedural UI Image
@@ -119,6 +120,7 @@ namespace UnityEngine.UI.ProceduralImage
         {
             base.OnEnable();
             this.Init();
+            this.SetVerticesDirty();
         }
 
         override protected void OnDisable()
@@ -194,6 +196,16 @@ namespace UnityEngine.UI.ProceduralImage
         protected override void OnPopulateMesh(VertexHelper toFill)
         {
             base.OnPopulateMesh(toFill);
+            //EncodeAllInfoIntoVertices(toFill, CalculateInfo());
+            StartCoroutine(coEncodeAllInfoIntoVertices(toFill));
+        }
+
+        private IEnumerator coEncodeAllInfoIntoVertices(VertexHelper toFill)
+        {
+            while (CanvasUpdateRegistry.IsRebuildingLayout())
+            {
+                yield return null;
+            }
             EncodeAllInfoIntoVertices(toFill, CalculateInfo());
         }
 
