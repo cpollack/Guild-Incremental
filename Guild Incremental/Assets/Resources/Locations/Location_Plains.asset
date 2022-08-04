@@ -10,24 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 974b2866eaef99a408fdb1ee5480a7a4, type: 3}
-  m_Name: Location_Sewer
+  m_Name: Location_Plains
   m_EditorClassIdentifier: 
-  locationID: Sewer
-  Name: Village Sewers
+  locationID: Plains
+  Name: Willow Plains
   type: 0
-  Description: A network of sewers and waterways are weaven below the city. They
-    are said to be inhabited by giant rats that feast on the refuse, and occasionally
-    wandering pets.
-  minLevel: 1
-  maxLevel: 3
+  Description: Tall grass and gentle breezes make for a lovely stroll through these
+    plains. Broad willows serve as waypoints, but also as dens for the local fauna.
+    The repititive scenery can lead the inexperienced to become easily lost.
+  minLevel: 2
+  maxLevel: 5
   distance: 0
-  depthInHours: 2
+  depthInHours: 4
   maxExplore: 100
   encounterRates:
   - type: 1
     rate: 50
   - type: 2
     rate: 30
+  - type: 5
+    rate: 5
   monsters:
   - {fileID: 11400000, guid: 732ba13a96b631f4d9d3c9625a78b907, type: 2}
   boss: {fileID: 11400000, guid: 01a2afd7c3618c2459dc8e94510616b7, type: 2}
