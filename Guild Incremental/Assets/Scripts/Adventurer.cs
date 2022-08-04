@@ -168,7 +168,7 @@ public class Adventurer : IFighter
         }
         catch (TypeLoadException e)
         {
-            Debug.LogError("Unable to load adventurer state [" + currentState + "]");
+            Debug.LogError("Unable to load adventurer state [" + currentState + "] " + e.Message);
         }
     }
 
