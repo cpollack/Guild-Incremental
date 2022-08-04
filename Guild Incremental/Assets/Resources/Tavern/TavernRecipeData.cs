@@ -14,7 +14,7 @@ public struct RecipeEntry
 public class TavernRecipeData : ScriptableObject
 {
     public string id;
-    public string name;
+    public string Name;
     [TextArea(3, 10)]
     public string description;
     public TavernItemType type;
